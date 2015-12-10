@@ -2,12 +2,37 @@
 # Cookbook Name:: osquery-pkg
 # Recipe:: default
 #
-# Copyright 2015, YOUR_COMPANY_NAME
+# Copyright 2015, Jack Naglieri
 #
 # All rights reserved - Do Not Redistribute
 #
 
-# Domain used by the OS X LaunchDaemon.
+unless node['osquery']['supported'].include?(node['platform'])
+  Chef::Log.warn("** Warning: Unsupported version #{node['platform']} **")
+  return
+end
+
+brewdir = '/usr/local/bin/brew'
+unless File.exist?(brewdir)
+  Chef::Log.warn('** Warning: Brew is required for this cookbook **')
+  return
+end
+
+packs_config = {}
+node['osquery']['packs'].each do |pack|
+  packs_config[pack] = "/var/osquery/packs/#{pack}.conf"
+end
+
+schedule_config = { info: { query: 'SELECT * FROM osquery_info',
+                            interval: '86400'
+                          }
+                  }
+config_hash = { options: node['osquery']['options'],
+                schedule: schedule_config,
+                packs: packs_config
+              }
+osquery_config = Chef::JSONCompat.to_json_pretty(config_hash)
+
 domain = 'com.facebook.osqueryd'
 config_path = '/var/osquery/osquery.conf'
 pid_path = '/var/osquery/osquery.pid'
@@ -32,8 +57,7 @@ directory '/var/log/osquery' do
   mode 0755
 end
 
-packs = ['ir', 'osx-attacks']
-packs.each do |pack|
+node['osquery']['packs'].each do |pack|
   cookbook_file "/var/osquery/packs/#{pack}.conf" do
     mode '0444'
     source "packs/#{pack}.conf"
@@ -62,11 +86,12 @@ cookbook_file "/etc/newsyslog.d/#{domain}.conf" do
   group 'wheel'
 end
 
-cookbook_file '/var/osquery/osquery.conf' do
-  source 'osquery.conf'
+template '/var/osquery/osquery.conf' do
+  source 'osquery.conf.erb'
   mode '0444'
   owner 'root'
   group 'wheel'
+  variables(config: osquery_config)
   notifies :restart, "service[#{domain}]"
 end
 
