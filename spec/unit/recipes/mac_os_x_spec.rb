@@ -1,24 +1,28 @@
-require 'chefspec'
+require 'spec_helper'
 
-describe 'osquery-pkg::default' do
+describe 'osquery::mac_os_x' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new do |node|
       node.automatic['platform'] = 'mac_os_x'
+      node.automatic['platform_version'] = '10.10'
       node.set['osquery']['packs'] = ['hardware-monitoring']
     end.converge(described_recipe)
   end
 
   let(:osquery_vers) { '1.6.1' }
   let(:domain) { 'com.facebook.osqueryd' }
-
-  osquery_dirs = ['/var/log/osquery', '/var/osquery/packs']
+  osquery_dirs = [
+    '/var/log/osquery',
+    '/var/osquery/packs'
+  ]
 
   it 'converges without error' do
     expect { chef_run }.not_to raise_error
   end
 
   it 'installs osquery package' do
-    expect(chef_run).to install_package('osquery').with(version: osquery_vers)
+    expect(chef_run).to install_package('osquery')
+      .with(version: osquery_vers)
   end
 
   osquery_dirs.each do |dir|

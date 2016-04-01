@@ -1,4 +1,4 @@
-osquery-pkg
+osquery
 ====================
 * Installs, configures, and runs [osquery](https://osquery.io/). 
 * Installation occurs with the package resource, which uses brew.  Versions are pinned based on the attribute below.
@@ -33,7 +33,7 @@ Parameters for osquery:
 
 Usage
 -----
-Just include `osquery-pkg` in your node's `run_list`!
+Just include `osquery` in your node's `run_list`!
 
 Contributing
 ------------

@@ -1,11 +1,15 @@
-osquery-pkg CHANGELOG
+osquery CHANGELOG
 =====================
 
-This file is used to list changes made in each version of the osquery-pkg cookbook.
+This file is used to list changes made in each version of the osquery cookbook.
 
 0.1.0
 -----
-- [your_name] - Initial release of osquery-pkg
+- [jack naglieri] - Initial release of osquery
+
+0.2.0
+-----
+- [jack naglieri] - Dynamic osquery config template
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
