@@ -5,6 +5,8 @@ license 'All rights reserved'
 description 'Install and configure osquery'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 supports 'mac_os_x'
+supports 'ubuntu'
 version '0.2.0'
 
 depends 'homebrew'
+depends 'apt'

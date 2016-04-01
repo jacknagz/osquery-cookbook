@@ -8,7 +8,7 @@
 #
 
 unless node['osquery']['supported'].include?(node['platform'])
-  Chef::Log.warn("** Warning: Unsupported version #{node['platform']} **")
+  Chef::Log.warn("** Unsupported version #{node['platform']} **")
   return
 end
 

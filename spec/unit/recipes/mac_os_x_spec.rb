@@ -5,11 +5,11 @@ describe 'osquery::mac_os_x' do
     ChefSpec::SoloRunner.new do |node|
       node.automatic['platform'] = 'mac_os_x'
       node.automatic['platform_version'] = '10.10'
-      node.set['osquery']['packs'] = ['hardware-monitoring']
+      node.set['osquery']['packs'] = %w(osx_pack)
     end.converge(described_recipe)
   end
 
-  let(:osquery_vers) { '1.6.1' }
+  let(:osquery_vers) { '1.7.0' }
   let(:domain) { 'com.facebook.osqueryd' }
   osquery_dirs = [
     '/var/log/osquery',
@@ -31,9 +31,9 @@ describe 'osquery::mac_os_x' do
     end
   end
 
-  it 'installs the hardware-monitoring pack' do
+  it 'installs the a pack' do
     expect(chef_run)
-      .to create_cookbook_file('/var/osquery/packs/hardware-monitoring.conf')
+      .to create_cookbook_file('/var/osquery/packs/osx_pack.conf')
   end
 
   it 'creates osquery config' do

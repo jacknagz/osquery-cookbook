@@ -35,3 +35,35 @@ apt_repository 'osquery' do
   key '1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B'
   action :add
 end
+
+include_recipe 'apt::default'
+
+package 'osquery' do
+  version "#{node['osquery']['version']}-1.ubuntu14"
+  action :install
+end
+
+node['osquery']['packs'].each do |pack|
+  cookbook_file "/usr/share/osquery/packs/#{pack}.conf" do
+    mode '0444'
+    source "packs/#{pack}.conf"
+    owner 'root'
+    group 'root'
+    notifies :restart, 'service[osqueryd]'
+  end
+end
+
+template '/etc/osquery/osquery.conf' do
+  source 'osquery.conf.erb'
+  mode '0444'
+  owner 'root'
+  group 'root'
+  variables(
+    config: osquery_config
+  )
+  notifies :restart, 'service[osqueryd]'
+end
+
+service 'osqueryd' do
+  action [:enable, :start]
+end

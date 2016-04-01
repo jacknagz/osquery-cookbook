@@ -8,7 +8,7 @@
 #
 
 unless File.exist?('/usr/local/bin/brew')
-  Chef::Log.warn('** Warning: Brew is required, installing now **')
+  Chef::Log.info('** Brew is required, installing now **')
   include_recipe 'homebrew::default'
 end
 
