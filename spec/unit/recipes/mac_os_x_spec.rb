@@ -53,4 +53,13 @@ describe 'osquery::mac_os_x' do
     expect(chef_run).to enable_service(domain)
     expect(chef_run).to start_service(domain)
   end
+
+  it 'notifies to run permission mod' do
+    package = chef_run.package('osquery')
+    expect(package).to notify('execute[osqueryd permissions]').to(:run).immediately
+  end
+
+  it 'modifies osquery binary permissions' do
+    expect(chef_run).to_not run_execute('chown root:wheel /usr/local/bin/osqueryd')
+  end
 end

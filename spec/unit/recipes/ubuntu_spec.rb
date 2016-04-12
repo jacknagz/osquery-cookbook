@@ -26,11 +26,15 @@ describe 'osquery::ubuntu' do
   end
 
   it 'creates osquery config' do
-    expect(chef_run).to create_template('/etc/osquery/osquery.conf')
+    expect(chef_run).to create_osquery_config('/etc/osquery/osquery.conf')
   end
 
   it 'starts and enables osquery service' do
     expect(chef_run).to enable_service('osqueryd')
     expect(chef_run).to start_service('osqueryd')
+  end
+
+  it 'adds osquery apt repo' do
+    expect(chef_run).to add_apt_repository('osquery')
   end
 end
