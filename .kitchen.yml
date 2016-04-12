@@ -13,7 +13,7 @@ platforms:
       box: jhcook/osx-yosemite-10.10
   - name: centos-6-6
     driver:
-      box: chef/centos-6.6 
+      box: chef/centos-6.6
   - name: ubuntu-trusty64
     driver:
       box: ubuntu/trusty64

@@ -1,12 +1,12 @@
-default['osquery']['supported'] = [
-  'mac_os_x'
-]
-default['osquery']['version'] = '1.6.1'
-default['osquery']['packs'] = [
-  'incident-response',
-  'osx-attacks'
-]
-
+default['osquery']['supported'] = %w(
+  mac_os_x
+  ubuntu
+)
+default['osquery']['packs'] = %w(
+  incident-response
+  osx-attacks
+)
+default['osquery']['version'] = '1.7.0'
 default['osquery']['options']['config_plugin']  = 'filesystem'
 default['osquery']['options']['logger_plugin']  = 'filesystem'
 default['osquery']['options']['logger_path']    = '/var/log/osquery'

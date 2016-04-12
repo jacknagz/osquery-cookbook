@@ -5,11 +5,11 @@ describe 'osquery::mac_os_x' do
     ChefSpec::SoloRunner.new do |node|
       node.automatic['platform'] = 'mac_os_x'
       node.automatic['platform_version'] = '10.10'
-      node.set['osquery']['packs'] = ['hardware-monitoring']
+      node.set['osquery']['packs'] = %w(osx_pack)
     end.converge(described_recipe)
   end
 
-  let(:osquery_vers) { '1.6.1' }
+  let(:osquery_vers) { '1.7.0' }
   let(:domain) { 'com.facebook.osqueryd' }
   osquery_dirs = [
     '/var/log/osquery',
@@ -31,9 +31,9 @@ describe 'osquery::mac_os_x' do
     end
   end
 
-  it 'installs the hardware-monitoring pack' do
+  it 'installs the a pack' do
     expect(chef_run)
-      .to create_cookbook_file('/var/osquery/packs/hardware-monitoring.conf')
+      .to create_cookbook_file('/var/osquery/packs/osx_pack.conf')
   end
 
   it 'creates osquery config' do
@@ -52,5 +52,14 @@ describe 'osquery::mac_os_x' do
   it 'starts and enables osquery service' do
     expect(chef_run).to enable_service(domain)
     expect(chef_run).to start_service(domain)
+  end
+
+  it 'notifies to run permission mod' do
+    package = chef_run.package('osquery')
+    expect(package).to notify('execute[osqueryd permissions]').to(:run).immediately
+  end
+
+  it 'modifies osquery binary permissions' do
+    expect(chef_run).to_not run_execute('chown root:wheel /usr/local/bin/osqueryd')
   end
 end
