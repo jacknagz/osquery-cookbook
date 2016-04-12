@@ -9,6 +9,10 @@ describe 'osquery::mac_os_x' do
     end.converge(described_recipe)
   end
 
+  before do
+    stub_command('which git').and_return('/usr/bin/git')
+  end
+
   let(:osquery_vers) { '1.7.0' }
   let(:domain) { 'com.facebook.osqueryd' }
   osquery_dirs = [
@@ -56,10 +60,12 @@ describe 'osquery::mac_os_x' do
 
   it 'notifies to run permission mod' do
     package = chef_run.package('osquery')
-    expect(package).to notify('execute[osqueryd permissions]').to(:run).immediately
+    expect(package).to notify('execute[osqueryd permissions]')
+      .to(:run).immediately
   end
 
   it 'modifies osquery binary permissions' do
-    expect(chef_run).to_not run_execute('chown root:wheel /usr/local/bin/osqueryd')
+    expect(chef_run)
+      .to_not run_execute('chown root:wheel /usr/local/bin/osqueryd')
   end
 end
