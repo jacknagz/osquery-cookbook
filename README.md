@@ -1,27 +1,30 @@
 osquery
 ====================
-* Installs, configures, and runs [osquery](https://osquery.io/). 
-* Installation occurs with the package resource, which uses brew.  Versions are pinned based on the attribute below.
-* The proper configuration and logging folders are created, permissions are adjusted on the osqueryd binary, sample packs/configuration are dropped into the `/var/osquery/` folder, and `LaunchDaemon`/`syslog` files are created.
+[![Build Status](https://travis-ci.org/jacknagz/osquery-cookbook.svg?branch=master)](https://travis-ci.org/jacknagz/osquery-cookbook)
+
+* Installs, configures, and starts [osquery](https://osquery.io/). 
+* Cross-platform support: `OS X`, `Ubuntu`, and `Centos` (soon).
 * Configurations are generated based on node attributes.
-* Launchctl loads the daemon, and logs start generating in `/var/log/osquery/osqueryd.results.log`
 
 Requirements
 ------------
-* [Homebrew](http://brew.sh/)
-* [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
+* OS X
+  * [Homebrew](http://brew.sh/)
+  * [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
+
+* Ubuntu
+  * None
 
 Attributes
 ----------
-Version, supported platforms, and pinned osquery package version:
-* `default['osquery']['version'] = '1.6.1'`
-* `default['osquery']['supported']  = ['mac_os_x']`
-* `default['osquery']['version']    = '1.6.1'`
+osquery version and supported platforms
+* `default['osquery']['version'] = '1.7.0'`
+* `default['osquery']['supported']  = ['mac_os_x', 'ubuntu']`
 
-Controls which packs are installed and added to the configuration:
+controls which packs are installed and added to the configuration:
 * `default['osquery']['packs'] = ['incident-response', 'osx-attacks']`
 
-Parameters for osquery:
+parameters for osquery conf:
 * `default['osquery']['options']['config_plugin']  = 'filesystem'`
 * `default['osquery']['options']['logger_plugin']  = 'filesystem'`
 * `default['osquery']['options']['logger_path']    = '/var/log/osquery'`
@@ -31,9 +34,36 @@ Parameters for osquery:
 * `default['osquery']['options']['worker_threads'] = '2'`
 * `default['osquery']['options']['enable_monitor'] = 'true'`
 
+Custom Resources
+----------------
+
+* osquery_conf: create osquery config from selected options and packs.
+
+`create`:
+
+```ruby
+osquery_conf '/etc/osquery/osquery.conf' do
+  action :create
+  schedule schedule_config
+  notifies :restart, 'service[osqueryd]'
+end
+```
+
+`remove`:
+
+```ruby
+osquery_conf 'delete osquery config' do
+  action :delete
+end
+```
+
+Testing
+-----
+`$ rake`: executes `foodcritic`, `rubocop`, and `chefspec`.
+
 Usage
 -----
-Just include `osquery` in your node's `run_list`!
+Include `osquery` in your node's `run_list`!
 
 Contributing
 ------------
