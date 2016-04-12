@@ -9,6 +9,10 @@ describe 'osquery::mac_os_x' do
     end.converge(described_recipe)
   end
 
+  before do
+    stub_command('which git').and_return('/usr/bin/git')
+  end
+
   let(:osquery_vers) { '1.7.0' }
   let(:domain) { 'com.facebook.osqueryd' }
   osquery_dirs = [
