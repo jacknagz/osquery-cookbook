@@ -8,16 +8,19 @@ provisioner:
     audit_mode: :enabled
 
 platforms:
-  - name: osx-10-10
+  - name: osx-1010
     driver:
       box: jhcook/osx-yosemite-10.10
-  - name: centos-6-6
+  - name: centos-67
     driver:
-      box: chef/centos-6.6
+      box: bento/centos-6.7
+  - name: centos-72
+    driver:
+      box: bento/centos-7.2
   - name: ubuntu-trusty64
     driver:
       box: ubuntu/trusty64
-  - name: ubuntu-precise64
+  - name: ubuntu/precise64
     driver:
       box: ubuntu/precise64
 
