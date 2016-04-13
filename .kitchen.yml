@@ -17,6 +17,9 @@ platforms:
   - name: ubuntu-trusty64
     driver:
       box: ubuntu/trusty64
+  - name: ubuntu-precise64
+    driver:
+      box: ubuntu/precise64
 
 suites:
   - name: default

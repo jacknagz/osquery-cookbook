@@ -1,42 +1,39 @@
-osquery
+osquery chef cookbook
 ====================
 [![Build Status](https://travis-ci.org/jacknagz/osquery-cookbook.svg?branch=master)](https://travis-ci.org/jacknagz/osquery-cookbook)
 
 * Installs, configures, and starts [osquery](https://osquery.io/). 
-* Cross-platform support: `OS X`, `Ubuntu`, and `Centos` (soon).
+* Supports: OS X, Ubuntu, and Centos (soon).
 * Configurations are generated based on node attributes.
 
 Requirements
 ------------
 * OS X
-  * [Homebrew](http://brew.sh/)
-  * [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
+  * [Xcode Command Line Tools](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 
-* Ubuntu
-  * None
-
-Attributes
+General Attributes
 ----------
-osquery version and supported platforms
-* `default['osquery']['version'] = '1.7.0'`
-* `default['osquery']['supported']  = ['mac_os_x', 'ubuntu']`
+| name   | type | default | description |
+|--------|------|---------|-------------|
+| `['osquery']['version']` | `String` | `1.7.0` | osquery version to install |
+| `['osquery']['supported']` | `Array` | `%w(mac_os_x ubuntu)` | supported platforms |
+| `['osquery']['packs']` | `Array` | `%w(incident-response osx-attacks)` | osquery packs found in `files/default/packs/` |
 
-controls which packs are installed and added to the configuration:
-* `default['osquery']['packs'] = ['incident-response', 'osx-attacks']`
-
-parameters for osquery conf:
-* `default['osquery']['options']['config_plugin']  = 'filesystem'`
-* `default['osquery']['options']['logger_plugin']  = 'filesystem'`
-* `default['osquery']['options']['logger_path']    = '/var/log/osquery'`
-* `default['osquery']['options']['schedule_splay_percent'] = '10'`
-* `default['osquery']['options']['events_expiry']  = '3600'`
-* `default['osquery']['options']['verbose']        = 'false'`
-* `default['osquery']['options']['worker_threads'] = '2'`
-* `default['osquery']['options']['enable_monitor'] = 'true'`
+Configuration Attributes
+----------
+| name   | type | default | description |
+|--------|------|---------|-------------|
+| `['osquery']['options']['config_plugin']` | `String` | `filesystem` | configuration plugin |
+| `['osquery']['options']['logger_plugin']` | `String` | `filesystem` | logger plugin |
+| `['osquery']['options']['logger_path']` | `String` | `/var/log/osquery` | path to store osquery logs |
+| `['osquery']['options']['schedule_splay_percent']` | `Fixnum` | `10` | query schedule splay percentage |
+| `['osquery']['options']['events_expiry']` | `Fixnum` | `3600` | timeout to expire eventing pubsub results |
+| `['osquery']['options']['verbose']` | `Boolean` | `false` | enable verbose informational messages |
+| `['osquery']['options']['worker_threads']` | `Fixnum` | `2` | number of work dispatch threads |
+| `['osquery']['options']['enable_monitor']` | `Boolean` | `false` | enable schedule monitor |
 
 Custom Resources
 ----------------
-
 * osquery_conf: create osquery config from selected options and packs.
 
 `create`:
