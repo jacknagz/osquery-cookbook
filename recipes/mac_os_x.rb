@@ -2,9 +2,7 @@
 # Cookbook Name:: osquery
 # Recipe:: mac_os_x
 #
-# Copyright 2015, Jack Naglieri
-#
-# All rights reserved - Do Not Redistribute
+# Copyright 2016, Jack Naglieri
 #
 
 unless File.exist?('/usr/local/bin/brew')

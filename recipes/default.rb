@@ -2,9 +2,7 @@
 # Cookbook Name:: osquery
 # Recipe:: default
 #
-# Copyright 2015, Jack Naglieri
-#
-# All rights reserved - Do Not Redistribute
+# Copyright 2016, Jack Naglieri
 #
 
 unless node['osquery']['supported'].include?(node['platform'])

@@ -2,9 +2,7 @@ require 'spec_helper'
 
 describe 'osquery::mac_os_x' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new do |node|
-      node.automatic['platform'] = 'mac_os_x'
-      node.automatic['platform_version'] = '10.10'
+    ChefSpec::SoloRunner.new(platform: 'mac_os_x', version: '10.10') do |node|
       node.set['osquery']['packs'] = %w(osx_pack)
     end.converge(described_recipe)
   end

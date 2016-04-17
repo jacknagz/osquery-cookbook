@@ -12,5 +12,6 @@ group :test do
 end
 
 group :production do
-  gem 'chef', '>= 12.5.0'
+  gem 'chef', '~> 12.5.0'
+  gem 'chef-zero', '4.5.0'
 end
