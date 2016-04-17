@@ -39,7 +39,7 @@ describe 'osquery::mac_os_x' do
   end
 
   it 'creates osquery config' do
-    expect(chef_run).to create_template('/var/osquery/osquery.conf')
+    expect(chef_run).to create_osquery_config('/var/osquery/osquery.conf')
   end
 
   it 'creates osquery LaunchDaemon' do
