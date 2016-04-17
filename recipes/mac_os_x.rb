@@ -4,8 +4,6 @@
 #
 # Copyright 2016, Jack Naglieri
 #
-# All rights reserved - Do Not Redistribute
-#
 
 unless File.exist?('/usr/local/bin/brew')
   Chef::Log.info('** Brew is required, installing now **')

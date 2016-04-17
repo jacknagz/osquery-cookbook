@@ -4,8 +4,6 @@
 #
 # Copyright 2016, Jack Naglieri
 #
-# All rights reserved - Do Not Redistribute
-#
 
 # Example schedule config.
 schedule_config = {

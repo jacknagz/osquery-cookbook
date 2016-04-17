@@ -1,16 +1,18 @@
 name 'osquery'
 maintainer 'Jack Naglieri'
-maintainer_email 'jnaglierijr@gmail.com'
-license 'All rights reserved'
-description 'Install and configure osquery'
+maintainer_email 'jacknagzdev@gmail.com'
+license 'Apache 2.0'
+description 'Install and configure osquery (osquery.io)'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-issues_url 'https://github.com/jacknagz/osquery-cookbook/issues'
-source_url 'https://github.com/jacknagz/osquery-cookbook'
+version '0.3.0'
 
-version '0.2.0'
+%w(ubuntu centos mac_os_x).each do |os|
+  supports os
+end
 
-supports 'mac_os_x'
-supports 'ubuntu'
+chef_version '>= 12' if respond_to?(:chef_version)
+issues_url 'https://github.com/jacknagz/osquery-cookbook/issues' if respond_to?(:issues_url)
+source_url 'https://github.com/jacknagz/osquery-cookbook' if respond_to?(:source_url)
 
 depends 'homebrew'
 depends 'apt'
