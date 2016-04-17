@@ -16,3 +16,4 @@ source_url 'https://github.com/jacknagz/osquery-cookbook' if respond_to?(:source
 
 depends 'homebrew'
 depends 'apt'
+depends 'compat_resource'
