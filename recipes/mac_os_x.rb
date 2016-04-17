@@ -2,7 +2,7 @@
 # Cookbook Name:: osquery
 # Recipe:: mac_os_x
 #
-# Copyright 2015, Jack Naglieri
+# Copyright 2016, Jack Naglieri
 #
 # All rights reserved - Do Not Redistribute
 #

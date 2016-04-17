@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: osquery
-# Recipe:: ubuntu
+# Recipe:: centos
 #
 # Copyright 2016, Jack Naglieri
 #
@@ -15,27 +15,25 @@ schedule_config = {
   }
 }
 
-ubuntu_version = node['platform_version'].split('.')[0].to_i
-case ubuntu_version
-when 14
-  ubuntu_release = 'trusty'
-when 12
-  ubuntu_release = 'precise'
+centos_version = node['platform_version'].split('.')[0].to_i
+repo_checksum = node['osquery']['repo']["checksum#{centos_version}"]
+repo_url = "https://osquery-packages.s3.amazonaws.com/centos#{centos_version}/noarch"
+centos6_repo = "osquery-s3-centos#{centos_version}-repo-1-0.0.noarch.rpm"
+file_cache = Chef::Config['file_cache_path']
+
+remote_file "#{file_cache}/#{centos6_repo}" do
+  source "#{repo_url}/#{centos6_repo}"
+  checksum repo_checksum
+  notifies :install, 'rpm_package[osquery repo]', :immediately
+  action :create
 end
 
-apt_repository 'osquery' do
-  uri "https://osquery-packages.s3.amazonaws.com/#{ubuntu_release}"
-  components ['main']
-  distribution ubuntu_release
-  keyserver 'keyserver.ubuntu.com'
-  key '1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B'
-  action :add
+rpm_package 'osquery repo' do
+  source "#{file_cache}/#{centos6_repo}"
+  action :nothing
 end
-
-include_recipe 'apt::default'
 
 package 'osquery' do
-  version "#{node['osquery']['version']}-1.ubuntu#{ubuntu_version}"
   action :install
 end
 
