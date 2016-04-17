@@ -10,11 +10,6 @@ unless File.exist?('/usr/local/bin/brew')
   include_recipe 'homebrew::default'
 end
 
-packs_config = {}
-node['osquery']['packs'].each do |pack|
-  packs_config[pack] = "/var/osquery/packs/#{pack}.conf"
-end
-
 schedule_config = {
   info: {
     query: 'SELECT * FROM osquery_info',
@@ -22,17 +17,18 @@ schedule_config = {
   }
 }
 
-config_hash = {
-  options: node['osquery']['options'],
-  schedule: schedule_config,
-  packs: packs_config
-}
-
-osquery_config = Chef::JSONCompat.to_json_pretty(config_hash)
-
 domain = 'com.facebook.osqueryd'
 config_path = '/var/osquery/osquery.conf'
 pid_path = '/var/osquery/osquery.pid'
+
+directory '/var/osquery/packs' do
+  recursive true
+  mode 0755
+end
+
+directory '/var/log/osquery' do
+  mode 0755
+end
 
 package 'osquery' do
   action :install
@@ -45,13 +41,10 @@ execute 'osqueryd permissions' do
   action :nothing
 end
 
-directory '/var/osquery/packs' do
-  recursive true
-  mode 0755
-end
-
-directory '/var/log/osquery' do
-  mode 0755
+osquery_conf config_path do
+  action :create
+  schedule schedule_config
+  notifies :restart, "service[#{domain}]"
 end
 
 node['osquery']['packs'].each do |pack|
@@ -82,17 +75,6 @@ cookbook_file "/etc/newsyslog.d/#{domain}.conf" do
   mode '0644'
   owner 'root'
   group 'wheel'
-end
-
-template '/var/osquery/osquery.conf' do
-  source 'osquery.conf.erb'
-  mode '0444'
-  owner 'root'
-  group 'wheel'
-  variables(
-    config: osquery_config
-  )
-  notifies :restart, "service[#{domain}]"
 end
 
 service domain do

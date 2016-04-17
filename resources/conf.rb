@@ -5,8 +5,15 @@ default_action :create
 
 action :create do
   packs_config = {}
+  case node['platform']
+  when 'mac_os_x'
+    packs_dir = '/var/osquery/packs'
+  when 'centos' || 'ubuntu'
+    packs_dir = '/usr/share/osquery/packs'
+  end
+
   node['osquery']['packs'].each do |pack|
-    packs_config[pack] = "/usr/share/osquery/packs/#{pack}.conf"
+    packs_config[pack] = "#{packs_dir}/#{pack}.conf"
   end
 
   config_hash = {
