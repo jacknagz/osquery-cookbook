@@ -2,7 +2,10 @@ require 'spec_helper'
 
 describe 'osquery::centos' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+    ChefSpec::SoloRunner.new(platform: 'centos',
+                             version: '7.0',
+                             step_into: ['osquery_conf']
+                            ) do |node|
       node.set['osquery']['packs'] = %w(centos_pack)
     end.converge(described_recipe)
   end
@@ -17,9 +20,14 @@ describe 'osquery::centos' do
     expect(chef_run).to install_package('osquery')
   end
 
-  it 'installs the centos pack' do
+  it 'installs the centos pack via lwrp' do
     expect(chef_run)
       .to create_cookbook_file('/usr/share/osquery/packs/centos_pack.conf')
+  end
+
+  it 'creates osquery conf via lwrp' do
+    expect(chef_run)
+      .to create_template('/etc/osquery/osquery.conf')
   end
 
   it 'install osquery repo' do

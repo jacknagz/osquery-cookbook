@@ -10,21 +10,9 @@ unless File.exist?('/usr/local/bin/brew')
   include_recipe 'homebrew::default'
 end
 
-schedule_config = {
-  info: {
-    query: 'SELECT * FROM osquery_info',
-    interval: '86400'
-  }
-}
-
 domain = 'com.facebook.osqueryd'
 config_path = '/var/osquery/osquery.conf'
 pid_path = '/var/osquery/osquery.pid'
-
-directory '/var/osquery/packs' do
-  recursive true
-  mode 0755
-end
 
 directory '/var/log/osquery' do
   mode 0755
@@ -42,19 +30,9 @@ execute 'osqueryd permissions' do
 end
 
 osquery_conf config_path do
-  action :create
-  schedule schedule_config
+  schedule node['osquery']['schedule']
+  packs node['osquery']['packs']
   notifies :restart, "service[#{domain}]"
-end
-
-node['osquery']['packs'].each do |pack|
-  cookbook_file "/var/osquery/packs/#{pack}.conf" do
-    mode '0444'
-    source "packs/#{pack}.conf"
-    owner 'root'
-    group 'wheel'
-    notifies :restart, "service[#{domain}]"
-  end
 end
 
 template "/Library/LaunchDaemons/#{domain}.plist" do

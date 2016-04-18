@@ -5,9 +5,20 @@
 # Copyright 2016, Jack Naglieri
 #
 
-unless node['osquery']['supported'].include?(node['platform'])
+supported_platforms = %w(
+  mac_os_x
+  ubuntu
+  centos
+  redhat
+)
+
+unless supported_platforms.include?(node['platform'])
   Chef::Log.warn("** Unsupported version #{node['platform']} **")
   return
 end
 
-include_recipe "osquery::#{node['platform']}"
+if node['platform'].eql?('redhat')
+  include_recipe 'osquery::centos'
+else
+  include_recipe "osquery::#{node['platform']}"
+end

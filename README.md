@@ -2,25 +2,32 @@ osquery chef cookbook
 ====================
 [![Build Status](https://travis-ci.org/jacknagz/osquery-cookbook.svg?branch=master)](https://travis-ci.org/jacknagz/osquery-cookbook)
 
-* Installs, configures, and starts [osquery](https://osquery.io/). 
-* Supports: OS X, Ubuntu, and Centos (soon).
+* Installs, configures, and starts [osquery](https://osquery.io/).
 * Configurations are generated based on node attributes.
 
-Requirements
+Supported Platforms
 ------------
 * OS X
-  * [Xcode Command Line Tools](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
+  * Requires [Xcode Command Line Tools](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
+* Ubuntu
+* Centos
+* Redhat
 
 General Attributes
 ----------
+`attributes/default.rb`:
+
 | name   | type | default | description |
 |--------|------|---------|-------------|
 | `['osquery']['version']` | `String` | `1.7.0` | osquery version to install |
-| `['osquery']['supported']` | `Array` | `%w(mac_os_x ubuntu)` | supported platforms |
 | `['osquery']['packs']` | `Array` | `%w(incident-response osx-attacks)` | osquery packs found in `files/default/packs/` |
+| `['osquery']['repo']['checksum6']` | `String` | - | SHA256 Hash of the centos6 repo |
+| `['osquery']['repo']['checksum7']` | `String` | - | SHA256 Hash of the centos7 repo |
 
 Configuration Attributes
 ----------
+`attributes/config.rb`:
+
 | name   | type | default | description |
 |--------|------|---------|-------------|
 | `['osquery']['options']['config_plugin']` | `String` | `filesystem` | configuration plugin |
@@ -32,9 +39,25 @@ Configuration Attributes
 | `['osquery']['options']['worker_threads']` | `Fixnum` | `2` | number of work dispatch threads |
 | `['osquery']['options']['enable_monitor']` | `Boolean` | `false` | enable schedule monitor |
 
+Query Schedule Attributes
+----------
+`attributes/schedule.rb`:
+
+| name   | type | default | description |
+|--------|------|---------|-------------|
+| `['osquery']['schedule']` | `Hash` | - | osquery schedule |
+
+File Integrity Monitoring Attributes
+----------
+`attributes/file_paths.rb`:
+
+| name   | type | default | description |
+|--------|------|---------|-------------|
+| `['osquery']['file_paths']` | `Hash` | - | file paths to monitor events from |
+
 Custom Resources
 ----------------
-* osquery_conf: create osquery config from selected options and packs.
+`osquery_conf`: create osquery config from selected options and packs.
 
 `create`:
 
@@ -56,11 +79,17 @@ end
 
 Testing
 -----
-`$ rake`: executes `foodcritic`, `rubocop`, and `chefspec`.
+`$ rake` to run:
+* `foodcritic`
+* `rubocop`
+* `chefspec`.
+
+`$ kitchen list` to show integration test suites <br />
+`$ kitchen converge` to run test suites
 
 Usage
 -----
-Include `osquery` in your node's `run_list`!
+Include `osquery` in your node's `run_list`, and override attributes to fit your desired setup.
 
 Contributing
 ------------
@@ -73,4 +102,5 @@ Contributing
 
 License and Authors
 -------------------
-Authors: Jack Naglieri <jnaglierijr@gmail.com>
+Authors: Jack Naglieri <jacknagzdev@gmail.com>
+License: 'Apache 2.0'

@@ -2,7 +2,10 @@ require 'spec_helper'
 
 describe 'osquery::mac_os_x' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'mac_os_x', version: '10.10') do |node|
+    ChefSpec::SoloRunner.new(platform: 'mac_os_x',
+                             version: '10.10',
+                             step_into: ['osquery_conf']
+                            ) do |node|
       node.set['osquery']['packs'] = %w(osx_pack)
     end.converge(described_recipe)
   end
@@ -40,6 +43,10 @@ describe 'osquery::mac_os_x' do
 
   it 'creates osquery config' do
     expect(chef_run).to create_osquery_config('/var/osquery/osquery.conf')
+  end
+
+  it 'creates osquery conf via lwrp' do
+    expect(chef_run).to create_template('/var/osquery/osquery.conf')
   end
 
   it 'creates osquery LaunchDaemon' do

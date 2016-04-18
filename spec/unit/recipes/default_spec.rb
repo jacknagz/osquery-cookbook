@@ -52,4 +52,20 @@ describe 'osquery::default' do
       expect { chef_run }.not_to raise_error
     end
   end
+
+  context 'when redhat' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'redhat', version: '7.0') do |node|
+        node.set['osquery']['packs'] = %w(centos_pack)
+      end.converge(described_recipe)
+    end
+
+    it 'includes centos installation recipe' do
+      expect(chef_run).to include_recipe('osquery::centos')
+    end
+
+    it 'converges without error' do
+      expect { chef_run }.not_to raise_error
+    end
+  end
 end
