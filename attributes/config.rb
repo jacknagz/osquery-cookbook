@@ -1,3 +1,4 @@
+# osquery daemon configuration.
 default['osquery']['options']['config_plugin']  = 'filesystem'
 default['osquery']['options']['logger_plugin']  = 'filesystem'
 default['osquery']['options']['logger_path']    = '/var/log/osquery'
