@@ -30,6 +30,7 @@ end
 osquery_conf '/etc/osquery/osquery.conf' do
   schedule node['osquery']['schedule']
   packs node['osquery']['packs']
+  fim_paths node['osquery']['file_paths']
   notifies :restart, 'service[osqueryd]'
 end
 

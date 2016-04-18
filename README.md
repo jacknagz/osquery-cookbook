@@ -64,8 +64,8 @@ Custom Resources
 ```ruby
 osquery_conf '/etc/osquery/osquery.conf' do
   action :create
-  schedule schedule_config
-  notifies :restart, 'service[osqueryd]'
+  schedule node['osquery']['schedule']
+  packs node['osquery']['packs']
 end
 ```
 

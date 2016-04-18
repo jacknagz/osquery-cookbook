@@ -14,7 +14,7 @@ describe 'osquery::mac_os_x' do
     stub_command('which git').and_return('/usr/bin/git')
   end
 
-  let(:osquery_vers) { '1.7.0' }
+  let(:osquery_vers) { '1.7.3' }
   let(:domain) { 'com.facebook.osqueryd' }
   osquery_dirs = [
     '/var/log/osquery',

@@ -34,8 +34,12 @@ describe 'osquery::centos' do
     expect(chef_run).to_not install_rpm_package('osquery repo')
   end
 
-  it 'fetches osquery repo' do
+  it 'get osquery repo' do
     expect(chef_run).to create_remote_file("#{Chef::Config['file_cache_path']}/#{repo}")
+  end
+
+  it 'creates directory if its missing' do
+    expect(chef_run).to create_directory('/usr/share/osquery/packs')
   end
 
   it 'creates osquery config' do

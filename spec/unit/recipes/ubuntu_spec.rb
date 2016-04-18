@@ -10,7 +10,7 @@ describe 'osquery::ubuntu' do
     end.converge(described_recipe)
   end
 
-  let(:osquery_vers) { '1.7.0-1.ubuntu14' }
+  let(:osquery_vers) { '1.7.3-1.ubuntu14' }
 
   it 'converges without error' do
     expect { chef_run }.not_to raise_error
