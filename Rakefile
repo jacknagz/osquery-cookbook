@@ -5,13 +5,20 @@ require 'foodcritic'
 require 'rspec/core/rake_task'
 
 desc 'Run all tests'
-task test: [
+task all: [
   :rubocop,
   :foodcritic,
   :unit
 ]
+task lint: [
+  :rubocop,
+  :foodcritic
+]
+task test: [
+  :unit
+]
 
-task default: [:test]
+task default: [:all]
 
 desc 'Lists all the tasks.'
 task :list do

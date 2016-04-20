@@ -39,6 +39,7 @@ describe 'osquery::mac_os_x' do
   it 'installs the a pack' do
     expect(chef_run)
       .to create_cookbook_file('/var/osquery/packs/osx_pack.conf')
+      .with(group: 'wheel', user: 'root')
   end
 
   it 'creates osquery config' do
@@ -46,16 +47,21 @@ describe 'osquery::mac_os_x' do
   end
 
   it 'creates osquery conf via lwrp' do
-    expect(chef_run).to create_template('/var/osquery/osquery.conf')
+    expect(chef_run)
+      .to create_template('/var/osquery/osquery.conf')
+      .with(group: 'wheel', user: 'root')
   end
 
   it 'creates osquery LaunchDaemon' do
     expect(chef_run)
       .to create_template("/Library/LaunchDaemons/#{domain}.plist")
+      .with(group: 'wheel', user: 'root')
   end
 
   it 'creates osquery syslog conf entry' do
-    expect(chef_run).to create_cookbook_file("/etc/newsyslog.d/#{domain}.conf")
+    expect(chef_run)
+      .to create_cookbook_file("/etc/newsyslog.d/#{domain}.conf")
+      .with(group: 'wheel', user: 'root')
   end
 
   it 'starts and enables osquery service' do

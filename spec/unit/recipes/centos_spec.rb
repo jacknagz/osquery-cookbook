@@ -23,11 +23,13 @@ describe 'osquery::centos' do
   it 'installs the centos pack via lwrp' do
     expect(chef_run)
       .to create_cookbook_file('/usr/share/osquery/packs/centos_pack.conf')
+      .with(group: 'root', user: 'root')
   end
 
   it 'creates osquery conf via lwrp' do
     expect(chef_run)
       .to create_template('/etc/osquery/osquery.conf')
+      .with(group: 'root', user: 'root')
   end
 
   it 'install osquery repo' do

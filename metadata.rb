@@ -4,7 +4,7 @@ maintainer_email 'jacknagzdev@gmail.com'
 license 'Apache 2.0'
 description 'Install and configure osquery (osquery.io)'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.4.0'
+version '0.4.1'
 
 %w(ubuntu centos mac_os_x).each do |os|
   supports os
