@@ -11,15 +11,16 @@ action :create do
     schedule: schedule
   }
 
-  unless packs.empty?
+  case node['platform']
+  when 'mac_os_x'
+    packs_dir = '/var/osquery/packs'
+    file_group = 'wheel'
+  when 'centos', 'ubuntu'
+    packs_dir = '/usr/share/osquery/packs'
+    file_group = 'root'
+  end
 
-    packs_config = {}
-    case node['platform']
-    when 'mac_os_x'
-      packs_dir = '/var/osquery/packs'
-    when 'centos', 'ubuntu'
-      packs_dir = '/usr/share/osquery/packs'
-    end
+  unless packs.empty?
 
     directory packs_dir do
       action :create
@@ -32,10 +33,12 @@ action :create do
         mode '0444'
         source "packs/#{pack}.conf"
         owner 'root'
-        group 'root'
+        group file_group
         # TODO: source cookbook option
       end
     end
+
+    packs_config = {}
 
     packs.each do |pack|
       packs_config[pack] = "#{packs_dir}/#{pack}.conf"
@@ -50,7 +53,7 @@ action :create do
     source 'osquery.conf.erb'
     mode '0444'
     owner 'root'
-    group 'root'
+    group file_group
     variables(
       config: Chef::JSONCompat.to_json_pretty(config_hash)
     )

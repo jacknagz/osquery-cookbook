@@ -28,6 +28,7 @@ describe 'osquery::ubuntu' do
   it 'installs the ubuntu pack via lwrp' do
     expect(chef_run)
       .to create_cookbook_file('/usr/share/osquery/packs/ubuntu_pack.conf')
+      .with(group: 'root', user: 'root')
   end
 
   it 'starts and enables osquery service' do
