@@ -11,37 +11,28 @@ action :create do
     schedule: schedule
   }
 
-  case node['platform']
-  when 'mac_os_x'
-    packs_dir = '/var/osquery/packs'
-    file_group = 'wheel'
-  when 'centos', 'ubuntu'
-    packs_dir = '/usr/share/osquery/packs'
-    file_group = 'root'
-  end
-
   unless packs.empty?
 
-    directory packs_dir do
+    directory osquery_packs_path do
       action :create
       recursive true
       mode 0755
     end
 
     packs.each do |pack|
-      cookbook_file "#{packs_dir}/#{pack}.conf" do
+      cookbook_file "#{osquery_packs_path}/#{pack}.conf" do
         mode '0444'
         source "packs/#{pack}.conf"
         owner 'root'
-        group file_group
-        # TODO: source cookbook option
+        group osquery_file_group
+        # TODO(jacknagz): source cookbook option
       end
     end
 
     packs_config = {}
 
     packs.each do |pack|
-      packs_config[pack] = "#{packs_dir}/#{pack}.conf"
+      packs_config[pack] = "#{osquery_packs_path}/#{pack}.conf"
     end
 
     config_hash[:packs] = packs_config
@@ -53,7 +44,7 @@ action :create do
     source 'osquery.conf.erb'
     mode '0444'
     owner 'root'
-    group file_group
+    group osquery_file_group
     variables(
       config: Chef::JSONCompat.to_json_pretty(config_hash)
     )
@@ -65,14 +56,7 @@ action :delete do
     action :delete
   end
 
-  case node['platform']
-  when 'mac_os_x'
-    packs_dir = '/var/osquery/packs'
-  when 'centos', 'ubuntu'
-    packs_dir = '/usr/share/osquery/packs'
-  end
-
-  directory packs_dir do
+  directory osquery_packs_path do
     action :delete
     recursive true
   end

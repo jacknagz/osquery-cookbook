@@ -22,3 +22,6 @@ if node['platform'].eql?('redhat')
 else
   include_recipe "osquery::#{node['platform']}"
 end
+
+# TODO(jacknagz): if chef version 12.1
+include_recipe 'osquery::audit'

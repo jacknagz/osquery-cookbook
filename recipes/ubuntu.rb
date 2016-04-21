@@ -5,18 +5,14 @@
 # Copyright 2016, Jack Naglieri
 #
 
-ubuntu_version = node['platform_version'].split('.')[0].to_i
-case ubuntu_version
-when 14
-  ubuntu_release = 'trusty'
-when 12
-  ubuntu_release = 'precise'
-end
+os_version = node['platform_version'].split('.')[0].to_i
+os_codename = node['lsb']['codename']
 
 apt_repository 'osquery' do
-  uri "https://osquery-packages.s3.amazonaws.com/#{ubuntu_release}"
+  uri File.join(osquery_s3, os_codename)
   components ['main']
-  distribution ubuntu_release
+  arch 'amd64'
+  distribution os_codename
   keyserver 'keyserver.ubuntu.com'
   key '1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B'
   action :add
@@ -25,7 +21,7 @@ end
 include_recipe 'apt::default'
 
 package 'osquery' do
-  version "#{node['osquery']['version']}-1.ubuntu#{ubuntu_version}"
+  version "#{node['osquery']['version']}-1.ubuntu#{os_version}"
   action :install
 end
 
