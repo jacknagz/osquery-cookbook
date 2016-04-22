@@ -11,7 +11,6 @@ unless File.exist?('/usr/local/bin/brew')
 end
 
 domain = 'com.facebook.osqueryd'
-config_path = '/var/osquery/osquery.conf'
 pid_path = '/var/osquery/osquery.pid'
 
 directory '/var/log/osquery' do
@@ -29,7 +28,7 @@ execute 'osqueryd permissions' do
   action :nothing
 end
 
-osquery_conf config_path do
+osquery_conf osquery_config_path do
   schedule node['osquery']['schedule']
   packs node['osquery']['packs']
   notifies :restart, "service[#{domain}]"
@@ -42,7 +41,7 @@ template "/Library/LaunchDaemons/#{domain}.plist" do
   group 'wheel'
   variables(
     domain: domain,
-    config_path: config_path,
+    config_path: osquery_config_path,
     pid_path: pid_path
   )
   notifies :restart, "service[#{domain}]"

@@ -17,8 +17,11 @@ unless supported_platforms.include?(node['platform'])
   return
 end
 
-if node['platform'].eql?('redhat')
+case node['platform']
+when 'redhat'
   include_recipe 'osquery::centos'
 else
   include_recipe "osquery::#{node['platform']}"
 end
+
+include_recipe 'osquery::audit' if compat_audit

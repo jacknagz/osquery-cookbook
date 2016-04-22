@@ -11,18 +11,27 @@ platforms:
   - name: osx-1010
     driver:
       box: jhcook/osx-yosemite-10.10
+      box_url: https://atlas.hashicorp.com/jhcook/boxes/osx-yosemite-10.10/versions/10.10.5/providers/virtualbox.box
   - name: centos-67
     driver:
       box: bento/centos-6.7
+      box_url: https://atlas.hashicorp.com/bento/boxes/centos-6.7/versions/2.2.5/providers/virtualbox.box
   - name: centos-72
     driver:
       box: bento/centos-7.2
+      box_url: https://atlas.hashicorp.com/bento/boxes/centos-7.2/versions/2.2.5/providers/virtualbox.box
   - name: ubuntu-trusty64
     driver:
       box: ubuntu/trusty64
+      box_url: https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/20160406.0.0/providers/virtualbox.box
   - name: ubuntu/precise64
     driver:
       box: ubuntu/precise64
+      box_url: https://atlas.hashicorp.com/ubuntu/boxes/precise64/versions/20160329.0.0/providers/virtualbox.box
+  - name: debian/wheezy64
+    driver:
+      box: debian/wheezy64
+      box_url: https://atlas.hashicorp.com/debian/boxes/wheezy64/versions/7.10.0/providers/virtualbox.box
 
 suites:
   - name: default
