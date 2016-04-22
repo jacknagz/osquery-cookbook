@@ -19,7 +19,7 @@ General Attributes
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
-| `['osquery']['version']` | `String` | `1.7.0` | osquery version to install |
+| `['osquery']['version']` | `String` | `1.7.3` | osquery version to install |
 | `['osquery']['packs']` | `Array` | `%w(incident-response osx-attacks)` | osquery packs found in `files/default/packs/` |
 | `['osquery']['repo']['checksum6']` | `String` | - | SHA256 Hash of the centos6 repo |
 | `['osquery']['repo']['checksum7']` | `String` | - | SHA256 Hash of the centos7 repo |
@@ -65,6 +65,7 @@ Custom Resources
 osquery_conf '/etc/osquery/osquery.conf' do
   action :create
   schedule node['osquery']['schedule']
+  fim_paths node['osquery']['file_paths']
   packs node['osquery']['packs']
 end
 ```
@@ -84,8 +85,9 @@ Testing
 * `rubocop`
 * `chefspec`.
 
-`$ kitchen list` to show integration test suites <br />
-`$ kitchen converge` to run test suites
+Prerequisite: Virtualbox with Extension Pack
+* `$ kitchen list` to show integration test suites <br />
+* `$ kitchen converge` to run test suites
 
 Usage
 -----
@@ -102,5 +104,5 @@ Contributing
 
 License and Authors
 -------------------
-Authors: Jack Naglieri <jacknagzdev@gmail.com>
+Authors: Jack Naglieri <jacknagzdev@gmail.com><br />
 License: 'Apache 2.0'

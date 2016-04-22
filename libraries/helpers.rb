@@ -1,5 +1,11 @@
 # Helper modules for common case statements.
 module Osquery
+  def compat_audit
+    required = Chef::Version.new('12.1.0')
+    current = Chef::Version.new(node['chef_packages']['chef']['version'])
+    current >= required
+  end
+
   def osquery_s3
     'https://osquery-packages.s3.amazonaws.com'
   end
