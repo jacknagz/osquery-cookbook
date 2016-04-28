@@ -21,6 +21,7 @@ General Attributes
 |--------|------|---------|-------------|
 | `['osquery']['version']` | `String` | `1.7.3` | osquery version to install |
 | `['osquery']['packs']` | `Array` | `%w(incident-response osx-attacks)` | osquery packs found in `files/default/packs/` |
+| `['osquery']['pack_source']` | `String` | `osquery` | Cookbook to load osquery packs from |
 | `['osquery']['repo']['checksum6']` | `String` | - | SHA256 Hash of the centos6 repo |
 | `['osquery']['repo']['checksum7']` | `String` | - | SHA256 Hash of the centos7 repo |
 
@@ -57,26 +58,35 @@ File Integrity Monitoring Attributes
 
 Custom Resources
 ----------------
-`osquery_conf`: create osquery config from selected options and packs.
+`osquery_conf`: creates osquery config from selected options and packs.
 
 `create`:
 
 ```ruby
-osquery_conf '/etc/osquery/osquery.conf' do
+osquery_conf osquery_config_path do
   action :create
   schedule node['osquery']['schedule']
   fim_paths node['osquery']['file_paths']
   packs node['osquery']['packs']
+  pack_source node['osquery']['pack_source']
 end
 ```
 
-`remove`:
+`delete`:
 
 ```ruby
 osquery_conf 'delete osquery config' do
   action :delete
 end
 ```
+
+`osquery_conf` attributes:
+* `action`: `:create` or `:delete`
+* `schedule`: (required) Hash of scheduled queries to run
+* `fim_paths`: (optional) Hash of file integrity monitoring path descriptions and array of their paths
+* `packs`: (optional) List of osquery packs to install.  Based on filenames ending in `*.conf` in `pack_source/packs`
+* `pack_source`: (optional) Cookbook source for osquery packs
+* The daemon configuration is compiled from the node`['osquery']['options']` attributes.
 
 Testing
 -----
@@ -91,7 +101,8 @@ Prerequisite: Virtualbox with Extension Pack
 
 Usage
 -----
-Include `osquery` in your node's `run_list`, and override attributes to fit your desired setup.
+* Include `osquery` in your node's `run_list`
+* Override attributes to fit your desired setup
 
 Contributing
 ------------
@@ -104,5 +115,20 @@ Contributing
 
 License and Authors
 -------------------
-Authors: Jack Naglieri <jacknagzdev@gmail.com><br />
-License: 'Apache 2.0'
+* Authors: Jack Naglieri (jacknagzdev@gmail.com)
+
+```text
+Copyright 2013-2014 Jack Naglieri <jacknagzdev@gmail.com>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

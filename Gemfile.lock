@@ -62,6 +62,9 @@ GEM
       serverspec (~> 2.7)
       specinfra (~> 2.10)
       syslog-logger (~> 1.6)
+    chef-api (0.5.0)
+      logify (~> 0.1)
+      mime-types
     chef-config (12.5.1)
       mixlib-config (~> 2.0)
       mixlib-shellout (~> 2.0)
@@ -106,7 +109,11 @@ GEM
     kitchen-vagrant (0.20.0)
       test-kitchen (~> 1.4)
     libyajl2 (1.2.0)
+    logify (0.2.0)
     method_source (0.8.2)
+    mime-types (3.0)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0221)
     mini_portile2 (2.0.0)
     minitar (0.5.4)
     mixlib-authentication (1.4.0)
@@ -230,6 +237,9 @@ GEM
       net-ssh (>= 2.7, < 4.0)
       net-telnet
       sfl
+    stove (3.2.8)
+      chef-api (~> 0.5)
+      logify (~> 0.2)
     syslog-logger (1.6.8)
     systemu (2.6.5)
     test-kitchen (1.7.3)
@@ -265,6 +275,7 @@ DEPENDENCIES
   rake
   rspec
   rubocop
+  stove
   test-kitchen
 
 BUNDLED WITH

@@ -2,6 +2,7 @@ property :osquery_conf, kind_of: String, name_property: true
 property :schedule, kind_of: Hash, default: {}, required: true
 property :packs, kind_of: Array, default: []
 property :fim_paths, kind_of: Hash, default: {}
+property :pack_source, kind_of: String
 
 default_action :create
 
@@ -25,7 +26,7 @@ action :create do
         source "packs/#{pack}.conf"
         owner 'root'
         group osquery_file_group
-        # TODO(jacknagz): source cookbook option
+        cookbook pack_source unless pack_source.nil?
       end
     end
 

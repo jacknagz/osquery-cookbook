@@ -5,5 +5,6 @@ default['osquery']['repo']['checksum7'] = '86fd64c84d78072e9ad4051afd29890ff6d85
 default['osquery']['version'] = '1.7.3'
 default['osquery']['packs'] = %w(
   incident-response
-  osx-attacks
+  osquery-monitoring
 )
+default['osquery']['pack_source'] = 'osquery'

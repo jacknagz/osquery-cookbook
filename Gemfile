@@ -9,6 +9,7 @@ group :test do
   gem 'kitchen-vagrant'
   gem 'chefspec'
   gem 'rspec'
+  gem 'stove'
 end
 
 group :production do
