@@ -15,6 +15,7 @@ remote_file "#{file_cache}/#{centos_repo}" do
   source "#{repo_url}/#{centos_repo}"
   checksum repo_checksum
   notifies :install, 'rpm_package[osquery repo]', :immediately
+  not_if { node['osquery']['repo']['internal'] }
   action :create
 end
 
