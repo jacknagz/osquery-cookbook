@@ -1,6 +1,7 @@
 osquery chef cookbook
 ====================
 [![Build Status](https://travis-ci.org/jacknagz/osquery-cookbook.svg?branch=master)](https://travis-ci.org/jacknagz/osquery-cookbook)
+[![Cookbook Version](https://img.shields.io/cookbook/v/osquery.svg)](https://supermarket.chef.io/cookbooks/osquery)
 
 * Installs, configures, and starts [osquery](https://osquery.io/).
 * Configurations are generated based on node attributes.
@@ -80,22 +81,22 @@ osquery_conf 'delete osquery config' do
 end
 ```
 
-`osquery_conf` attributes:
-* `action`: `:create` or `:delete`
-* `schedule`: (required) Hash of scheduled queries to run
-* `fim_paths`: (optional) Hash of file integrity monitoring path descriptions and array of their paths
-* `packs`: (optional) List of osquery packs to install.  Based on filenames ending in `*.conf` in `pack_source/packs`
-* `pack_source`: (optional) Cookbook source for osquery packs
+osquery_conf attributes:
+* action: `:create` or `:delete`
+* schedule: (required) Hash of scheduled queries to run
+* fim_paths: (optional) Hash of file integrity monitoring path descriptions and array of their paths
+* packs: (optional) List of osquery packs to install.  Based on filenames ending in `*.conf` in `pack_source/packs`
+* pack_source: (optional) Cookbook source for osquery packs
 * The daemon configuration is compiled from the node`['osquery']['options']` attributes.
 
 Testing
 -----
-`$ rake` to run:
-* `foodcritic`
-* `rubocop`
-* `chefspec`.
+Run `$ rake` to execute:
+* foodcritic
+* rubocop
+* chefspec
 
-Prerequisite: Virtualbox with Extension Pack
+Prerequisite: Virtualbox with Extension Pack (for os x)
 * `$ kitchen list` to show integration test suites <br />
 * `$ kitchen converge` to run test suites
 
