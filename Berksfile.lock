@@ -13,7 +13,7 @@ GRAPH
   compat_resource (12.9.1)
   homebrew (2.1.0)
     build-essential (>= 2.1.2)
-  osquery (1.0.0)
+  osquery (1.0.1)
     apt (>= 0.0.0)
     compat_resource (>= 0.0.0)
     homebrew (>= 0.0.0)

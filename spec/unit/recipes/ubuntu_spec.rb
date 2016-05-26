@@ -2,11 +2,13 @@ require 'spec_helper'
 
 describe 'osquery::ubuntu' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu',
-                             version: '14.04',
-                             step_into: ['osquery_conf']
-                            ) do |node|
+    ChefSpec::SoloRunner.new(
+      platform: 'ubuntu',
+      version: '14.04',
+      step_into: ['osquery_conf']
+    ) do |node|
       node.set['osquery']['packs'] = %w(ubuntu_pack)
+      node.set['osquery']['version'] = '1.7.3'
     end.converge(described_recipe)
   end
 

@@ -39,7 +39,7 @@ action :create do
     config_hash[:packs] = packs_config
   end
 
-  config_hash[:file_paths] = fim_paths unless fim_paths.empty?
+  config_hash[:file_paths] = fim_paths if node['osquery']['fim_enabled'] && !fim_paths.empty?
 
   template osquery_conf do
     source 'osquery.conf.erb'
