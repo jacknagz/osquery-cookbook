@@ -24,6 +24,10 @@ rpm_package 'osquery repo' do
   action :nothing
 end
 
+osquery_syslog node['osquery']['syslog']['filename'] do
+  only_if { node['osquery']['syslog']['enabled'] }
+end
+
 package 'osquery' do
   version "#{node['osquery']['version']}-1.el#{centos_version}"
   action :install

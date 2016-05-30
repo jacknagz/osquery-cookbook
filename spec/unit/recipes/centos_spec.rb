@@ -5,14 +5,20 @@ describe 'osquery::centos' do
     ChefSpec::SoloRunner.new(
       platform: 'centos',
       version: '7.0',
-      step_into: ['osquery_conf']
+      step_into: %w(osquery_conf osquery_syslog)
     ) do |node|
       node.set['osquery']['packs'] = %w(centos_pack)
       node.set['osquery']['version'] = '1.7.3'
+      node.set['osquery']['syslog']['enabled'] = false
     end.converge(described_recipe)
   end
 
   let(:repo) { 'osquery-s3-centos7-repo-1-0.0.noarch.rpm' }
+
+  before do
+    stub_command('which rsyslogd').and_return('/usr/sbin/rsyslogd')
+    stub_command('`which rsyslogd` -v ').and_return('rsyslogd 7.4.4 \n')
+  end
 
   it 'converges without error' do
     expect { chef_run }.not_to raise_error

@@ -1,3 +1,5 @@
+require 'mixlib/shellout'
+
 # Helper modules for common case statements.
 module Osquery
   def compat_audit
@@ -34,6 +36,25 @@ module Osquery
       'wheel'
     when 'centos', 'ubuntu', 'redhat'
       'root'
+    end
+  end
+
+  def rsyslog_installed
+    inst = Mixlib::ShellOut.new('which rsyslogd')
+    inst.run_command
+    if inst.stdout.empty?
+      false
+    else
+      true
+    end
+  end
+
+  def rsyslog_legacy
+    version = Mixlib::ShellOut.new('`which rsyslogd` -v ')
+    version.run_command
+    if version.stderr.empty?
+      rsyslogd = version.stdout.split("\n")[0]
+      rsyslogd.scan(/\d.\d.\d/).first.to_f < 7.0
     end
   end
 end

@@ -5,6 +5,8 @@
 # Copyright 2016, Jack Naglieri
 #
 osquery_conf = osquery_config_path
+syslog_enabled = node['osquery']['syslog']['enabled']
+syslog_file = node['osquery']['syslog']['filename']
 
 case node['platform']
 when 'mac_os_x'
@@ -55,6 +57,11 @@ when 'centos', 'ubuntu', 'redhat'
       end
       it 'should be running' do
         expect(service('osqueryd')).to be_running
+      end
+    end
+    control 'osquery rsyslog' do
+      it 'should have the config file' do
+        expect(file(syslog_file)).to exist if syslog_enabled
       end
     end
   end

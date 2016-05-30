@@ -17,6 +17,11 @@ unless supported_platforms.include?(node['platform'])
   return
 end
 
+case node['osquery']['options']['logger_plugin']
+when 'filesystem'
+  node.default['osquery']['options']['logger_path'] = '/var/log/osquery'
+end
+
 case node['platform']
 when 'redhat'
   include_recipe 'osquery::centos'

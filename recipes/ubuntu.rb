@@ -34,3 +34,8 @@ end
 service 'osqueryd' do
   action [:enable, :start]
 end
+
+osquery_syslog node['osquery']['syslog']['filename'] do
+  only_if { node['osquery']['syslog']['enabled'] }
+  notifies :restart, 'service[osqueryd]'
+end
