@@ -39,8 +39,20 @@ module Osquery
     end
   end
 
-  def rsyslog_installed
-    inst = Mixlib::ShellOut.new('which rsyslogd')
+  def osquery_latest_version
+    Chef::Version.new(node['osquery']['version'])
+  end
+
+  def osquery_current_version
+    version = Mixlib::ShellOut.new('`which osqueryi` -version')
+    version.run_command
+    return nil if version.stdout.empty?
+    osquery = version.stdout.split("\n")[0]
+    Chef::Version.new(osquery.scan(/\d.\d.\d/).first)
+  end
+
+  def app_installed(app)
+    inst = Mixlib::ShellOut.new("which #{app}")
     inst.run_command
     if inst.stdout.empty?
       false
@@ -52,10 +64,14 @@ module Osquery
   def rsyslog_legacy
     version = Mixlib::ShellOut.new('`which rsyslogd` -v ')
     version.run_command
-    if version.stderr.empty?
-      rsyslogd = version.stdout.split("\n")[0]
-      rsyslogd.scan(/\d.\d.\d/).first.to_f < 7.0
-    end
+    return nil unless version.stderr.empty?
+    rsyslogd = version.stdout.split("\n")[0]
+    rsyslogd.scan(/\d.\d.\d/).first.to_f < 7.0
+  end
+
+  def osx_upgradable
+    return true if osquery_current_version.nil?
+    osquery_current_version < osquery_latest_version
   end
 end
 

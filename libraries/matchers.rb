@@ -14,4 +14,14 @@ if defined?(ChefSpec)
   def delete_osquery_syslog(syslog_file)
     ChefSpec::Matchers::ResourceMatcher.new(:osquery_syslog, :delete, syslog_file)
   end
+
+  ChefSpec.define_matcher :osquery_pkg
+
+  def install_osquery_pkg(pkg_path)
+    ChefSpec::Matchers::ResourceMatcher.new(:osquery_pkg, :install, pkg_path)
+  end
+
+  def remove_osquery_pkg(pkg_path)
+    ChefSpec::Matchers::ResourceMatcher.new(:osquery_pkg, :remove, pkg_path)
+  end
 end

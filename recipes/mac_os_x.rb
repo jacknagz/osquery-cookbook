@@ -5,22 +5,31 @@
 # Copyright 2016, Jack Naglieri
 #
 
-unless File.exist?('/usr/local/bin/brew')
-  Chef::Log.info('** Brew is required, installing now **')
-  include_recipe 'homebrew::default'
+file_cache = Chef::Config['file_cache_path']
+osx_checksum = node['osquery']['repo']['osx_checksum']
+
+package_name = "osquery-#{node['osquery']['version']}.pkg"
+package_url = "#{osquery_s3}/darwin/#{package_name}"
+package_file = "#{file_cache}/#{package_name}"
+
+remote_file package_file do
+  source package_url
+  checksum osx_checksum
+  notifies :install, "osquery_pkg[#{package_file}]", :immediately
+  only_if { osx_upgradable }
+  action :create
+end
+
+osquery_pkg package_file do
+  action :nothing
+  notifies :run, 'execute[osqueryd permissions]', :immediately
 end
 
 domain = 'com.facebook.osqueryd'
 pid_path = '/var/osquery/osquery.pid'
 
 directory '/var/log/osquery' do
-  mode 0755
-end
-
-package 'osquery' do
-  action :install
-  version node['osquery']['version']
-  notifies :run, 'execute[osqueryd permissions]', :immediately
+  mode '0755'
 end
 
 execute 'osqueryd permissions' do

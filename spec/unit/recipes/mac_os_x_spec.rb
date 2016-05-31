@@ -5,7 +5,7 @@ describe 'osquery::mac_os_x' do
     ChefSpec::SoloRunner.new(
       platform: 'mac_os_x',
       version: '10.10',
-      step_into: ['osquery_conf']
+      step_into: %w(osquery_conf osquery_pkg)
     ) do |node|
       node.set['osquery']['packs'] = %w(osx_pack)
       node.set['osquery']['version'] = '1.7.3'
@@ -14,28 +14,34 @@ describe 'osquery::mac_os_x' do
 
   before do
     stub_command('which git').and_return('/usr/bin/git')
+    stub_command('`which osqueryi` -version').and_return('osqueryi version 1.7.1')
   end
 
   let(:osquery_vers) { '1.7.3' }
   let(:domain) { 'com.facebook.osqueryd' }
-  osquery_dirs = [
-    '/var/log/osquery',
-    '/var/osquery/packs'
-  ]
+  let(:pkg) { "/var/chef/cache/osquery-#{osquery_vers}.pkg" }
+  osquery_dirs = %w(/var/log/osquery /var/osquery/packs)
 
   it 'converges without error' do
     expect { chef_run }.not_to raise_error
-  end
-
-  it 'installs osquery package' do
-    expect(chef_run).to install_package('osquery')
-      .with(version: osquery_vers)
   end
 
   osquery_dirs.each do |dir|
     it "creates #{dir}" do
       expect(chef_run).to create_directory(dir)
     end
+  end
+
+  it 'fetches osquery pkg' do
+    expect(chef_run).to create_remote_file(pkg)
+  end
+
+  it 'installs pkg' do
+    downloaded_pkg = chef_run.remote_file(pkg)
+    expect(downloaded_pkg).to notify("osquery_pkg[#{pkg}]")
+      .to(:install).immediately
+    expect(chef_run.osquery_pkg(pkg)).to do_nothing
+    # expect(chef_run).to run_execute("installer -pkg #{osquery_pkg} -target /")
   end
 
   it 'installs the a pack' do
@@ -72,7 +78,7 @@ describe 'osquery::mac_os_x' do
   end
 
   it 'notifies to run permission mod' do
-    package = chef_run.package('osquery')
+    package = chef_run.osquery_pkg(pkg)
     expect(package).to notify('execute[osqueryd permissions]')
       .to(:run).immediately
   end

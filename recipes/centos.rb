@@ -6,7 +6,7 @@
 #
 
 centos_version = node['platform_version'].split('.')[0].to_i
-repo_checksum = node['osquery']['repo']["checksum#{centos_version}"]
+repo_checksum = node['osquery']['repo']["el#{centos_version}_checksum"]
 repo_url = "#{osquery_s3}/centos#{centos_version}/noarch"
 centos_repo = "osquery-s3-centos#{centos_version}-repo-1-0.0.noarch.rpm"
 file_cache = Chef::Config['file_cache_path']

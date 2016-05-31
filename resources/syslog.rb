@@ -6,7 +6,7 @@ default_action :create
 action :create do
   package 'rsyslog' do
     action :install
-    not_if { rsyslog_installed }
+    not_if { app_installed('rsyslog') }
   end
 
   cookbook_file syslog_file do

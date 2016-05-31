@@ -31,7 +31,10 @@ when 'mac_os_x'
     end
     control 'osquery package' do
       it 'should be installed' do
-        expect(package('osquery')).to be_installed
+        %w(osqueryi osqueryd).each do |osquery_bin|
+          expect(file("/usr/local/bin/#{osquery_bin}")).to be_file
+          expect(file("/usr/local/bin/#{osquery_bin}")).to exist
+        end
       end
       it 'should be running' do
         expect(service('com.facebook.osqueryd')).to be_running
