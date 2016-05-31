@@ -27,9 +27,15 @@ end
 osquery_conf osquery_config_path do
   schedule node['osquery']['schedule']
   packs node['osquery']['packs']
+  fim_paths node['osquery']['file_paths']
   notifies :restart, 'service[osqueryd]'
 end
 
 service 'osqueryd' do
   action [:enable, :start]
+end
+
+osquery_syslog node['osquery']['syslog']['filename'] do
+  only_if { node['osquery']['syslog']['enabled'] }
+  notifies :restart, 'service[osqueryd]'
 end

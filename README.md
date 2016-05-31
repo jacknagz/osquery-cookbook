@@ -20,11 +20,11 @@ General Attributes
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
-| `['osquery']['version']` | `String` | `1.7.3` | osquery version to install |
+| `['osquery']['version']` | `String` | `1.7.4` | osquery version to install |
 | `['osquery']['packs']` | `Array` | `%w(incident-response osx-attacks)` | osquery packs found in `files/default/packs/` |
 | `['osquery']['pack_source']` | `String` | `osquery` | Cookbook to load osquery packs from |
-| `['osquery']['repo']['checksum6']` | `String` | - | SHA256 Hash of the centos6 repo |
-| `['osquery']['repo']['checksum7']` | `String` | - | SHA256 Hash of the centos7 repo |
+| `['osquery']['repo']['el6_checksum']` | `String` | - | SHA256 Hash of the centos6 repo |
+| `['osquery']['repo']['el7_checksum']` | `String` | - | SHA256 Hash of the centos7 repo |
 
 Configuration Attributes
 ----------
@@ -47,7 +47,7 @@ Query Schedule Attributes
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
-| `['osquery']['schedule']` | `Hash` | - | osquery schedule |
+| `['osquery']['schedule']` | `Hash` | osquery_info and file_events | osquery schedule |
 
 File Integrity Monitoring Attributes
 ----------
@@ -55,7 +55,8 @@ File Integrity Monitoring Attributes
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
-| `['osquery']['file_paths']` | `Hash` | - | file paths to monitor events from |
+| `['osquery']['file_paths']` | `Hash` | homes, etc, and tmp | file paths to monitor events from |
+| `['osquery']['fim_enabled']` | `Boolean` | false | enable/disable file event tracking in config |
 
 Custom Resources
 ----------------

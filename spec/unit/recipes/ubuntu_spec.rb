@@ -2,15 +2,24 @@ require 'spec_helper'
 
 describe 'osquery::ubuntu' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu',
-                             version: '14.04',
-                             step_into: ['osquery_conf']
-                            ) do |node|
+    ChefSpec::SoloRunner.new(
+      platform: 'ubuntu',
+      version: '14.04',
+      step_into: %w(osquery_conf osquery_syslog)
+    ) do |node|
       node.set['osquery']['packs'] = %w(ubuntu_pack)
+      node.set['osquery']['version'] = '1.7.3'
+      node.set['osquery']['syslog']['enabled'] = true
+      node.set['osquery']['syslog']['filename'] = '/etc/rsyslog.d/60-osquery.conf'
     end.converge(described_recipe)
   end
 
   let(:osquery_vers) { '1.7.3-1.ubuntu14' }
+
+  before do
+    stub_command('which rsyslogd').and_return('/usr/sbin/rsyslogd')
+    stub_command('`which rsyslogd` -v ').and_return('rsyslogd 7.4.4 \n')
+  end
 
   it 'converges without error' do
     expect { chef_run }.not_to raise_error
@@ -19,6 +28,13 @@ describe 'osquery::ubuntu' do
   it 'installs osquery package' do
     expect(chef_run).to install_package('osquery')
       .with(version: osquery_vers)
+  end
+
+  it 'sets up syslog configuration' do
+    expect(chef_run).to create_osquery_syslog('/etc/rsyslog.d/60-osquery.conf')
+    expect(chef_run).to install_package('rsyslog')
+    expect(chef_run.service('rsyslog')).to do_nothing
+    expect(chef_run).to create_cookbook_file('/etc/rsyslog.d/60-osquery.conf')
   end
 
   it 'creates osquery config' do
