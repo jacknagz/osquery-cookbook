@@ -28,10 +28,6 @@ platforms:
     driver:
       box: ubuntu/precise64
       box_url: https://atlas.hashicorp.com/ubuntu/boxes/precise64/versions/20160329.0.0/providers/virtualbox.box
-  - name: debian/wheezy64
-    driver:
-      box: debian/wheezy64
-      box_url: https://atlas.hashicorp.com/debian/boxes/wheezy64/versions/7.10.0/providers/virtualbox.box
 
 suites:
   - name: default
