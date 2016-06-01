@@ -6,13 +6,16 @@ osquery chef cookbook
 * Installs, configures, and starts [osquery](https://osquery.io/).
 * Configurations are generated based on node attributes.
 
-Supported Platforms
+Requirements
 ------------
+* Chef >= 12.1.0
 * OS X
-  * Requires [Xcode Command Line Tools](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 * Ubuntu
-* Centos
-* Redhat
+  * 12.04
+  * 14.04
+* Centos/Redhat
+  * 6.5+
+  * 7.0+
 
 General Attributes
 ----------
@@ -22,9 +25,11 @@ General Attributes
 |--------|------|---------|-------------|
 | `['osquery']['version']` | `String` | `1.7.4` | osquery version to install |
 | `['osquery']['packs']` | `Array` | `%w(incident-response osx-attacks)` | osquery packs found in `files/default/packs/` |
-| `['osquery']['pack_source']` | `String` | `osquery` | Cookbook to load osquery packs from |
+| `['osquery']['pack_source']` | `String` | `osquery` | cookbook to load osquery packs from |
 | `['osquery']['repo']['el6_checksum']` | `String` | - | SHA256 Hash of the centos6 repo |
 | `['osquery']['repo']['el7_checksum']` | `String` | - | SHA256 Hash of the centos7 repo |
+| `['osquery']['repo']['osx_checksum']` | `String` | - | SHA256 Hash of the os x pkg file |
+| `['osquery']['audit']['enabled']` | `Boolean` | `true` | flag to enable/disable chef audits |
 
 Configuration Attributes
 ----------
@@ -34,12 +39,13 @@ Configuration Attributes
 |--------|------|---------|-------------|
 | `['osquery']['options']['config_plugin']` | `String` | `filesystem` | configuration plugin |
 | `['osquery']['options']['logger_plugin']` | `String` | `filesystem` | logger plugin |
-| `['osquery']['options']['logger_path']` | `String` | `/var/log/osquery` | path to store osquery logs |
 | `['osquery']['options']['schedule_splay_percent']` | `Fixnum` | `10` | query schedule splay percentage |
 | `['osquery']['options']['events_expiry']` | `Fixnum` | `3600` | timeout to expire eventing pubsub results |
 | `['osquery']['options']['verbose']` | `Boolean` | `false` | enable verbose informational messages |
 | `['osquery']['options']['worker_threads']` | `Fixnum` | `2` | number of work dispatch threads |
 | `['osquery']['options']['enable_monitor']` | `Boolean` | `false` | enable schedule monitor |
+| `['osquery']['syslog']['enabled']` | `Boolean` | `true` | enable syslog tables |
+| `['osquery']['syslog']['filename']` | `String` | `/etc/rsyslog.d/60-osquery.conf` | syslog conf file path |
 
 Query Schedule Attributes
 ----------
@@ -97,9 +103,11 @@ Run `$ rake` to execute:
 * rubocop
 * chefspec
 
-Prerequisite: Virtualbox with Extension Pack (for os x)
+Requirements: VirtualBox with Extension Pack (for the OS X vm)
 * `$ kitchen list` to show integration test suites <br />
 * `$ kitchen converge` to run test suites
+
+Note: Audit mode is enabled in the Kitchen yaml by default.  The tests are found in `./recipes/audit.rb` and run post converge.  To disable, override the `node['osquery']['audit']['enabled']` attribute to `false`.
 
 Usage
 -----
