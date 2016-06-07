@@ -17,12 +17,12 @@ action :create do
     directory osquery_packs_path do
       action :create
       recursive true
-      mode 0755
+      mode 0644
     end
 
     packs.each do |pack|
       cookbook_file "#{osquery_packs_path}/#{pack}.conf" do
-        mode '0444'
+        mode '0440'
         source "packs/#{pack}.conf"
         owner 'root'
         group osquery_file_group
@@ -43,7 +43,7 @@ action :create do
 
   template osquery_conf do
     source 'osquery.conf.erb'
-    mode '0444'
+    mode '0440'
     owner 'root'
     group osquery_file_group
     variables(

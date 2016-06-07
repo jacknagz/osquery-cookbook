@@ -57,7 +57,7 @@ describe 'osquery::mac_os_x' do
   it 'creates osquery conf via lwrp' do
     expect(chef_run)
       .to create_template('/var/osquery/osquery.conf')
-      .with(group: 'wheel', user: 'root')
+      .with(group: 'wheel', user: 'root', mode: '0440')
   end
 
   it 'creates osquery LaunchDaemon' do
