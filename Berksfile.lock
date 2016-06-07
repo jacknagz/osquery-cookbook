@@ -7,6 +7,6 @@ DEPENDENCIES
 GRAPH
   apt (3.0.0)
   compat_resource (12.9.1)
-  osquery (1.1.0)
+  osquery (1.1.1)
     apt (>= 0.0.0)
     compat_resource (>= 0.0.0)

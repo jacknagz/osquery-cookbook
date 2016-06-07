@@ -8,16 +8,16 @@ describe 'osquery::mac_os_x' do
       step_into: %w(osquery_conf osquery_pkg)
     ) do |node|
       node.set['osquery']['packs'] = %w(osx_pack)
-      node.set['osquery']['version'] = '1.7.3'
+      node.set['osquery']['version'] = '1.7.4'
     end.converge(described_recipe)
   end
 
   before do
     stub_command('which git').and_return('/usr/bin/git')
-    stub_command('`which osqueryi` -version').and_return('osqueryi version 1.7.1')
+    stub_command('`which osqueryi` -version').and_return('osqueryi version 1.7.2')
   end
 
-  let(:osquery_vers) { '1.7.3' }
+  let(:osquery_vers) { '1.7.4' }
   let(:domain) { 'com.facebook.osqueryd' }
   let(:pkg) { "/var/chef/cache/osquery-#{osquery_vers}.pkg" }
   osquery_dirs = %w(/var/log/osquery /var/osquery/packs)
@@ -32,7 +32,7 @@ describe 'osquery::mac_os_x' do
     end
   end
 
-  it 'fetches osquery pkg' do
+  it 'downloads osquery pkg' do
     expect(chef_run).to create_remote_file(pkg)
   end
 
