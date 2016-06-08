@@ -73,6 +73,31 @@ module Osquery
     return true if osquery_current_version.nil?
     osquery_current_version < osquery_latest_version
   end
+
+  def supported
+    {
+      mac_os_x: %w(10.10),
+      ubuntu: %w(12.04 14.04),
+      centos: %w(6.5 7.0),
+      redhat: %w(6.5 7.0)
+    }
+  end
+
+  def supported_platform_version
+    current_version = Chef::Version.new(node['platform_version'])
+    sp = false
+    supported[node['platform'].to_sym].each do |version|
+      required_version = Chef::Version.new(version)
+      next unless required_version.major == current_version.major
+      sp = true if required_version <= current_version
+    end
+    sp
+  end
+
+  def supported_platform
+    supported.keys.include?(node['platform'].to_sym) &&
+      supported_platform_version
+  end
 end
 
 Chef::Recipe.send(:include, Osquery)
