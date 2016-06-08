@@ -5,20 +5,12 @@
 # Copyright 2016, Jack Naglieri
 #
 
-supported_platforms = %w(
-  mac_os_x
-  ubuntu
-  centos
-  redhat
-)
-
-unless supported_platforms.include?(node['platform'])
-  Chef::Log.warn("** Unsupported version #{node['platform']} **")
+unless supported_platform
+  Chef::Log.warn("** Unsupported version #{node['platform']}:#{node['platform_version']} **")
   return
 end
 
-case node['osquery']['options']['logger_plugin']
-when 'filesystem'
+if node['osquery']['options']['logger_plugin'].include?('filesystem')
   node.default['osquery']['options']['logger_path'] = '/var/log/osquery'
 end
 
