@@ -46,6 +46,7 @@ action :create do
     mode '0440'
     owner 'root'
     group osquery_file_group
+    sensitive true
     variables(
       config: Chef::JSONCompat.to_json_pretty(config_hash)
     )
