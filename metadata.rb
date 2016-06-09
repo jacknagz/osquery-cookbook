@@ -4,7 +4,7 @@ maintainer_email 'jacknagzdev@gmail.com'
 license 'Apache 2.0'
 description 'Install and configure osquery (osquery.io)'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '1.2.2'
+version '1.3.0'
 
 %w(ubuntu centos redhat mac_os_x).each do |os|
   supports os
@@ -21,4 +21,3 @@ issues_url 'https://github.com/jacknagz/osquery-cookbook/issues' if respond_to?(
 source_url 'https://github.com/jacknagz/osquery-cookbook' if respond_to?(:source_url)
 
 depends 'apt'
-depends 'compat_resource'
