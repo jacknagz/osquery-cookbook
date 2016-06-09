@@ -37,7 +37,7 @@ describe 'osquery::centos' do
   it 'creates osquery conf via lwrp' do
     expect(chef_run)
       .to create_template('/etc/osquery/osquery.conf')
-      .with(group: 'root', user: 'root', mode: '0440')
+      .with(group: 'root', user: 'root', mode: '0440', sensitive: true)
   end
 
   it 'install osquery repo' do
