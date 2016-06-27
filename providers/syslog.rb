@@ -7,7 +7,6 @@ end
 action :create do
   package 'rsyslog' do
     action :install
-    not_if { app_installed('rsyslog') }
   end
 
   cookbook_file new_resource.syslog_file do
@@ -16,12 +15,13 @@ action :create do
     mode  '644'
     source rsyslog_legacy ? 'rsyslog/osquery-legacy.conf' : 'rsyslog/osquery.conf'
     action :create
-    notifies :restart, 'service[rsyslog]', :immediately
+    notifies :restart, 'service[rsyslog]'
   end
 
   service 'rsyslog' do
-    action :nothing
+    provider Chef::Provider::Service::Upstart if node['platform'].eql?('ubuntu')
     supports restart: true
+    action :nothing
   end
   new_resource.updated_by_last_action(true)
 end
