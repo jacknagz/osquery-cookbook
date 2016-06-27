@@ -21,6 +21,7 @@ action :create do
 
   service 'rsyslog' do
     action :nothing
+    supports restart: true
   end
   new_resource.updated_by_last_action(true)
 end
