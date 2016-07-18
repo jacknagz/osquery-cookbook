@@ -4,8 +4,9 @@ driver:
 
 provisioner:
   name: chef_zero
-  client_rb:
-    audit_mode: :enabled
+
+verifier:
+  name: inspec
 
 platforms:
   - name: osx-1010
@@ -24,12 +25,26 @@ platforms:
     driver:
       box: ubuntu/trusty64
       box_url: https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/20160406.0.0/providers/virtualbox.box
-  - name: ubuntu/precise64
+  - name: ubuntu-precise64
     driver:
       box: ubuntu/precise64
       box_url: https://atlas.hashicorp.com/ubuntu/boxes/precise64/versions/20160329.0.0/providers/virtualbox.box
 
 suites:
-  - name: default
+  - name: osx
     run_list:
       - recipe[osquery::default]
+    includes:
+      - osx-1010
+  - name: centos
+    run_list:
+      - recipe[osquery::default]
+    includes:
+      - centos-67
+      - centos-72
+  - name: ubuntu
+    run_list:
+      - recipe[osquery::default]
+    includes:
+      - ubuntu-trusty64
+      - ubuntu-precise64
