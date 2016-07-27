@@ -33,3 +33,6 @@ suites:
   - name: default
     run_list:
       - recipe[osquery::default]
+  - name: osquery_conf
+    run_list:
+      - recipe[osquery_spec::osquery_conf]

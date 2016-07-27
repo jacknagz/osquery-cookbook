@@ -3,8 +3,12 @@ DEPENDENCIES
   osquery
     path: .
     metadata: true
+  osquery_spec
+    path: spec/fixtures/osquery_spec
 
 GRAPH
   apt (3.0.0)
   osquery (1.3.0)
     apt (>= 0.0.0)
+  osquery_spec (0.1.0)
+    osquery (>= 0.0.0)
