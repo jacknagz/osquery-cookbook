@@ -2,14 +2,11 @@ require 'spec_helper'
 
 describe 'osquery::centos' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(
-      platform: 'centos',
-      version: '7.0',
-      step_into: %w(osquery_conf osquery_syslog)
-    ) do |node|
+    ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
       node.set['osquery']['packs'] = %w(centos_pack)
       node.set['osquery']['version'] = '1.7.3'
       node.set['osquery']['syslog']['enabled'] = false
+      node.set['osquery']['syslog']['filename'] = '/etc/rsyslog.d/60-osquery.conf'
     end.converge(described_recipe)
   end
 
@@ -28,28 +25,12 @@ describe 'osquery::centos' do
     expect(chef_run).to install_package('osquery')
   end
 
-  it 'installs the centos pack via lwrp' do
-    expect(chef_run)
-      .to create_cookbook_file('/usr/share/osquery/packs/centos_pack.conf')
-      .with(group: 'root', user: 'root')
-  end
-
-  it 'creates osquery conf via lwrp' do
-    expect(chef_run)
-      .to create_template('/etc/osquery/osquery.conf')
-      .with(group: 'root', user: 'root', mode: '0440', sensitive: true)
-  end
-
   it 'install osquery repo' do
     expect(chef_run).to_not install_rpm_package('osquery repo')
   end
 
   it 'get osquery repo' do
     expect(chef_run).to create_remote_file("#{Chef::Config['file_cache_path']}/#{repo}")
-  end
-
-  it 'creates directory if its missing' do
-    expect(chef_run).to create_directory('/usr/share/osquery/packs')
   end
 
   it 'creates osquery config' do

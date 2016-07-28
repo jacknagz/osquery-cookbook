@@ -22,8 +22,12 @@ describe 'osquery_spec::osquery_conf' do
       .with(group: 'root', user: 'root', mode: '0440', sensitive: true)
   end
 
-  it 'creates directory if its missing' do
+  it 'creates packs directory if its missing' do
     expect(chef_run).to create_directory('/usr/share/osquery/packs')
+  end
+
+  it 'creates config directory if its missing' do
+    expect(chef_run).to create_directory('/etc/osquery')
   end
 
   it 'installs the osquery_spec_test pack' do
