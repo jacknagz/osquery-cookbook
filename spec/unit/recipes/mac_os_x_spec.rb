@@ -32,7 +32,7 @@ describe 'osquery::mac_os_x' do
     end
   end
 
-  it 'downloads osquery pkg' do
+  xit 'downloads osquery pkg' do
     expect(chef_run).to create_remote_file(pkg)
   end
 

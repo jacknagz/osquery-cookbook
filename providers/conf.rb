@@ -4,14 +4,17 @@ def whyrun_supported?
   true
 end
 
+def load_current_resource
+  @current_resource = Chef::Resource::OsqueryConf.new(@new_resource.name)
+  @current_resource
+end
+
 action :create do
-  config_hash = {
-    options: node['osquery']['options'],
-    schedule: new_resource.schedule
-  }
+  config_hash = { options: node['osquery']['options'], schedule: new_resource.schedule }
+  config_hash[:file_paths] = new_resource.fim_paths if node['osquery']['fim_enabled'] && !new_resource.fim_paths.empty?
+  config_hash[:decorators] = new_resource.decorators unless new_resource.decorators.empty?
 
   unless new_resource.packs.empty?
-
     directory osquery_packs_path do
       action :create
       recursive true
@@ -37,7 +40,11 @@ action :create do
     config_hash[:packs] = packs_config
   end
 
-  config_hash[:file_paths] = new_resource.fim_paths if node['osquery']['fim_enabled'] && !new_resource.fim_paths.empty?
+  directory ::File.dirname(osquery_config_path) do
+    owner 'root'
+    group 'root'
+    mode '0644'
+  end
 
   template new_resource.osquery_conf do
     source 'osquery.conf.erb'
@@ -45,6 +52,7 @@ action :create do
     owner 'root'
     sensitive true
     group osquery_file_group
+    cookbook 'osquery'
     variables(
       config: Chef::JSONCompat.to_json_pretty(config_hash)
     )

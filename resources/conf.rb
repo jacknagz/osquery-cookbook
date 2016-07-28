@@ -6,3 +6,4 @@ attribute :schedule, kind_of: Hash, default: {}, required: true
 attribute :packs, kind_of: Array, default: []
 attribute :fim_paths, kind_of: Hash, default: {}
 attribute :pack_source, kind_of: String
+attribute :decorators, kind_of: Hash, default: {}

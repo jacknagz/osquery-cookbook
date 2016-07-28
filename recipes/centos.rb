@@ -30,15 +30,15 @@ end
 
 package 'osquery' do
   version "#{node['osquery']['version']}-1.el#{centos_version}"
-  action :install
+  action  :install
 end
 
 osquery_conf osquery_config_path do
-  schedule node['osquery']['schedule']
-  packs node['osquery']['packs']
-  fim_paths node['osquery']['file_paths']
+  schedule    node['osquery']['schedule']
+  packs       node['osquery']['packs']
+  fim_paths   node['osquery']['file_paths']
   pack_source node['osquery']['pack_source']
-  notifies :restart, 'service[osqueryd]'
+  notifies    :restart, 'service[osqueryd]'
 end
 
 service 'osqueryd' do
