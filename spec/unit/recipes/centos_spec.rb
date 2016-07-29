@@ -5,7 +5,7 @@ describe 'osquery::centos' do
     ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
       node.set['osquery']['packs'] = %w(centos_pack)
       node.set['osquery']['version'] = '1.7.3'
-      node.set['osquery']['syslog']['enabled'] = false
+      node.set['osquery']['syslog']['enabled'] = true
       node.set['osquery']['syslog']['filename'] = '/etc/rsyslog.d/60-osquery.conf'
     end.converge(described_recipe)
   end
@@ -19,6 +19,10 @@ describe 'osquery::centos' do
 
   it 'converges without error' do
     expect { chef_run }.not_to raise_error
+  end
+
+  it 'sets up syslog for osquery' do
+    expect(chef_run).to create_osquery_syslog('/etc/rsyslog.d/60-osquery.conf')
   end
 
   it 'installs osquery package' do

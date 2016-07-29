@@ -2,14 +2,10 @@ require 'spec_helper'
 
 describe 'osquery::default' do
   context 'when os_x' do
-    let(:chef_run) do
-      ChefSpec::SoloRunner.new(
-        platform: 'mac_os_x',
-        version: '10.10'
-      ) do |node|
-        node.set['osquery']['packs'] = %w(osx_pack)
-        node.set['osquery']['version'] = '1.7.3'
-      end.converge(described_recipe)
+    include_context 'converged recipe'
+
+    let(:node_attributes) do
+      { platform: 'mac_os_x', version: '10.10' }
     end
 
     before do
@@ -27,13 +23,10 @@ describe 'osquery::default' do
   end
 
   context 'when ubuntu' do
-    let(:chef_run) do
-      ChefSpec::SoloRunner.new(
-        platform: 'ubuntu',
-        version: '14.04'
-      ) do |node|
-        node.set['osquery']['packs'] = %w(ubuntu_pack)
-      end.converge(described_recipe)
+    include_context 'converged recipe'
+
+    let(:node_attributes) do
+      { platform: 'ubuntu', version: '14.04' }
     end
 
     it 'includes ubuntu installation recipe' do
@@ -46,13 +39,10 @@ describe 'osquery::default' do
   end
 
   context 'when centos' do
-    let(:chef_run) do
-      ChefSpec::SoloRunner.new(
-        platform: 'centos',
-        version: '7.0'
-      ) do |node|
-        node.set['osquery']['packs'] = %w(centos_pack)
-      end.converge(described_recipe)
+    include_context 'converged recipe'
+
+    let(:node_attributes) do
+      { platform: 'centos', version: '7.0' }
     end
 
     it 'includes centos installation recipe' do
@@ -65,13 +55,10 @@ describe 'osquery::default' do
   end
 
   context 'when redhat' do
-    let(:chef_run) do
-      ChefSpec::SoloRunner.new(
-        platform: 'redhat',
-        version: '7.0'
-      ) do |node|
-        node.set['osquery']['packs'] = %w(centos_pack)
-      end.converge(described_recipe)
+    include_context 'converged recipe'
+
+    let(:node_attributes) do
+      { platform: 'redhat', version: '7.0' }
     end
 
     it 'includes centos installation recipe' do

@@ -1,12 +1,10 @@
 require 'spec_helper'
 
 describe 'osquery_spec::osquery_syslog' do
-  let(:chef_run) do
-    runner = ChefSpec::SoloRunner.new(
-      platform: 'ubuntu', version: '14.04', step_into: %w(osquery_syslog)
-    )
-    runner.node.set['osquery']['syslog']['filename'] = '/etc/rsyslog.d/osquery.conf'
-    runner.converge(described_recipe)
+  include_context 'converged recipe'
+
+  let(:node_attributes) do
+    { platform: 'ubuntu', version: '14.04', step_into: %w(osquery_syslog) }
   end
 
   it 'converges without error' do
