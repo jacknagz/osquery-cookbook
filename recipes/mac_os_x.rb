@@ -14,7 +14,7 @@ package_file = "#{file_cache}/#{package_name}"
 
 remote_file package_file do
   source package_url
-  checksum osx_checksum
+  checksum osx_checksum[node['osquery']['version']]
   notifies :install, "osquery_pkg[#{package_file}]", :immediately
   only_if { osx_upgradable }
   action :create

@@ -42,7 +42,7 @@ action :create do
 
   directory ::File.dirname(osquery_config_path) do
     owner 'root'
-    group 'root'
+    group osquery_file_group
     mode '0644'
   end
 
