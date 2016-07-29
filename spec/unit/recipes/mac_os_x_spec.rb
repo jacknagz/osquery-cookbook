@@ -1,15 +1,19 @@
 require 'spec_helper'
 
 describe 'osquery::mac_os_x' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(
-      platform: 'mac_os_x',
-      version: '10.10',
-      step_into: %w(osquery_conf osquery_pkg)
-    ) do |node|
-      node.set['osquery']['packs'] = %w(osx_pack)
-      node.set['osquery']['version'] = '1.7.4'
-    end.converge(described_recipe)
+  include_context 'converged recipe'
+
+  let(:node_attributes) do
+    {
+      'osquery' => {
+        'packs' => %w(osx_pack),
+        'version' => '1.7.4'
+      }
+    }
+  end
+
+  let(:platform) do
+    { platform: 'mac_os_x', version: '10.10', step_into: %w(osquery_conf osquery_pkg) }
   end
 
   before do
@@ -33,7 +37,7 @@ describe 'osquery::mac_os_x' do
   end
 
   xit 'downloads osquery pkg' do
-    expect(chef_run).to create_remote_file(pkg)
+    expect(chef_run).to install_osquery_pkg(pkg)
   end
 
   it 'installs pkg' do
@@ -41,7 +45,6 @@ describe 'osquery::mac_os_x' do
     expect(downloaded_pkg).to notify("osquery_pkg[#{pkg}]")
       .to(:install).immediately
     expect(chef_run.osquery_pkg(pkg)).to do_nothing
-    # expect(chef_run).to run_execute("installer -pkg #{osquery_pkg} -target /")
   end
 
   it 'installs the a pack' do

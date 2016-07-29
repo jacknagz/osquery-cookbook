@@ -4,7 +4,7 @@ describe 'osquery_spec::osquery_conf' do
   context 'ubuntu' do
     include_context 'converged recipe'
 
-    let(:node_attributes) do
+    let(:platform) do
       { platform: 'ubuntu', version: '14.04', step_into: %w(osquery_conf) }
     end
 
@@ -45,7 +45,7 @@ describe 'osquery_spec::osquery_conf' do
   context 'os x' do
     include_context 'converged recipe'
 
-    let(:node_attributes) do
+    let(:platform) do
       { platform: 'mac_os_x', version: '10.10', step_into: %w(osquery_conf) }
     end
 
