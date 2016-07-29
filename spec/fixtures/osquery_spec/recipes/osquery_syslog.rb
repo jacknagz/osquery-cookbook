@@ -1,4 +1,5 @@
 node.override['osquery']['syslog']['enabled'] = true
+node.override['osquery']['syslog']['filename'] = '/etc/rsyslog.d/osquery.conf'
 
 osquery_syslog node['osquery']['syslog']['filename'] do
   action :create
