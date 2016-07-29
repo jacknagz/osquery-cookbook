@@ -1,13 +1,23 @@
 require 'spec_helper'
 
 describe 'osquery::ubuntu' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
-      node.set['osquery']['packs'] = %w(ubuntu_pack)
-      node.set['osquery']['version'] = '1.7.3'
-      node.set['osquery']['syslog']['enabled'] = true
-      node.set['osquery']['syslog']['filename'] = '/etc/rsyslog.d/60-osquery.conf'
-    end.converge(described_recipe)
+  include_context 'converged recipe'
+
+  let(:node_attributes) do
+    {
+      'osquery' => {
+        'packs' => %w(ubuntu_pack),
+        'version' => '1.7.3',
+        'syslog' => {
+          'enabled' => true,
+          'filename' => '/etc/rsyslog.d/osquery.conf'
+        }
+      }
+    }
+  end
+
+  let(:platform) do
+    { platform: 'ubuntu', version: '14.04' }
   end
 
   let(:osquery_vers) { '1.7.3-1.ubuntu14' }
@@ -28,11 +38,16 @@ describe 'osquery::ubuntu' do
 
   it 'sets up syslog' do
     resource = chef_run.package('osquery')
-    expect(resource).to notify('osquery_syslog[/etc/rsyslog.d/60-osquery.conf]').to(:create)
+    expect(resource).to notify('osquery_syslog[/etc/rsyslog.d/osquery.conf]').to(:create)
   end
 
   it 'creates osquery config' do
     expect(chef_run).to create_osquery_config('/etc/osquery/osquery.conf')
+  end
+
+  it 'syslog does nothing on its own' do
+    resource = chef_run.osquery_syslog('/etc/rsyslog.d/osquery.conf')
+    expect(resource).to do_nothing
   end
 
   it 'starts and enables osquery service' do

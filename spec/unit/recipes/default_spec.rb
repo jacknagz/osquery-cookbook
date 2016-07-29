@@ -4,7 +4,7 @@ describe 'osquery::default' do
   context 'when os_x' do
     include_context 'converged recipe'
 
-    let(:node_attributes) do
+    let(:platform) do
       { platform: 'mac_os_x', version: '10.10' }
     end
 
@@ -25,7 +25,7 @@ describe 'osquery::default' do
   context 'when ubuntu' do
     include_context 'converged recipe'
 
-    let(:node_attributes) do
+    let(:platform) do
       { platform: 'ubuntu', version: '14.04' }
     end
 
@@ -41,7 +41,7 @@ describe 'osquery::default' do
   context 'when centos' do
     include_context 'converged recipe'
 
-    let(:node_attributes) do
+    let(:platform) do
       { platform: 'centos', version: '7.0' }
     end
 
@@ -57,7 +57,7 @@ describe 'osquery::default' do
   context 'when redhat' do
     include_context 'converged recipe'
 
-    let(:node_attributes) do
+    let(:platform) do
       { platform: 'redhat', version: '7.0' }
     end
 
