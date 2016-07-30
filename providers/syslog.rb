@@ -16,6 +16,7 @@ action :create do
     source rsyslog_legacy ? 'rsyslog/osquery-legacy.conf' : 'rsyslog/osquery.conf'
     action :create
     notifies :restart, 'service[rsyslog]'
+    notifies :restart, "service[#{osquery_daemon}]"
   end
 
   service 'rsyslog' do
@@ -23,12 +24,10 @@ action :create do
     supports restart: true
     action :nothing
   end
-  new_resource.updated_by_last_action(true)
 end
 
 action :delete do
   cookbook_file filename do
     action :delete
   end
-  new_resource.updated_by_last_action(true)
 end

@@ -4,11 +4,6 @@ def whyrun_supported?
   true
 end
 
-def load_current_resource
-  @current_resource = Chef::Resource::OsqueryConf.new(@new_resource.name)
-  @current_resource
-end
-
 action :create do
   config_hash = { options: node['osquery']['options'], schedule: new_resource.schedule }
   config_hash[:file_paths] = new_resource.fim_paths if node['osquery']['fim_enabled'] && !new_resource.fim_paths.empty?
@@ -59,7 +54,6 @@ action :create do
     )
     notifies :restart, "service[#{osquery_daemon}]"
   end
-  new_resource.updated_by_last_action(true)
 end
 
 action :delete do
@@ -71,5 +65,4 @@ action :delete do
     action :delete
     recursive true
   end
-  new_resource.updated_by_last_action(true)
 end

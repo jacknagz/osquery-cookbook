@@ -73,6 +73,13 @@ Custom Resource: osquery_conf
 ----------------
 `osquery_conf`: creates osquery config from selected options and packs.
 
+* action: `:create` or `:delete`
+* schedule: (required) Hash of scheduled queries to run
+* fim_paths: (optional) Hash of file integrity monitoring path descriptions and array of their paths
+* packs: (optional) List of osquery packs to install.  Based on filenames ending in `*.conf` in `pack_source/packs`
+* pack_source: (optional) Cookbook source for osquery packs
+* The daemon configuration is compiled from the node`['osquery']['options']` attributes.
+
 `create`:
 
 ```ruby
@@ -93,14 +100,6 @@ osquery_conf 'delete osquery config' do
   action :delete
 end
 ```
-
-osquery_conf attributes:
-* action: `:create` or `:delete`
-* schedule: (required) Hash of scheduled queries to run
-* fim_paths: (optional) Hash of file integrity monitoring path descriptions and array of their paths
-* packs: (optional) List of osquery packs to install.  Based on filenames ending in `*.conf` in `pack_source/packs`
-* pack_source: (optional) Cookbook source for osquery packs
-* The daemon configuration is compiled from the node`['osquery']['options']` attributes.
 
 Testing
 -----

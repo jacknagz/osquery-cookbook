@@ -4,33 +4,10 @@
 #
 # Copyright 2016, Jack Naglieri
 #
-
-package_name = "osquery-#{node['osquery']['version']}.pkg"
-package_url = "#{osquery_s3}/darwin/#{package_name}"
-package_file = "#{file_cache}/#{package_name}"
 domain = 'com.facebook.osqueryd'
-pid_path = '/var/osquery/osquery.pid'
 
-remote_file package_file do
-  source package_url
-  checksum mac_os_x_pkg_hashes[node['osquery']['version']]
-  notifies :install, "osquery_pkg[#{package_file}]", :immediately
-  only_if { osx_upgradable }
-  action :create
-end
-
-osquery_pkg package_file do
-  action :nothing
-  notifies :run, 'execute[osqueryd permissions]', :immediately
-end
-
-directory '/var/log/osquery' do
-  mode '0755'
-end
-
-execute 'osqueryd permissions' do
-  command 'chown root:wheel /usr/local/bin/osqueryd'
-  action :nothing
+osquery_install node['osquery']['version'] do
+  action :install_os_x
 end
 
 osquery_conf osquery_config_path do
@@ -40,19 +17,6 @@ osquery_conf osquery_config_path do
   pack_source node['osquery']['pack_source']
   decorators  node['osquery']['decorators']
   notifies    :restart, "service[#{domain}]"
-end
-
-template "/Library/LaunchDaemons/#{domain}.plist" do
-  source 'launchd.plist.erb'
-  mode '0644'
-  owner 'root'
-  group 'wheel'
-  variables(
-    domain: domain,
-    config_path: osquery_config_path,
-    pid_path: pid_path
-  )
-  notifies :restart, "service[#{domain}]"
 end
 
 cookbook_file "/etc/newsyslog.d/#{domain}.conf" do

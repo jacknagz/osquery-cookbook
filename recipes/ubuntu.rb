@@ -5,25 +5,8 @@
 # Copyright 2016, Jack Naglieri
 #
 
-os_version = node['platform_version'].split('.')[0].to_i
-os_codename = node['lsb']['codename']
-
-apt_repository 'osquery' do
-  action :add
-  uri File.join(osquery_s3, os_codename)
-  components ['main']
-  arch 'amd64'
-  distribution os_codename
-  keyserver 'keyserver.ubuntu.com'
-  key repo_hashes[:ubuntu][:key]
-  not_if { node['osquery']['repo']['internal'] }
-  not_if { ::File.exist?('/etc/apt/sources.list.d/osquery.list') }
-end
-
-package 'osquery' do
-  action :install
-  version "#{node['osquery']['version']}-1.ubuntu#{os_version}"
-  notifies :create, "osquery_syslog[#{node['osquery']['syslog']['filename']}]"
+osquery_install node['osquery']['version'] do
+  action :install_ubuntu
 end
 
 osquery_conf osquery_config_path do
@@ -38,7 +21,6 @@ end
 osquery_syslog node['osquery']['syslog']['filename'] do
   action   :nothing
   only_if  { node['osquery']['syslog']['enabled'] }
-  notifies :restart, 'service[osqueryd]'
 end
 
 service osquery_daemon do

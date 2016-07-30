@@ -5,3 +5,7 @@ osquery_syslog node['osquery']['syslog']['filename'] do
   action :create
   only_if { node['osquery']['syslog']['enabled'] }
 end
+
+service osquery_daemon do
+  action :nothing
+end
