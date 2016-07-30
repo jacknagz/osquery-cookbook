@@ -24,13 +24,15 @@ rpm_package 'osquery repo' do
   action :nothing
 end
 
-osquery_syslog node['osquery']['syslog']['filename'] do
-  only_if { node['osquery']['syslog']['enabled'] }
+package 'osquery' do
+  action  :install
+  version "#{node['osquery']['version']}-1.el#{centos_version}"
+  notifies :create, "osquery_syslog[#{node['osquery']['syslog']['filename']}]"
 end
 
-package 'osquery' do
-  version "#{node['osquery']['version']}-1.el#{centos_version}"
-  action  :install
+osquery_syslog node['osquery']['syslog']['filename'] do
+  action :nothing
+  only_if { node['osquery']['syslog']['enabled'] }
 end
 
 osquery_conf osquery_config_path do
@@ -38,9 +40,9 @@ osquery_conf osquery_config_path do
   packs       node['osquery']['packs']
   fim_paths   node['osquery']['file_paths']
   pack_source node['osquery']['pack_source']
-  notifies    :restart, 'service[osqueryd]'
+  decorators  node['osquery']['decorators']
 end
 
-service 'osqueryd' do
+service osquery_daemon do
   action [:enable, :start]
 end

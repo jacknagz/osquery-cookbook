@@ -36,3 +36,6 @@ suites:
   - name: osquery_conf
     run_list:
       - recipe[osquery_spec::osquery_conf]
+  - name: osquery_decorators
+    run_list:
+      - recipe[osquery_spec::osquery_decorators]

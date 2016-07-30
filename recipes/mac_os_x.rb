@@ -38,11 +38,12 @@ execute 'osqueryd permissions' do
 end
 
 osquery_conf osquery_config_path do
-  schedule node['osquery']['schedule']
-  packs node['osquery']['packs']
-  fim_paths node['osquery']['file_paths']
+  schedule    node['osquery']['schedule']
+  packs       node['osquery']['packs']
+  fim_paths   node['osquery']['file_paths']
   pack_source node['osquery']['pack_source']
-  notifies :restart, "service[#{domain}]"
+  decorators  node['osquery']['decorators']
+  notifies    :restart, "service[#{domain}]"
 end
 
 template "/Library/LaunchDaemons/#{domain}.plist" do
@@ -65,6 +66,6 @@ cookbook_file "/etc/newsyslog.d/#{domain}.conf" do
   group 'wheel'
 end
 
-service domain do
+service osquery_daemon do
   action [:enable, :start]
 end

@@ -27,20 +27,20 @@ package 'osquery' do
 end
 
 osquery_conf osquery_config_path do
-  action :create
-  schedule node['osquery']['schedule']
-  packs node['osquery']['packs']
-  fim_paths node['osquery']['file_paths']
+  action      :create
+  schedule    node['osquery']['schedule']
+  packs       node['osquery']['packs']
+  fim_paths   node['osquery']['file_paths']
   pack_source node['osquery']['pack_source']
-  notifies :restart, 'service[osqueryd]'
+  decorators  node['osquery']['decorators']
 end
 
 osquery_syslog node['osquery']['syslog']['filename'] do
-  action :nothing
-  only_if { node['osquery']['syslog']['enabled'] }
+  action   :nothing
+  only_if  { node['osquery']['syslog']['enabled'] }
   notifies :restart, 'service[osqueryd]'
 end
 
-service 'osqueryd' do
+service osquery_daemon do
   action [:enable, :start]
 end

@@ -23,3 +23,7 @@ osquery_conf osquery_config_path do
   pack_source node['osquery']['pack_source']
   decorators  node['osquery']['decorators']
 end
+
+service osquery_daemon do
+  action :nothing
+end

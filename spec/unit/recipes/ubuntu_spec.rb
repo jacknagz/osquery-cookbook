@@ -6,12 +6,8 @@ describe 'osquery::ubuntu' do
   let(:node_attributes) do
     {
       'osquery' => {
-        'packs' => %w(ubuntu_pack),
         'version' => '1.7.3',
-        'syslog' => {
-          'enabled' => true,
-          'filename' => '/etc/rsyslog.d/osquery.conf'
-        }
+        'packs' => %w(chefspec)
       }
     }
   end
@@ -38,15 +34,20 @@ describe 'osquery::ubuntu' do
 
   it 'sets up syslog' do
     resource = chef_run.package('osquery')
-    expect(resource).to notify('osquery_syslog[/etc/rsyslog.d/osquery.conf]').to(:create)
+    expect(resource).to notify('osquery_syslog[/etc/rsyslog.d/60-osquery.conf]').to(:create)
   end
 
   it 'creates osquery config' do
     expect(chef_run).to create_osquery_config('/etc/osquery/osquery.conf')
+      .with(
+        pack_source: 'osquery',
+        packs: %w(chefspec),
+        decorators: {}
+      )
   end
 
   it 'syslog does nothing on its own' do
-    resource = chef_run.osquery_syslog('/etc/rsyslog.d/osquery.conf')
+    resource = chef_run.osquery_syslog('/etc/rsyslog.d/60-osquery.conf')
     expect(resource).to do_nothing
   end
 

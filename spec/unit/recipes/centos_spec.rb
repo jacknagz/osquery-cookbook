@@ -6,12 +6,8 @@ describe 'osquery::centos' do
   let(:node_attributes) do
     {
       'osquery' => {
-        'packs' => %w(centos_pack),
-        'version' => '1.7.3',
-        'syslog' => {
-          'enabled' => true,
-          'filename' => '/etc/rsyslog.d/osquery.conf'
-        }
+        'packs' => %w(chefspec),
+        'version' => '1.7.3'
       }
     }
   end
@@ -32,7 +28,8 @@ describe 'osquery::centos' do
   end
 
   it 'sets up syslog for osquery' do
-    expect(chef_run).to create_osquery_syslog('/etc/rsyslog.d/osquery.conf')
+    resource = chef_run.package('osquery')
+    expect(resource).to notify('osquery_syslog[/etc/rsyslog.d/60-osquery.conf]').to(:create)
   end
 
   it 'installs osquery package' do
@@ -49,6 +46,11 @@ describe 'osquery::centos' do
 
   it 'creates osquery config' do
     expect(chef_run).to create_osquery_config('/etc/osquery/osquery.conf')
+      .with(
+        pack_source: 'osquery',
+        packs: %w(chefspec),
+        decorators: {}
+      )
   end
 
   it 'starts and enables osquery service' do

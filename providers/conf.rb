@@ -18,16 +18,17 @@ action :create do
     directory osquery_packs_path do
       action :create
       recursive true
-      mode 0644
+      mode '0755'
     end
 
     new_resource.packs.each do |pack|
       cookbook_file "#{osquery_packs_path}/#{pack}.conf" do
-        mode '0440'
+        mode '0664'
         source "packs/#{pack}.conf"
         owner 'root'
         group osquery_file_group
         cookbook new_resource.pack_source unless new_resource.pack_source.nil?
+        notifies :restart, "service[#{osquery_daemon}]"
       end
     end
 
@@ -43,7 +44,7 @@ action :create do
   directory ::File.dirname(osquery_config_path) do
     owner 'root'
     group osquery_file_group
-    mode '0644'
+    mode '0755'
   end
 
   template new_resource.osquery_conf do
@@ -56,6 +57,7 @@ action :create do
     variables(
       config: Chef::JSONCompat.to_json_pretty(config_hash)
     )
+    notifies :restart, "service[#{osquery_daemon}]"
   end
   new_resource.updated_by_last_action(true)
 end
