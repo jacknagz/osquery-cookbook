@@ -5,16 +5,15 @@
 # Copyright 2016, Jack Naglieri
 #
 
-file_cache = Chef::Config['file_cache_path']
-osx_checksum = node['osquery']['repo']['osx_checksum']
-
 package_name = "osquery-#{node['osquery']['version']}.pkg"
 package_url = "#{osquery_s3}/darwin/#{package_name}"
 package_file = "#{file_cache}/#{package_name}"
+domain = 'com.facebook.osqueryd'
+pid_path = '/var/osquery/osquery.pid'
 
 remote_file package_file do
   source package_url
-  checksum osx_checksum[node['osquery']['version']]
+  checksum mac_os_x_pkg_hashes[node['osquery']['version']]
   notifies :install, "osquery_pkg[#{package_file}]", :immediately
   only_if { osx_upgradable }
   action :create
@@ -24,9 +23,6 @@ osquery_pkg package_file do
   action :nothing
   notifies :run, 'execute[osqueryd permissions]', :immediately
 end
-
-domain = 'com.facebook.osqueryd'
-pid_path = '/var/osquery/osquery.pid'
 
 directory '/var/log/osquery' do
   mode '0755'

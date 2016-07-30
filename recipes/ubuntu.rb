@@ -15,7 +15,7 @@ apt_repository 'osquery' do
   arch 'amd64'
   distribution os_codename
   keyserver 'keyserver.ubuntu.com'
-  key '1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B'
+  key repo_hashes[:ubuntu][:key]
   not_if { node['osquery']['repo']['internal'] }
   not_if { ::File.exist?('/etc/apt/sources.list.d/osquery.list') }
 end
