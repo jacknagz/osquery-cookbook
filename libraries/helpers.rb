@@ -2,6 +2,15 @@ require 'mixlib/shellout'
 
 # Helper modules for common case statements.
 module Osquery
+  def osquery_daemon
+    case node['platform']
+    when 'mac_os_x'
+      'com.facebook.osqueryd'
+    when 'centos', 'ubuntu', 'redhat'
+      'osqueryd'
+    end
+  end
+
   def compat_audit
     required = Chef::Version.new('12.1.0')
     current = Chef::Version.new(node['chef_packages']['chef']['version'])
