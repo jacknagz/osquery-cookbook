@@ -13,7 +13,7 @@ describe 'osquery::mac_os_x' do
   end
 
   let(:platform) do
-    { platform: 'mac_os_x', version: '10.10', step_into: %w(osquery_conf osquery_pkg) }
+    { platform: 'mac_os_x', version: '10.10', step_into: %w(osquery_conf osquery_install) }
   end
 
   before do
@@ -24,10 +24,14 @@ describe 'osquery::mac_os_x' do
   let(:osquery_vers) { '1.7.4' }
   let(:domain) { 'com.facebook.osqueryd' }
   let(:pkg) { "/var/chef/cache/osquery-#{osquery_vers}.pkg" }
-  osquery_dirs = %w(/var/log/osquery /var/osquery/packs)
+  osquery_dirs = %w(/var/log/osquery /var/osquery/packs /var/osquery)
 
   it 'converges without error' do
     expect { chef_run }.not_to raise_error
+  end
+
+  it 'installs osquery' do
+    expect(chef_run).to install_osquery_os_x(osquery_vers)
   end
 
   osquery_dirs.each do |dir|
@@ -36,21 +40,21 @@ describe 'osquery::mac_os_x' do
     end
   end
 
-  xit 'downloads osquery pkg' do
-    expect(chef_run).to install_osquery_pkg(pkg)
-  end
-
-  it 'installs pkg' do
-    downloaded_pkg = chef_run.remote_file(pkg)
-    expect(downloaded_pkg).to notify("osquery_pkg[#{pkg}]")
-      .to(:install).immediately
-    expect(chef_run.osquery_pkg(pkg)).to do_nothing
-  end
-
   it 'installs the a pack' do
     expect(chef_run)
       .to create_cookbook_file('/var/osquery/packs/osx_pack.conf')
       .with(group: 'wheel', user: 'root')
+  end
+
+  it 'downloads rpm repo' do
+    expect(chef_run).to create_remote_file(pkg)
+  end
+
+  it 'installs pkg file' do
+    downloaded_pkg = chef_run.remote_file(pkg)
+    expect(downloaded_pkg).to notify('execute[install osquery]')
+      .to(:run).immediately
+    expect(chef_run.execute('install osquery')).to do_nothing
   end
 
   it 'creates osquery config' do
@@ -81,8 +85,8 @@ describe 'osquery::mac_os_x' do
   end
 
   it 'notifies to run permission mod' do
-    package = chef_run.osquery_pkg(pkg)
-    expect(package).to notify('execute[osqueryd permissions]')
+    install = chef_run.execute('install osquery')
+    expect(install).to notify('execute[osqueryd permissions]')
       .to(:run).immediately
   end
 

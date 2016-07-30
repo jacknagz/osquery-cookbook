@@ -4,12 +4,11 @@ osquery chef cookbook
 [![Cookbook Version](https://img.shields.io/cookbook/v/osquery.svg)](https://supermarket.chef.io/cookbooks/osquery)
 
 * Installs, configures, and starts [osquery](https://osquery.io/).
-* Configurations are generated based on node attributes.
 
-Requirements
+Supported Platforms
 ------------
-* Chef >= 12.1.0
 * OS X
+  * 10.10+
 * Ubuntu
   * 12.04
   * 14.04
@@ -23,13 +22,13 @@ General Attributes
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
-| `['osquery']['version']` | `String` | `1.7.4` | osquery version to install |
-| `['osquery']['packs']` | `Array` | `%w(incident-response osx-attacks)` | osquery packs found in `files/default/packs/` |
+| `['osquery']['version']` | `String` | `1.8.1` | osquery version to install |
+| `['osquery']['packs']` | `Array` | `%w(incident-response osx-attacks)` | packs to install |
 | `['osquery']['pack_source']` | `String` | `osquery` | cookbook to load osquery packs from |
-| `['osquery']['repo']['el6_checksum']` | `String` | - | SHA256 Hash of the centos6 repo |
-| `['osquery']['repo']['el7_checksum']` | `String` | - | SHA256 Hash of the centos7 repo |
-| `['osquery']['repo']['osx_checksum']` | `String` | - | SHA256 Hash of the os x pkg file |
-| `['osquery']['audit']['enabled']` | `Boolean` | `true` | flag to enable/disable chef audits |
+| `['osquery']['audit']['enabled']` | `Boolean` | `true` | enable/disable chef audits |
+| `['osquery']['repo']['internal']` | `Boolean` | `false` | enable/disable the use the facebook repo |
+| `['osquery']['syslog']['enabled']` | `Boolean` | `true` | enable syslog tables |
+| `['osquery']['syslog']['filename']` | `String` | `/etc/rsyslog.d/60-osquery.conf` | syslog conf file path |
 
 Configuration Attributes
 ----------
@@ -44,8 +43,6 @@ Configuration Attributes
 | `['osquery']['options']['verbose']` | `Boolean` | `false` | enable verbose informational messages |
 | `['osquery']['options']['worker_threads']` | `Fixnum` | `2` | number of work dispatch threads |
 | `['osquery']['options']['enable_monitor']` | `Boolean` | `false` | enable schedule monitor |
-| `['osquery']['syslog']['enabled']` | `Boolean` | `true` | enable syslog tables |
-| `['osquery']['syslog']['filename']` | `String` | `/etc/rsyslog.d/60-osquery.conf` | syslog conf file path |
 
 Query Schedule Attributes
 ----------
@@ -53,7 +50,7 @@ Query Schedule Attributes
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
-| `['osquery']['schedule']` | `Hash` | osquery_info and file_events | osquery schedule |
+| `['osquery']['schedule']` | `Hash` | osquery_info | osquery scheduled queries |
 
 File Integrity Monitoring Attributes
 ----------
@@ -61,22 +58,38 @@ File Integrity Monitoring Attributes
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
-| `['osquery']['file_paths']` | `Hash` | homes, etc, and tmp | file paths to monitor events from |
 | `['osquery']['fim_enabled']` | `Boolean` | false | enable/disable file event tracking in config |
+| `['osquery']['file_paths']` | `Hash` | homes, etc, and tmp | file paths to monitor events from |
 
-Custom Resources
+Decorator Attributes
+----------
+`attributes/decorators.rb`:
+
+| name   | type | default | description |
+|--------|------|---------|-------------|
+| `['osquery']['decorators']` | `Hash` | `{}` | load, always, or interval decorator queries |
+
+Custom Resource: osquery_conf
 ----------------
 `osquery_conf`: creates osquery config from selected options and packs.
+
+* action: `:create` or `:delete`
+* schedule: (required) Hash of scheduled queries to run
+* fim_paths: (optional) Hash of file integrity monitoring path descriptions and array of their paths
+* packs: (optional) List of osquery packs to install.  Based on filenames ending in `*.conf` in `pack_source/packs`
+* pack_source: (optional) Cookbook source for osquery packs
+* The daemon configuration is compiled from the node`['osquery']['options']` attributes.
 
 `create`:
 
 ```ruby
 osquery_conf osquery_config_path do
-  action :create
-  schedule node['osquery']['schedule']
-  fim_paths node['osquery']['file_paths']
-  packs node['osquery']['packs']
+  action      :create
+  schedule    node['osquery']['schedule']
+  fim_paths   node['osquery']['file_paths']
+  packs       node['osquery']['packs']
   pack_source node['osquery']['pack_source']
+  decorators node['osquery']['decorators']
 end
 ```
 
@@ -87,14 +100,6 @@ osquery_conf 'delete osquery config' do
   action :delete
 end
 ```
-
-osquery_conf attributes:
-* action: `:create` or `:delete`
-* schedule: (required) Hash of scheduled queries to run
-* fim_paths: (optional) Hash of file integrity monitoring path descriptions and array of their paths
-* packs: (optional) List of osquery packs to install.  Based on filenames ending in `*.conf` in `pack_source/packs`
-* pack_source: (optional) Cookbook source for osquery packs
-* The daemon configuration is compiled from the node`['osquery']['options']` attributes.
 
 Testing
 -----

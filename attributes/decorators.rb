@@ -1,3 +1,4 @@
+# default decorator hash.
 default['osquery']['decorators'] = {}
 
 # Decorator query key examples:

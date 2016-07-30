@@ -13,7 +13,7 @@ describe 'osquery::centos' do
   end
 
   let(:platform) do
-    { platform: 'centos', version: '7.0' }
+    { platform: 'centos', version: '7.0', step_into: ['osquery_install'] }
   end
 
   let(:repo) { 'osquery-s3-centos7-repo-1-0.0.noarch.rpm' }
@@ -25,6 +25,10 @@ describe 'osquery::centos' do
 
   it 'converges without error' do
     expect { chef_run }.not_to raise_error
+  end
+
+  it 'installs osquery' do
+    expect(chef_run).to install_osquery_centos('1.7.3')
   end
 
   it 'sets up syslog for osquery' do
