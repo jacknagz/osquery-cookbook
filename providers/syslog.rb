@@ -16,7 +16,6 @@ action :create do
     source rsyslog_legacy ? 'rsyslog/osquery-legacy.conf' : 'rsyslog/osquery.conf'
     action :create
     notifies :restart, 'service[rsyslog]'
-    notifies :restart, "service[#{osquery_daemon}]"
   end
 
   service 'rsyslog' do

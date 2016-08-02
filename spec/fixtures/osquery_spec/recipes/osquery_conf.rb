@@ -18,10 +18,12 @@ node.override['osquery']['pack_source'] = 'osquery_spec'
 node.override['osquery']['packs'] = %w(osquery_spec_test)
 
 osquery_conf osquery_config_path do
+  action      :create
   schedule    node['osquery']['schedule']
   packs       node['osquery']['packs']
   pack_source node['osquery']['pack_source']
   decorators  node['osquery']['decorators']
+  notifies    :restart, "service[#{osquery_daemon}]"
 end
 
 service osquery_daemon do
