@@ -33,6 +33,14 @@ suites:
   - name: default
     run_list:
       - recipe[osquery::default]
+  - name: osquery_wrapper_legacy
+    run_list:
+      - recipe[osquery_spec::osquery_wrapper]
+    driver:
+        require_chef_omnibus: 11.18.12-1
+  - name: osquery_wrapper
+    run_list:
+      - recipe[osquery_spec::osquery_wrapper]
   - name: osquery_conf
     run_list:
       - recipe[osquery_spec::osquery_conf]

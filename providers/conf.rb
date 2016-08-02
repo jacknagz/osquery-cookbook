@@ -23,7 +23,6 @@ action :create do
         owner 'root'
         group osquery_file_group
         cookbook new_resource.pack_source unless new_resource.pack_source.nil?
-        notifies :restart, "service[#{osquery_daemon}]"
       end
     end
 
@@ -52,7 +51,6 @@ action :create do
     variables(
       config: Chef::JSONCompat.to_json_pretty(config_hash)
     )
-    notifies :restart, "service[#{osquery_daemon}]"
   end
 end
 

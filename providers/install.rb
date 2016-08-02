@@ -24,7 +24,6 @@ action :install_ubuntu do
   package 'osquery' do
     action   :install
     version  package_version
-    notifies :create, "osquery_syslog[#{node['osquery']['syslog']['filename']}]"
   end
 end
 
@@ -50,7 +49,6 @@ action :install_centos do
   package 'osquery' do
     action   :install
     version  package_version
-    notifies :create, "osquery_syslog[#{node['osquery']['syslog']['filename']}]"
   end
 end
 

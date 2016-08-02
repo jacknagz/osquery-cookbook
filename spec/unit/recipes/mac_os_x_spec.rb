@@ -46,7 +46,7 @@ describe 'osquery::mac_os_x' do
       .with(group: 'wheel', user: 'root')
   end
 
-  it 'downloads rpm repo' do
+  xit 'downloads rpm repo' do
     expect(chef_run).to create_remote_file(pkg)
   end
 
