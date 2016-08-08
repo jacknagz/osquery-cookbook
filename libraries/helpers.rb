@@ -2,6 +2,10 @@ require 'mixlib/shellout'
 
 # helper methods for common case statements
 module Osquery
+  def os_version
+    node['platform_version'].split('.')[0].to_i
+  end
+
   def osquery_daemon
     case node['platform']
     when 'mac_os_x'

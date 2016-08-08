@@ -4,10 +4,10 @@ def whyrun_supported?
   true
 end
 
+# Add Apt repo and install osquery package.
 action :install_ubuntu do
-  os_version = node['platform_version'].split('.')[0].to_i
-  os_codename = node['lsb']['codename']
   package_version = "#{new_resource.version}-1.ubuntu#{os_version}"
+  os_codename = node['lsb']['codename']
 
   apt_repository 'osquery' do
     action        :add
@@ -27,16 +27,17 @@ action :install_ubuntu do
   end
 end
 
+# Setup CentOS repo and install osquery package.
 action :install_centos do
-  centos_version = node['platform_version'].split('.')[0].to_i
-  package_version = "#{new_resource.version}-1.el#{centos_version}"
-  repo_url = "#{osquery_s3}/centos#{centos_version}/noarch"
-  centos_repo = "osquery-s3-centos#{centos_version}-repo-1-0.0.noarch.rpm"
+  os_version = node['platform_version'].split('.')[0].to_i
+  package_version = "#{new_resource.version}-1.el#{os_version}"
+  repo_url = "#{osquery_s3}/centos#{os_version}/noarch"
+  centos_repo = "osquery-s3-centos#{os_version}-repo-1-0.0.noarch.rpm"
 
   remote_file "#{file_cache}/#{centos_repo}" do
     action   :create
     source   "#{repo_url}/#{centos_repo}"
-    checksum repo_hashes[:centos][centos_version]
+    checksum repo_hashes[:centos][os_version]
     notifies :install, 'rpm_package[osquery repo]', :immediately
     not_if   { node['osquery']['repo']['internal'] }
   end
@@ -52,6 +53,7 @@ action :install_centos do
   end
 end
 
+# Download os x pkg, setup directories, permissions, plist files, and install.
 action :install_os_x do
   domain = 'com.facebook.osqueryd'
   package_name = "osquery-#{new_resource.version}.pkg"
@@ -96,6 +98,7 @@ action :install_os_x do
   end
 end
 
+# remove apt repo and osquery package.
 action :remove_ubuntu do
   apt_repository 'osquery' do
     action :remove
@@ -107,9 +110,9 @@ action :remove_ubuntu do
   end
 end
 
+# remove osquery package.
 action :remove_centos do
-  centos_version = node['platform_version'].split('.')[0].to_i
-  package_version = "#{new_resource.version}-1.el#{centos_version}"
+  package_version = "#{new_resource.version}-1.el#{os_version}"
 
   package 'osquery' do
     action :remove
@@ -117,6 +120,7 @@ action :remove_centos do
   end
 end
 
+# delete osquery binary files.
 action :remove_os_x do
   %w(osqueryi osqueryd osqueryctl).each do |osquery_bin|
     file osquery_bin do

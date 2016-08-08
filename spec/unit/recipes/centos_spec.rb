@@ -32,8 +32,7 @@ describe 'osquery::centos' do
   end
 
   it 'sets up syslog for osquery' do
-    resource = chef_run.osquery_install('1.7.3')
-    expect(resource).to notify('osquery_syslog[/etc/rsyslog.d/60-osquery.conf]').to(:create)
+    expect(chef_run).to create_osquery_syslog('/etc/rsyslog.d/60-osquery.conf')
   end
 
   it 'installs osquery package' do
