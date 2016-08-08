@@ -29,7 +29,6 @@ end
 
 # Setup CentOS repo and install osquery package.
 action :install_centos do
-  os_version = node['platform_version'].split('.')[0].to_i
   package_version = "#{new_resource.version}-1.el#{os_version}"
   repo_url = "#{osquery_s3}/centos#{os_version}/noarch"
   centos_repo = "osquery-s3-centos#{os_version}-repo-1-0.0.noarch.rpm"

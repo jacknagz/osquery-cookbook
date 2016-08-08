@@ -16,9 +16,10 @@ Supported Platforms
   * 6.5+
   * 7.0+
 
-General Attributes
+Attributes
 ----------
-`attributes/default.rb`:
+
+##### `attributes/default.rb`:
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
@@ -30,9 +31,7 @@ General Attributes
 | `['osquery']['syslog']['enabled']` | `Boolean` | `true` | enable syslog tables |
 | `['osquery']['syslog']['filename']` | `String` | `/etc/rsyslog.d/60-osquery.conf` | syslog conf file path |
 
-Configuration Attributes
-----------
-`attributes/config.rb`:
+##### `attributes/config.rb`:
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
@@ -44,36 +43,30 @@ Configuration Attributes
 | `['osquery']['options']['worker_threads']` | `Fixnum` | `2` | number of work dispatch threads |
 | `['osquery']['options']['enable_monitor']` | `Boolean` | `false` | enable schedule monitor |
 
-Query Schedule Attributes
-----------
-`attributes/schedule.rb`:
+##### `attributes/schedule.rb`:
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
 | `['osquery']['schedule']` | `Hash` | osquery_info | osquery scheduled queries |
 
-File Integrity Monitoring Attributes
-----------
-`attributes/file_paths.rb`:
+##### `attributes/file_paths.rb`:
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
 | `['osquery']['fim_enabled']` | `Boolean` | false | enable/disable file event tracking in config |
 | `['osquery']['file_paths']` | `Hash` | homes, etc, and tmp | file paths to monitor events from |
 
-Decorator Attributes
-----------
-`attributes/decorators.rb`:
+##### `attributes/decorators.rb`:
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
 | `['osquery']['decorators']` | `Hash` | `{}` | load, always, or interval decorator queries |
 
-Custom Resource: osquery_conf
-----------------
-`osquery_conf`: creates osquery config from selected options and packs.
+## Custom Resources
 
-* action: `:create` or `:delete`
+##### `osquery_conf`: creates osquery config from selected options and packs
+
+* actions: `:create` or `:delete`
 * schedule: (required) Hash of scheduled queries to run
 * fim_paths: (optional) Hash of file integrity monitoring path descriptions and array of their paths
 * packs: (optional) List of osquery packs to install.  Based on filenames ending in `*.conf` in `pack_source/packs`
@@ -89,7 +82,7 @@ osquery_conf osquery_config_path do
   fim_paths   node['osquery']['file_paths']
   packs       node['osquery']['packs']
   pack_source node['osquery']['pack_source']
-  decorators node['osquery']['decorators']
+  decorators  node['osquery']['decorators']
 end
 ```
 
@@ -98,6 +91,54 @@ end
 ```ruby
 osquery_conf 'delete osquery config' do
   action :delete
+end
+```
+
+##### `osquery_install`: installs osquery on centos/redhat, ubuntu, or os x
+
+* actions:
+  * `:install_ubuntu`, `:install_centos`, `:install_os_x`
+  * `:remove_ubuntu`, `:remove_centos`, `:remove_os_x`
+* version: (required - name attribute) string of the osquery version to install
+
+`install`:
+
+```ruby
+osquery_install node['osquery']['version'] do
+  action :install_ubuntu
+end
+```
+
+`remove`:
+
+```ruby
+osquery_install node['osquery']['version'] do
+  action :remove_ubuntu
+end
+```
+
+##### `osquery_syslog`: creates osquery syslog config file
+
+* actions: `:create` or `:delete`
+* filename: (required - name attribute) filename of the osquery syslog config
+* note: this resource installs rsyslog if not already configured
+
+`install`:
+
+```ruby
+osquery_syslog node['osquery']['syslog']['filename'] do
+  action   :create
+  only_if  { node['osquery']['syslog']['enabled'] }
+  notifies :restart, "service[#{osquery_daemon}]"
+end
+```
+
+`delete`:
+
+```ruby
+osquery_syslog node['osquery']['syslog']['filename'] do
+  action   :delete
+  notifies :restart, "service[#{osquery_daemon}]"
 end
 ```
 
