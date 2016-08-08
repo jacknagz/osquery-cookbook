@@ -37,8 +37,7 @@ describe 'osquery::ubuntu' do
   end
 
   it 'sets up syslog for osquery' do
-    resource = chef_run.osquery_install('1.7.3')
-    expect(resource).to notify('osquery_syslog[/etc/rsyslog.d/60-osquery.conf]').to(:create)
+    expect(chef_run).to create_osquery_syslog('/etc/rsyslog.d/60-osquery.conf')
   end
 
   it 'adds osquery apt repo' do
@@ -52,11 +51,6 @@ describe 'osquery::ubuntu' do
         packs: %w(chefspec),
         decorators: {}
       )
-  end
-
-  it 'syslog does nothing on its own' do
-    resource = chef_run.osquery_syslog('/etc/rsyslog.d/60-osquery.conf')
-    expect(resource).to do_nothing
   end
 
   it 'starts and enables osquery service' do

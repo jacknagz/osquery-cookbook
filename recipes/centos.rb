@@ -7,11 +7,10 @@
 
 osquery_install node['osquery']['version'] do
   action   :install_centos
-  notifies :create, "osquery_syslog[#{node['osquery']['syslog']['filename']}]"
 end
 
 osquery_syslog node['osquery']['syslog']['filename'] do
-  action   :nothing
+  action   :create
   only_if  { node['osquery']['syslog']['enabled'] }
   notifies :restart, "service[#{osquery_daemon}]"
 end
