@@ -7,6 +7,7 @@ group :test do
   gem 'berkshelf'
   gem 'test-kitchen'
   gem 'kitchen-vagrant'
+  gem 'kitchen-docker'
   gem 'chefspec'
   gem 'rspec'
   gem 'stove'

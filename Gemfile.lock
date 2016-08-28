@@ -106,6 +106,8 @@ GEM
     httpclient (2.7.1)
     ipaddress (0.8.3)
     json (1.8.3)
+    kitchen-docker (2.5.0)
+      test-kitchen (>= 1.0.0)
     kitchen-vagrant (0.20.0)
       test-kitchen (~> 1.4)
     libyajl2 (1.2.0)
@@ -271,6 +273,7 @@ DEPENDENCIES
   chef-zero (= 4.5.0)
   chefspec
   foodcritic
+  kitchen-docker
   kitchen-vagrant
   rake
   rspec
@@ -279,4 +282,4 @@ DEPENDENCIES
   test-kitchen
 
 BUNDLED WITH
-   1.10.6
+   1.12.5
