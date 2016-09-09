@@ -26,7 +26,12 @@ action :create do
 end
 
 action :delete do
-  cookbook_file filename do
+  cookbook_file new_resource.syslog_file do
     action :delete
+    notifies :restart, 'service[rsyslog]', :immediately
+  end
+
+  service 'rsyslog' do
+    action :nothing
   end
 end

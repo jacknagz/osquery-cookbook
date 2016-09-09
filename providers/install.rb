@@ -107,6 +107,11 @@ action :remove_ubuntu do
     action :remove
     version "#{new_resource.version}-1.ubuntu#{os_version}"
   end
+
+  directory '/var/osquery' do
+    action :delete
+    recursive true
+  end
 end
 
 # remove osquery package.
