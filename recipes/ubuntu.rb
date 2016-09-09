@@ -12,7 +12,7 @@ end
 osquery_syslog node['osquery']['syslog']['filename'] do
   action   :create
   only_if  { node['osquery']['syslog']['enabled'] }
-  notifies :restart, "service[#{osquery_daemon}]"
+  notifies :restart, "service[#{osquery_daemon}]", :immediately
 end
 
 osquery_conf osquery_config_path do
@@ -22,7 +22,7 @@ osquery_conf osquery_config_path do
   fim_paths   node['osquery']['file_paths']
   pack_source node['osquery']['pack_source']
   decorators  node['osquery']['decorators']
-  notifies :restart, "service[#{osquery_daemon}]"
+  notifies :restart, "service[#{osquery_daemon}]", :immediately
 end
 
 service osquery_daemon do
