@@ -59,6 +59,11 @@ action :delete do
     action :delete
   end
 
+  directory ::File.dirname(osquery_config_path) do
+    action :delete
+    recursive true
+  end
+
   directory osquery_packs_path do
     action :delete
     recursive true
