@@ -25,7 +25,9 @@ task :list do
   puts "Tasks: \n- #{Rake::Task.tasks.join("\n- ")}"
 end
 
-RuboCop::RakeTask.new(:rubocop)
+RuboCop::RakeTask.new(:rubocop) do |t|
+  t.options = ['--auto-correct']
+end
 
 FoodCritic::Rake::LintTask.new(:foodcritic) do |t|
   t.options = {

@@ -99,13 +99,18 @@ end
 
 # remove apt repo and osquery package.
 action :remove_ubuntu do
+  service osquery_daemon do
+    action [:disable, :stop]
+    only_if { ::File.exist?('/etc/init.d/osqueryd') && ::File.exist?(osquery_config_path) }
+  end
+
   apt_repository 'osquery' do
     action :remove
+    not_if { node['osquery']['repo']['internal'] }
   end
 
   package 'osquery' do
-    action :remove
-    version "#{new_resource.version}-1.ubuntu#{os_version}"
+    action :purge
   end
 
   directory '/var/osquery' do
@@ -116,11 +121,12 @@ end
 
 # remove osquery package.
 action :remove_centos do
-  package_version = "#{new_resource.version}-1.el#{os_version}"
+  service osquery_daemon do
+    action [:disable, :stop]
+  end
 
   package 'osquery' do
-    action :remove
-    version package_version
+    action :purge
   end
 end
 
