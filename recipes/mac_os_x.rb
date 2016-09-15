@@ -16,7 +16,7 @@ osquery_conf osquery_config_path do
   fim_paths   node['osquery']['file_paths']
   pack_source node['osquery']['pack_source']
   decorators  node['osquery']['decorators']
-  notifies    :restart, "service[#{domain}]", :immediately
+  notifies    :restart, "service[#{domain}]"
 end
 
 cookbook_file "/etc/newsyslog.d/#{domain}.conf" do
