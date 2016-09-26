@@ -33,6 +33,18 @@ suites:
   - name: default
     run_list:
       - recipe[osquery::default]
+  - name: syslog
+    attributes:
+      osquery:
+        options:
+          verbose: true
+          syslog_pipe_path: '/var/osquery/syslog_pipe'
+        schedule:
+          syslog:
+            query: 'SELECT * FROM syslog'
+            interval: 10
+    run_list:
+      - recipe[osquery::default]
   - name: osquery_wrapper_legacy
     run_list:
       - recipe[osquery_spec::osquery_wrapper]

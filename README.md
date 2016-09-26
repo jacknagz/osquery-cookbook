@@ -30,6 +30,8 @@ Attributes
 | `['osquery']['repo']['internal']` | `Boolean` | `false` | enable/disable the use the facebook repo |
 | `['osquery']['syslog']['enabled']` | `Boolean` | `true` | enable syslog tables |
 | `['osquery']['syslog']['filename']` | `String` | `/etc/rsyslog.d/60-osquery.conf` | syslog conf file path |
+| `['osquery']['syslog']['pipe_user']` | `String` | `root` | syslog pipe user |
+| `['osquery']['syslog']['pipe_group']` | `String` | `root` | syslog pipe group |
 
 ##### `attributes/config.rb`:
 
@@ -42,6 +44,7 @@ Attributes
 | `['osquery']['options']['verbose']` | `Boolean` | `false` | enable verbose informational messages |
 | `['osquery']['options']['worker_threads']` | `Fixnum` | `2` | number of work dispatch threads |
 | `['osquery']['options']['enable_monitor']` | `Boolean` | `false` | enable schedule monitor |
+| `['osquery']['options']['syslog_pipe_path']` | `String` | `/var/osquery/syslog_pipe_test` | syslog pipe path |
 
 ##### `attributes/schedule.rb`:
 

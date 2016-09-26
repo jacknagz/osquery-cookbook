@@ -9,6 +9,31 @@ action :create do
     action :install
   end
 
+  if node['osquery']['options']['syslog_pipe_path']
+    pipe = node['osquery']['options']['syslog_pipe_path']
+    pipe_user = node['osquery']['syslog']['pipe_user']
+    pipe_group = node['osquery']['syslog']['pipe_group']
+
+    execute 'create osquery syslog pipe' do
+      command "/usr/bin/mkfifo #{pipe}"
+      creates pipe
+      action :run
+      notifies :run, 'execute[chown syslog pipe]', :immediately
+      notifies :run, 'execute[chmod syslog pipe]', :immediately
+    end
+
+    execute 'chown syslog pipe' do
+      command "chown #{pipe_user}:#{pipe_group} #{pipe}"
+      action :nothing
+    end
+
+    # rsyslog needs read/write access, osquery process needs read access
+    execute 'chmod syslog pipe' do
+      command "chmod 460 #{pipe}"
+      action :nothing
+    end
+  end
+
   cookbook_file new_resource.syslog_file do
     owner 'root'
     group 'root'
