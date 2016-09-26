@@ -28,4 +28,21 @@ describe 'osquery_spec::osquery_syslog' do
     expect(resource).to notify('service[rsyslog]').to(:restart)
     expect(chef_run.service('rsyslog')).to do_nothing
   end
+
+  it 'creates syslog pipe' do
+    expect(chef_run).to run_execute('create osquery syslog pipe')
+      .with(command: '/usr/bin/mkfifo /var/osquery/syslog_pipe_test')
+  end
+
+  it 'syslog pipe notifies chown and chmod of pipe' do
+    pipe = chef_run.execute('create osquery syslog pipe')
+    chown = chef_run.execute('chown syslog pipe')
+    chmod = chef_run.execute('chmod syslog pipe')
+
+    expect(pipe).to notify('execute[chown syslog pipe]').to(:run).immediately
+    expect(pipe).to notify('execute[chmod syslog pipe]').to(:run).immediately
+
+    expect(chown).to do_nothing
+    expect(chmod).to do_nothing
+  end
 end
