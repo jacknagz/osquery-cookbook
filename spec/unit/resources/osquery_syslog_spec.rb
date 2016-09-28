@@ -20,11 +20,11 @@ describe 'osquery_spec::osquery_syslog' do
   end
 
   it 'creates the osquery syslog conf' do
-    expect(chef_run).to create_cookbook_file('/etc/rsyslog.d/osquery.conf')
+    expect(chef_run).to create_template('/etc/rsyslog.d/osquery.conf')
   end
 
   it 'restarts rsyslog via notifies' do
-    resource = chef_run.cookbook_file('/etc/rsyslog.d/osquery.conf')
+    resource = chef_run.template('/etc/rsyslog.d/osquery.conf')
     expect(resource).to notify('service[rsyslog]').to(:restart)
     expect(chef_run.service('rsyslog')).to do_nothing
   end
@@ -34,15 +34,8 @@ describe 'osquery_spec::osquery_syslog' do
       .with(command: '/usr/bin/mkfifo /var/osquery/syslog_pipe_test')
   end
 
-  it 'syslog pipe notifies chown and chmod of pipe' do
-    pipe = chef_run.execute('create osquery syslog pipe')
-    chown = chef_run.execute('chown syslog pipe')
-    chmod = chef_run.execute('chmod syslog pipe')
-
-    expect(pipe).to notify('execute[chown syslog pipe]').to(:run).immediately
-    expect(pipe).to notify('execute[chmod syslog pipe]').to(:run).immediately
-
-    expect(chown).to do_nothing
-    expect(chmod).to do_nothing
+  it 'modifies permissions and ownership of syslog pipe' do
+    expect(chef_run).to run_execute('chown syslog pipe')
+    expect(chef_run).to run_execute('chmod syslog pipe')
   end
 end
