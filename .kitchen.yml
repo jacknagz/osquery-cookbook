@@ -36,10 +36,16 @@ suites:
   - name: syslog
     attributes:
       osquery:
+        syslog:
+          pipe_user: 'root'
+          pipe_group: 'syslog'
         options:
           verbose: true
-          syslog_pipe_path: '/var/osquery/syslog_pipe'
+          syslog_pipe_path: '/var/osquery/kitchen_syslog_pipe'
         schedule:
+          time:
+            query: 'SELECT * FROM time'
+            interval: 10
           syslog:
             query: 'SELECT * FROM syslog'
             interval: 10
