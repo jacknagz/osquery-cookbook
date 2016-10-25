@@ -1,2 +1,2 @@
 $template OsqueryCsvFormat, "%timestamp:::date-rfc3339,csv%,%hostname:::csv%,%syslogseverity:::csv%,%syslogfacility-text:::csv%,%syslogtag:::csv%,%msg:::csv%\n"
-*.* |<%= @pipe %>;OsqueryCsvFormat
+<%= @selector %> |<%= @pipe %>;OsqueryCsvFormat

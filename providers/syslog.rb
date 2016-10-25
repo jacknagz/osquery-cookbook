@@ -10,6 +10,7 @@ action :create do
   end
 
   pipe = '/var/osquery/syslog_pipe'
+  selector = node['osquery']['syslog']['selector'] || '*.*'
 
   if node['osquery']['options']['syslog_pipe_path']
     pipe = node['osquery']['options']['syslog_pipe_path']
@@ -39,7 +40,10 @@ action :create do
     group 'root'
     mode  '644'
     source rsyslog_legacy ? 'rsyslog/osquery-legacy.conf.erb' : 'rsyslog/osquery.conf.erb'
-    variables(pipe: pipe)
+    variables(
+      pipe: pipe,
+      selector: selector
+    )
     action :create
     notifies :restart, 'service[rsyslog]'
   end
