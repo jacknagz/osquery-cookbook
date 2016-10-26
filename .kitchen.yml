@@ -39,6 +39,7 @@ suites:
         syslog:
           pipe_user: 'root'
           pipe_group: 'syslog'
+          selector : '*.info'
         options:
           verbose: true
           syslog_pipe_path: '/var/osquery/kitchen_syslog_pipe'
