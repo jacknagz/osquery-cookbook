@@ -6,6 +6,15 @@ module Osquery
     node['platform_version'].split('.')[0].to_i
   end
 
+  def ubuntu_package_version(osquery_version)
+    case os_version
+    when '12', '14'
+      "#{osquery_version}-1.ubuntu14"
+    when '16'
+      "#{osquery_version}-1.ubuntu16"
+    end
+  end
+
   def osquery_daemon
     case node['platform']
     when 'mac_os_x'

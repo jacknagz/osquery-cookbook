@@ -6,7 +6,7 @@ end
 
 # Add Apt repo and install osquery package.
 action :install_ubuntu do
-  package_version = "#{new_resource.version}-1.ubuntu#{os_version}"
+  package_version = ubuntu_package_version(new_resource.version)
   os_codename = node['lsb']['codename']
 
   apt_repository 'osquery' do
