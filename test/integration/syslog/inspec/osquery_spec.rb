@@ -24,6 +24,11 @@ when 'debian', 'redhat'
     its('mode') { should cmp '0755' }
   end
 
+  describe file('/var/osquery/syslog_pipe') do
+    it { should exist }
+    it { should be_pipe }
+  end
+
   describe package('osquery') do
     it { should be_installed }
   end
