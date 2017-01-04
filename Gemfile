@@ -10,6 +10,7 @@ group :test do
   gem 'chefspec'
   gem 'rspec'
   gem 'stove'
+  gem 'kitchen-inspec'
 end
 
 group :production do

@@ -4,8 +4,9 @@ driver:
 
 provisioner:
   name: chef_zero
-  client_rb:
-    audit_mode: :enabled
+
+verifier:
+  name: inspec
 
 platforms:
   - name: osx-1010
