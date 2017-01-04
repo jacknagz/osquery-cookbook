@@ -22,7 +22,7 @@ action :install_ubuntu do
   end
 
   package 'osquery' do
-    action   :install
+    action   :upgrade
     version  package_version
   end
 end
@@ -47,7 +47,7 @@ action :install_centos do
   end
 
   package 'osquery' do
-    action   :install
+    action   :upgrade
     version  package_version
   end
 end
