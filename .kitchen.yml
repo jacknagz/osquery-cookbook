@@ -39,11 +39,12 @@ suites:
       osquery:
         syslog:
           pipe_user: 'root'
-          pipe_group: 'syslog'
+          pipe_group: 'root'
           selector : '*.info'
         options:
           verbose: true
-          syslog_pipe_path: '/var/osquery/kitchen_syslog_pipe'
+          syslog_pipe_path: '/var/osquery/syslog_pipe'
+          enable_syslog: true
         schedule:
           time:
             query: 'SELECT * FROM time'

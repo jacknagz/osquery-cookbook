@@ -1,39 +1,56 @@
-osquery chef cookbook
+osquery Cookbook
 ====================
 [![Build Status](https://travis-ci.org/jacknagz/osquery-cookbook.svg?branch=master)](https://travis-ci.org/jacknagz/osquery-cookbook)
 [![Cookbook Version](https://img.shields.io/cookbook/v/osquery.svg)](https://supermarket.chef.io/cookbooks/osquery)
 
-* Installs, configures, and starts [osquery](https://osquery.io/).
+This cookbook includes recipes and resources to install, configure, and start Facebook's  [osquery](https://osquery.io/).  osquery is an operating system instrumentation framework for OS X/macOS, Windows, and Linux.
 
-Supported Platforms
+Supported
 ------------
-* OS X
-  * 10.10+
-* Ubuntu
-  * 12.04
-  * 14.04
-* Centos/Redhat
-  * 6.5+
-  * 7.0+
+#### Platforms
+  * Ubuntu: 12.04, 14.04
+  * Centos/Redhat: 6.5, 7.0
+  * OS X
+
+#### Chef
+  * Chef 11+
+
+#### Cookbooks
+  * [`apt`](https://github.com/chef-cookbooks/apt)
+
+#### Usage
+  * Include `osquery::default` in your node's run_list
+  * Override attributes to fit your desired setup
+
+Recipes
+-------
+#### default
+The `default` recipe determines if a node is within the supported platform list and includes the one of the platform specific recipes to setup osquery.
+
+#### centos/ubuntu/mac_os_x
+  * Install osquery via package (rpm, deb, or pkg)
+  * Setup syslog ingestion if enabled
+  * Create configuration file(s)
+  * Start/enable osqueryd service
 
 Attributes
 ----------
-
-##### `attributes/default.rb`:
+##### attributes/default.rb:
+Default attributes control the version to install, syslog configuration, and whether or not to use Facebook's Apt/Yum repo or your own internal repo.
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
-| `['osquery']['version']` | `String` | `1.8.1` | osquery version to install |
+| `['osquery']['version']` | `String` | `2.2.1` | osquery version to install |
 | `['osquery']['packs']` | `Array` | `%w(incident-response osx-attacks)` | packs to install |
 | `['osquery']['pack_source']` | `String` | `osquery` | cookbook to load osquery packs from |
-| `['osquery']['audit']['enabled']` | `Boolean` | `true` | enable/disable chef audits |
 | `['osquery']['repo']['internal']` | `Boolean` | `false` | enable/disable the use the facebook repo |
 | `['osquery']['syslog']['enabled']` | `Boolean` | `true` | enable syslog tables |
 | `['osquery']['syslog']['filename']` | `String` | `/etc/rsyslog.d/60-osquery.conf` | syslog conf file path |
 | `['osquery']['syslog']['pipe_user']` | `String` | `root` | syslog pipe user |
 | `['osquery']['syslog']['pipe_group']` | `String` | `root` | syslog pipe group |
 
-##### `attributes/config.rb`:
+##### attributes/config.rb:
+Config attributes add options to the osquery config `options` key.  This includes logger plugins, config plugin, splay, worker threads, and more.
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
@@ -46,27 +63,37 @@ Attributes
 | `['osquery']['options']['enable_monitor']` | `Boolean` | `false` | enable schedule monitor |
 | `['osquery']['options']['syslog_pipe_path']` | `String` | `/var/osquery/syslog_pipe_test` | syslog pipe path |
 
-##### `attributes/schedule.rb`:
+##### attributes/schedule.rb:
+Schedule attributes control the main osquery query schedule.  You can add additional queries this way:
+
+```
+default['osquery']['schedule']['query_name'] = {
+  query: 'SELECT * FROM table_name;',
+  interval: '86400',
+  description: 'my new query'
+}
+```
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
 | `['osquery']['schedule']` | `Hash` | osquery_info | osquery scheduled queries |
 
-##### `attributes/file_paths.rb`:
+##### attributes/file_paths.rb:
+File integrity monitoring paths. 
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
 | `['osquery']['fim_enabled']` | `Boolean` | false | enable/disable file event tracking in config |
 | `['osquery']['file_paths']` | `Hash` | homes, etc, and tmp | file paths to monitor events from |
 
-##### `attributes/decorators.rb`:
+##### attributes/decorators.rb:
+Decorator query options. 
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
 | `['osquery']['decorators']` | `Hash` | `{}` | load, always, or interval decorator queries |
 
 ## Custom Resources
-
 ##### `osquery_conf`: creates osquery config from selected options and packs
 
 * actions: `:create` or `:delete`
@@ -147,21 +174,13 @@ end
 
 Testing
 -----
-Run `$ rake` to execute:
+Run `rake` to execute:
 * foodcritic
 * rubocop
 * chefspec
 
-Requirements: VirtualBox with Extension Pack (for the OS X vm)
-* `$ kitchen list` to show integration test suites <br />
-* `$ kitchen converge` to run test suites
-
-Note: Audit mode is enabled in the Kitchen yaml by default.  The tests are found in `./recipes/audit.rb` and run post converge.  To disable, override the `node['osquery']['audit']['enabled']` attribute to `false`.
-
-Usage
------
-* Include `osquery` in your node's `run_list`
-* Override attributes to fit your desired setup
+Run `kitchen verify` to run Inspec integration tests
+* Requirements: VirtualBox with Extension Pack (for the OS X vm)
 
 Contributing
 ------------
