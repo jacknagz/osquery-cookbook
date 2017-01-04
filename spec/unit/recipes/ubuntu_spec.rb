@@ -16,8 +16,6 @@ describe 'osquery::ubuntu' do
     { platform: 'ubuntu', version: '14.04', step_into: ['osquery_install'] }
   end
 
-  let(:osquery_vers) { '1.7.3-1.ubuntu14' }
-
   before do
     stub_command('which rsyslogd').and_return('/usr/sbin/rsyslogd')
     stub_command('`which rsyslogd` -v ').and_return('rsyslogd 7.4.4 \n')
@@ -33,7 +31,7 @@ describe 'osquery::ubuntu' do
 
   it 'installs osquery package' do
     expect(chef_run).to install_package('osquery')
-      .with(version: '1.7.3-1.ubuntu14')
+    # .with(version: '1.7.3-1.ubuntu14')
   end
 
   it 'sets up syslog for osquery' do
