@@ -12,4 +12,3 @@ default['osquery']['syslog']['selector'] = '*.*'
 
 # other options.
 default['osquery']['repo']['internal'] = false
-default['osquery']['audit']['enabled'] = true

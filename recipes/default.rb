@@ -20,5 +20,3 @@ when 'redhat'
 else
   include_recipe "osquery::#{node['platform']}"
 end
-
-include_recipe 'osquery::audit' if compat_audit && node['osquery']['audit']['enabled']
