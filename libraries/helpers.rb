@@ -55,12 +55,6 @@ module Osquery
     end
   end
 
-  def compat_audit
-    required = Chef::Version.new('12.1.0')
-    current = Chef::Version.new(node['chef_packages']['chef']['version'])
-    current >= required
-  end
-
   def file_cache
     Chef::Config['file_cache_path']
   end
