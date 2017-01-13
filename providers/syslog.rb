@@ -4,34 +4,44 @@ def whyrun_supported?
   true
 end
 
+def load_current_resource
+  @current_resource = Chef::Resource::OsquerySyslog.new(new_resource.syslog_file)
+  @current_resource.pipe_filter(new_resource.pipe_filter)
+  @current_resource.pipe_path(new_resource.pipe_path)
+end
+
 action :create do
   package 'rsyslog' do
     action :install
   end
 
-  pipe = '/var/osquery/syslog_pipe'
-  selector = node['osquery']['syslog']['selector'] || '*.*'
+  DEFAULT_PIPE = '/var/osquery/syslog_pipe'.freeze
+  pipe_filter = new_resource.pipe_filter
+  pipe_path = new_resource.pipe_path
 
-  if node['osquery']['options']['syslog_pipe_path']
-    pipe = node['osquery']['options']['syslog_pipe_path']
+  # we only need to create the pipe manually if it's not the default config
+  unless pipe_path.eql?(DEFAULT_PIPE)
     pipe_user = node['osquery']['syslog']['pipe_user']
     pipe_group = node['osquery']['syslog']['pipe_group']
 
-    execute 'create osquery syslog pipe' do
-      command "/usr/bin/mkfifo #{pipe}"
-      creates pipe
-      action :run
-    end
+    unless ::File.exist?(current_resource.pipe_path)
+      execute 'create osquery syslog pipe' do
+        command "/usr/bin/mkfifo #{pipe_path}"
+        creates pipe_path
+        action :run
+      end
 
-    execute 'chown syslog pipe' do
-      command "chown #{pipe_user}:#{pipe_group} #{pipe}"
-      action :run
-    end
+      execute 'chown syslog pipe' do
+        command "chown #{pipe_user}:#{pipe_group} #{pipe_path}"
+        action :run
+      end
 
-    # rsyslog needs read/write access, osquery process needs read access
-    execute 'chmod syslog pipe' do
-      command "chmod 460 #{pipe}"
-      action :run
+      # rsyslog needs read/write access, osquery process needs read access
+      execute 'chmod syslog pipe' do
+        command "chmod 460 #{pipe_path}"
+        action :run
+      end
+      new_resource.updated_by_last_action(true)
     end
   end
 
@@ -41,8 +51,8 @@ action :create do
     mode  '644'
     source rsyslog_legacy ? 'rsyslog/osquery-legacy.conf.erb' : 'rsyslog/osquery.conf.erb'
     variables(
-      pipe: pipe,
-      selector: selector
+      pipe: pipe_path,
+      pipe_filter: pipe_filter
     )
     action :create
     notifies :restart, 'service[rsyslog]'

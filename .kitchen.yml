@@ -40,10 +40,10 @@ suites:
         syslog:
           pipe_user: 'root'
           pipe_group: 'root'
-          selector : '*.info'
+          pipe_filter : '*.info'
         options:
           verbose: true
-          syslog_pipe_path: '/var/osquery/syslog_pipe'
+          syslog_pipe_path: '/var/osquery/kitchen_pipe'
           enable_syslog: true
         schedule:
           time:

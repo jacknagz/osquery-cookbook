@@ -24,7 +24,7 @@ when 'debian', 'redhat'
     its('mode') { should cmp '0755' }
   end
 
-  describe file('/var/osquery/syslog_pipe') do
+  describe file('/var/osquery/kitchen_pipe') do
     it { should exist }
     it { should be_pipe }
   end

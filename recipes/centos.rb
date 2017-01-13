@@ -6,13 +6,17 @@
 #
 
 osquery_install node['osquery']['version'] do
-  action   :install_centos
+  # TODO: - combine centos/ubuntu into linux and write a
+  #       generic action to determine the right platform
+  action :install_centos
 end
 
 osquery_syslog node['osquery']['syslog']['filename'] do
-  action   :create
-  only_if  { node['osquery']['syslog']['enabled'] }
-  notifies :restart, "service[#{osquery_daemon}]"
+  action      :create
+  pipe_filter node['osquery']['syslog']['pipe_filter']
+  pipe_path   node['osquery']['options']['syslog_pipe_path']
+  only_if     { node['osquery']['syslog']['enabled'] }
+  notifies    :restart, "service[#{osquery_daemon}]"
 end
 
 osquery_conf osquery_config_path do

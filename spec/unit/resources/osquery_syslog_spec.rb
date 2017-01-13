@@ -22,7 +22,7 @@ describe 'osquery_spec::osquery_syslog' do
   it 'creates the osquery syslog conf' do
     expect(chef_run).to create_template('/etc/rsyslog.d/osquery.conf')
       .with_variables(
-        selector: 'daemon,cron.*',
+        pipe_filter: 'daemon,cron.*',
         pipe: '/var/osquery/syslog_pipe_test'
       )
   end
