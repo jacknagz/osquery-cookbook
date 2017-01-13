@@ -61,7 +61,7 @@ Config attributes add options to the osquery config `options` key.  This include
 | `['osquery']['options']['verbose']` | `Boolean` | `false` | enable verbose informational messages |
 | `['osquery']['options']['worker_threads']` | `Fixnum` | `2` | number of work dispatch threads |
 | `['osquery']['options']['enable_monitor']` | `Boolean` | `false` | enable schedule monitor |
-| `['osquery']['options']['pipe_path']` | `String` | `/var/osquery/syslog_pipe_test` | syslog pipe path |
+| `['osquery']['options']['syslog_pipe_path']` | `String` | `/var/osquery/syslog_pipe_test` | syslog pipe path |
 
 ##### attributes/schedule.rb:
 Schedule attributes control the main osquery query schedule.  You can add additional queries this way:
