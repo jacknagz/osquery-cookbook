@@ -150,16 +150,20 @@ end
 ##### `osquery_syslog`: creates osquery syslog config file
 
 * actions: `:create` or `:delete`
-* filename: (required - name attribute) filename of the osquery syslog config
+* syslog_file: (required - name attribute) filename of the osquery syslog config
+* pipe_filter: the filter expression for routing events into the syslog pipe
+* pipe_path: the fifo pipe path
 * note: this resource installs rsyslog if not already configured
 
 `install`:
 
 ```ruby
 osquery_syslog node['osquery']['syslog']['filename'] do
-  action   :create
-  only_if  { node['osquery']['syslog']['enabled'] }
-  notifies :restart, "service[#{osquery_daemon}]"
+  pipe_filter node['osquery']['syslog']['pipe_filter']
+  pipe_path   node['osquery']['options']['syslog_pipe_path']
+  action      :create
+  only_if     { node['osquery']['syslog']['enabled'] }
+  notifies    :restart, "service[#{osquery_daemon}]"
 end
 ```
 
