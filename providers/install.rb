@@ -6,7 +6,7 @@ end
 
 # Add Apt repo and install osquery package.
 action :install_ubuntu do
-  package_version = ubuntu_package_version(new_resource.version)
+  package_version = "#{new_resource.version}-1.linux"
   os_codename = node['lsb']['codename']
 
   apt_repository 'osquery' do
@@ -29,7 +29,7 @@ end
 
 # Setup CentOS repo and install osquery package.
 action :install_centos do
-  package_version = "#{new_resource.version}-1.el#{os_version}"
+  package_version = "#{new_resource.version}_1.linux"
   repo_url = "#{osquery_s3}/centos#{os_version}/noarch"
   centos_repo = "osquery-s3-centos#{os_version}-repo-1-0.0.noarch.rpm"
 

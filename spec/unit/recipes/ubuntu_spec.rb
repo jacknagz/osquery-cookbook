@@ -6,7 +6,7 @@ describe 'osquery::ubuntu' do
   let(:node_attributes) do
     {
       'osquery' => {
-        'version' => '1.7.3',
+        'version' => '2.3.0',
         'packs' => %w(chefspec)
       }
     }
@@ -26,7 +26,7 @@ describe 'osquery::ubuntu' do
   end
 
   it 'installs osquery' do
-    expect(chef_run).to install_osquery_ubuntu('1.7.3')
+    expect(chef_run).to install_osquery_ubuntu('2.3.0')
   end
 
   it 'installs osquery package' do
