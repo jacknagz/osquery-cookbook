@@ -30,6 +30,10 @@ platforms:
     driver:
       box: ubuntu/precise64
       box_url: https://atlas.hashicorp.com/ubuntu/boxes/precise64/versions/20160329.0.0/providers/virtualbox.box
+  - name: ubuntu/xenial64
+    driver:
+      box: ubuntu/xenial64
+      box_url: https://atlas.hashicorp.com/ubuntu/boxes/xenial64/versions/20170418.0.0/providers/virtualbox.box
 
 suites:
   - name: default

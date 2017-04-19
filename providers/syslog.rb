@@ -59,7 +59,13 @@ action :create do
   end
 
   service 'rsyslog' do
-    provider Chef::Provider::Service::Upstart if node['platform'].eql?('ubuntu')
+    if node['platform'].eql?('ubuntu')
+      if os_version < 16
+        provider Chef::Provider::Service::Upstart
+      else
+        provider Chef::Provider::Service::Systemd
+      end
+    end
     supports restart: true
     action :nothing
   end

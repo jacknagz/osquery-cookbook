@@ -36,7 +36,7 @@ describe 'osquery::centos' do
   end
 
   it 'installs osquery package' do
-    expect(chef_run).to upgrade_package('osquery')
+    expect(chef_run).to install_package('osquery')
   end
 
   it 'install osquery repo' do

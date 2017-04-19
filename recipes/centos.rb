@@ -31,4 +31,5 @@ end
 
 service osquery_daemon do
   action [:enable, :start]
+  provider Chef::Provider::Service::Systemd if os_version.eql?(7)
 end
