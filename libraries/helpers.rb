@@ -3,16 +3,7 @@ require 'mixlib/shellout'
 # helper methods for common case statements
 module Osquery
   def os_version
-    node['platform_version'].split('.')[0].to_i
-  end
-
-  def ubuntu_package_version(osquery_version)
-    case os_version
-    when '12', '14'
-      "#{osquery_version}-1.ubuntu14"
-    when '16'
-      "#{osquery_version}-1.ubuntu16"
-    end
+    node['platform_version'].to_i
   end
 
   def osquery_daemon

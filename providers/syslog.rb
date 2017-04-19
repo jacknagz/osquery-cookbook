@@ -15,12 +15,12 @@ action :create do
     action :install
   end
 
-  DEFAULT_PIPE = '/var/osquery/syslog_pipe'.freeze
+  default_pipe = '/var/osquery/syslog_pipe'.freeze
   pipe_filter = new_resource.pipe_filter
   pipe_path = new_resource.pipe_path
 
   # we only need to create the pipe manually if it's not the default config
-  unless pipe_path.eql?(DEFAULT_PIPE)
+  unless pipe_path.eql?(default_pipe)
     pipe_user = node['osquery']['syslog']['pipe_user']
     pipe_group = node['osquery']['syslog']['pipe_group']
 

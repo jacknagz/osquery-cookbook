@@ -26,7 +26,9 @@ when 'debian', 'redhat'
 
   describe package('osquery') do
     it { should be_installed }
+    its('version') { should eq '2.4.0-1.linux' }
   end
+
 when 'darwin'
   describe file('/var/osquery/osquery.conf') do
     it { should exist }

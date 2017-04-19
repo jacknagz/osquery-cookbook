@@ -1,5 +1,5 @@
 # osquery version and packs.
-default['osquery']['version'] = '2.3.2'
+default['osquery']['version'] = '2.4.0'
 default['osquery']['pack_source'] = 'osquery'
 default['osquery']['packs'] = %w(osquery-monitoring)
 
