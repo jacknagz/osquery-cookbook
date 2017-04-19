@@ -30,7 +30,7 @@ describe 'osquery::ubuntu' do
   end
 
   it 'installs osquery package' do
-    expect(chef_run).to upgrade_package('osquery')
+    expect(chef_run).to install_package('osquery')
     # .with(version: '1.7.3-1.ubuntu14')
   end
 

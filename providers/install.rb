@@ -1,12 +1,14 @@
 use_inline_resources
 
+PACKAGE_SUFFIX = '-1.linux'.freeze
+
 def whyrun_supported?
   true
 end
 
 # Add Apt repo and install osquery package.
 action :install_ubuntu do
-  package_version = "#{new_resource.version}-1.linux"
+  package_version = "#{new_resource.version}#{PACKAGE_SUFFIX}"
   os_codename = node['lsb']['codename']
 
   apt_repository 'osquery' do
@@ -22,14 +24,14 @@ action :install_ubuntu do
   end
 
   package 'osquery' do
-    action   :upgrade
+    action   :install
     version  package_version
   end
 end
 
 # Setup CentOS repo and install osquery package.
 action :install_centos do
-  package_version = "#{new_resource.version}_1.linux"
+  package_version = "#{new_resource.version}#{PACKAGE_SUFFIX}"
   repo_url = "#{osquery_s3}/centos#{os_version}/noarch"
   centos_repo = "osquery-s3-centos#{os_version}-repo-1-0.0.noarch.rpm"
 
@@ -47,7 +49,7 @@ action :install_centos do
   end
 
   package 'osquery' do
-    action   :upgrade
+    action   :install
     version  package_version
   end
 end

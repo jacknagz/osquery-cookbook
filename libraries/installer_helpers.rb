@@ -38,7 +38,7 @@ module OsqueryInstallerHelpers
   def supported
     {
       mac_os_x: %w(10.10),
-      ubuntu: %w(12.04 14.04),
+      ubuntu: %w(12.04 14.04 16.04),
       centos: %w(6.5 7.0),
       redhat: %w(6.5 7.0)
     }
@@ -46,13 +46,11 @@ module OsqueryInstallerHelpers
 
   def supported_platform_version
     current_version = Chef::Version.new(node['platform_version'])
-    sp = false
     supported[node['platform'].to_sym].each do |version|
-      required_version = Chef::Version.new(version)
+      required_version = Chef::Version.new(version.to_f)
       next unless required_version.major == current_version.major
-      sp = true if required_version <= current_version
+      return true if required_version <= current_version
     end
-    sp
   end
 
   def supported_platform
