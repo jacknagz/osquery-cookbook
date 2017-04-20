@@ -27,5 +27,5 @@ cookbook_file "/etc/newsyslog.d/#{domain}.conf" do
 end
 
 service osquery_daemon do
-  action [:enable, :start]
+  action %i[enable start]
 end

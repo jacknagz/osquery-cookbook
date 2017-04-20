@@ -6,7 +6,7 @@ description 'Install and configure osquery (osquery.io)'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '1.7.2'
 
-%w(ubuntu centos redhat mac_os_x).each do |os|
+%w[ubuntu centos redhat mac_os_x].each do |os|
   supports os
 end
 

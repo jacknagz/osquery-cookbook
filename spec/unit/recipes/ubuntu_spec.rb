@@ -7,7 +7,7 @@ describe 'osquery::ubuntu' do
     {
       'osquery' => {
         'version' => '2.3.0',
-        'packs' => %w(chefspec)
+        'packs' => %w[chefspec]
       }
     }
   end
@@ -46,7 +46,7 @@ describe 'osquery::ubuntu' do
     expect(chef_run).to create_osquery_config('/etc/osquery/osquery.conf')
       .with(
         pack_source: 'osquery',
-        packs: %w(chefspec),
+        packs: %w[chefspec],
         decorators: {}
       )
   end

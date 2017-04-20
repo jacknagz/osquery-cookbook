@@ -5,7 +5,7 @@ def whyrun_supported?
 end
 
 def load_current_resource
-  @current_resource = Chef::Resource::OsquerySyslog.new(new_resource.syslog_file)
+  @current_resource = new_resource
   @current_resource.pipe_filter(new_resource.pipe_filter)
   @current_resource.pipe_path(new_resource.pipe_path)
 end
