@@ -102,7 +102,7 @@ end
 # remove apt repo and osquery package.
 action :remove_ubuntu do
   service osquery_daemon do
-    action [:disable, :stop]
+    action %i[disable stop]
     only_if { ::File.exist?('/etc/init.d/osqueryd') && ::File.exist?(osquery_config_path) }
   end
 
@@ -124,7 +124,7 @@ end
 # remove osquery package.
 action :remove_centos do
   service osquery_daemon do
-    action [:disable, :stop]
+    action %i[disable stop]
   end
 
   package 'osquery' do
@@ -134,7 +134,7 @@ end
 
 # delete osquery binary files.
 action :remove_os_x do
-  %w(osqueryi osqueryd osqueryctl).each do |osquery_bin|
+  %w[osqueryi osqueryd osqueryctl].each do |osquery_bin|
     file osquery_bin do
       action :delete
     end

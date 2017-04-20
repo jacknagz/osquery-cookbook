@@ -9,6 +9,6 @@ node.default['osquery']['decorators']['always'] = [
   "SELECT 'production' as envIdentifier"
 ]
 node.override['osquery']['pack_source'] = 'osquery_spec'
-node.override['osquery']['packs'] = %w(osquery_spec_test)
+node.override['osquery']['packs'] = %w[osquery_spec_test]
 
 include_recipe 'osquery::default'

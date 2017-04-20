@@ -6,7 +6,7 @@ describe 'osquery::centos' do
   let(:node_attributes) do
     {
       'osquery' => {
-        'packs' => %w(chefspec),
+        'packs' => %w[chefspec],
         'version' => '1.7.3'
       }
     }
@@ -51,7 +51,7 @@ describe 'osquery::centos' do
     expect(chef_run).to create_osquery_config('/etc/osquery/osquery.conf')
       .with(
         pack_source: 'osquery',
-        packs: %w(chefspec),
+        packs: %w[chefspec],
         decorators: {}
       )
   end
