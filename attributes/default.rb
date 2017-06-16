@@ -12,4 +12,5 @@ default['osquery']['syslog']['pipe_group'] = 'root'
 default['osquery']['syslog']['pipe_filter'] = '*.*'
 
 # other options.
+default['osquery']['repo']['package_upgrade'] = false
 default['osquery']['repo']['internal'] = false
