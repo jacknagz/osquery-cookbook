@@ -17,7 +17,6 @@ describe 'osquery::mac_os_x' do
   end
 
   before do
-    stub_command('which git').and_return('/usr/bin/git')
     stub_command('`which osqueryi` -version').and_return('osqueryi version 1.7.2')
   end
 

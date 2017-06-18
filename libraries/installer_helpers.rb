@@ -12,16 +12,6 @@ module OsqueryInstallerHelpers
     Chef::Version.new(osquery.scan(/\d.\d.\d/).first)
   end
 
-  def app_installed(app)
-    inst = Mixlib::ShellOut.new("which #{app}")
-    inst.run_command
-    if inst.stdout.empty?
-      false
-    else
-      true
-    end
-  end
-
   def rsyslog_legacy
     version = Mixlib::ShellOut.new('`which rsyslogd` -v ')
     version.run_command
