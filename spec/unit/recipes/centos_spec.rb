@@ -23,8 +23,7 @@ describe 'osquery::centos' do
   let(:repo) { 'osquery-s3-centos7-repo-1-0.0.noarch.rpm' }
 
   before do
-    stub_command('which rsyslogd').and_return('/usr/sbin/rsyslogd')
-    stub_command('`which rsyslogd` -v ').and_return('rsyslogd 7.4.4 \n')
+    allow_any_instance_of(Chef::Resource).to receive(:rsyslog_legacy).and_return(Chef::Version.new('7.4.4'))
   end
 
   it 'converges without error' do

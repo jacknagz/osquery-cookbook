@@ -15,8 +15,7 @@ module OsqueryInstallerHelpers
   end
 
   def rsyslog_legacy
-    version = Mixlib::ShellOut.new('`which rsyslogd` -v ')
-    version.run_command
+    version = shell_out!('`which rsyslogd` -v')
     return nil unless version.stderr.empty?
     rsyslogd = version.stdout.split("\n")[0]
     rsyslogd.scan(/\d.\d.\d/).first.to_f < 7.0
