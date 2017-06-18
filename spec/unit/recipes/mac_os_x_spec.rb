@@ -17,7 +17,7 @@ describe 'osquery::mac_os_x' do
   end
 
   before do
-    stub_command('`which osqueryi` -version').and_return('osqueryi version 1.7.2')
+    allow_any_instance_of(Chef::Resource).to receive(:osquery_current_version).and_return(Chef::Version.new('1.7.2'))
   end
 
   let(:osquery_vers) { '1.7.4' }
@@ -45,8 +45,10 @@ describe 'osquery::mac_os_x' do
       .with(group: 'wheel', user: 'root')
   end
 
-  xit 'downloads rpm repo' do
-    expect(chef_run).to create_remote_file(pkg)
+  context 'osx_upgradable true' do
+    it 'downloads pkg file' do
+      expect(chef_run).to create_remote_file(pkg)
+    end
   end
 
   it 'installs pkg file' do

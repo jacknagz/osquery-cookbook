@@ -7,8 +7,7 @@ module OsqueryInstallerHelpers
   end
 
   def osquery_current_version
-    version = Mixlib::ShellOut.new('`which osqueryi` -version')
-    version.run_command
+    version = shell_out!('`which osqueryi` -version')
     return nil if version.stdout.empty?
     osquery = version.stdout.split("\n")[0]
     Chef::Version.new(osquery.scan(/\d.\d.\d/).first)
