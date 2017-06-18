@@ -1,5 +1,7 @@
 # helper methods to setup installation
 module OsqueryInstallerHelpers
+  include Chef::Mixin::ShellOut
+
   def osquery_latest_version
     Chef::Version.new(node['osquery']['version'])
   end
