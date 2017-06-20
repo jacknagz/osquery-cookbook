@@ -7,7 +7,7 @@ group :test do
   gem 'berkshelf'
   gem 'test-kitchen'
   gem 'kitchen-vagrant'
-  gem 'chefspec'
+  gem 'chefspec', '~> 4'
   gem 'rspec'
   gem 'stove'
   gem 'kitchen-inspec'

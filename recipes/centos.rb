@@ -8,7 +8,8 @@
 osquery_install node['osquery']['version'] do
   # TODO: - combine centos/ubuntu into linux and write a
   #       generic action to determine the right platform
-  action :install_centos
+  action  :install_centos
+  upgrade node['osquery']['repo']['package_upgrade']
 end
 
 osquery_syslog node['osquery']['syslog']['filename'] do

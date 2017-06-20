@@ -8,11 +8,6 @@ describe 'osquery::default' do
       { platform: 'mac_os_x', version: '10.10' }
     end
 
-    before do
-      stub_command('which git').and_return('/usr/bin/git')
-      stub_command('`which osqueryi` -version').and_return('osqueryi version 1.7.1')
-    end
-
     it 'includes mac os x installation recipe' do
       expect(chef_run).to include_recipe('osquery::mac_os_x')
     end

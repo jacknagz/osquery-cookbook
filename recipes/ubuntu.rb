@@ -6,7 +6,8 @@
 #
 
 osquery_install node['osquery']['version'] do
-  action :install_ubuntu
+  action  :install_ubuntu
+  upgrade node['osquery']['repo']['package_upgrade']
 end
 
 osquery_syslog node['osquery']['syslog']['filename'] do

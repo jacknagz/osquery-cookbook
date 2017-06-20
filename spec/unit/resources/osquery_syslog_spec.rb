@@ -7,6 +7,10 @@ describe 'osquery_spec::osquery_syslog' do
     { platform: 'ubuntu', version: '14.04', step_into: %w(osquery_syslog) }
   end
 
+  before do
+    allow_any_instance_of(Chef::Resource).to receive(:rsyslog_legacy).and_return(Chef::Version.new('7.4.4'))
+  end
+
   it 'converges without error' do
     expect { chef_run }.not_to raise_error
   end
