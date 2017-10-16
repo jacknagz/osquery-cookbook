@@ -6,12 +6,12 @@ description 'Install and configure osquery (osquery.io)'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '1.8.0'
 
-%w(ubuntu centos redhat mac_os_x).each do |os|
+%w(ubuntu centos redhat oracle mac_os_x).each do |os|
   supports os
 end
 
 recipe 'osquery::default', 'convergence/audit requirements.'
-recipe 'osquery::centos', 'centos/redhat osquery installation.'
+recipe 'osquery::centos', 'centos/redhat/oracle osquery installation.'
 recipe 'osquery::mac_os_x', 'mac os x osquery installation.'
 recipe 'osquery::ubuntu', 'ubuntu osquery installation.'
 recipe 'osquery::audit', 'chef audits for osquery installation.'

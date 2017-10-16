@@ -7,7 +7,7 @@ module OsqueryInstallerHelpers
   end
 
   def osquery_current_version
-    version = shell_out!('`which osqueryi` -version')
+    version = shell_out!('`which osqueryi` --version', :returns => [0, 127])
     return nil if version.stdout.empty?
     osquery = version.stdout.split("\n")[0]
     Chef::Version.new(osquery.scan(/\d.\d.\d/).first)
@@ -30,7 +30,8 @@ module OsqueryInstallerHelpers
       mac_os_x: %w(10.10),
       ubuntu: %w(12.04 14.04 16.04),
       centos: %w(6.5 7.0),
-      redhat: %w(6.5 7.0)
+      redhat: %w(6.5 7.0),
+      oracle: %w(6.5 7.0)
     }
   end
 

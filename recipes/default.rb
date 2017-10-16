@@ -15,7 +15,7 @@ if node['osquery']['options']['logger_plugin'].include?('filesystem')
 end
 
 case node['platform']
-when 'redhat'
+when 'redhat', 'oracle'
   include_recipe 'osquery::centos'
 else
   include_recipe "osquery::#{node['platform']}"

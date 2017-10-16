@@ -22,6 +22,14 @@ platforms:
     driver:
       box: bento/centos-7.2
       box_url: https://atlas.hashicorp.com/bento/boxes/centos-7.2/versions/2.2.5/providers/virtualbox.box
+  - name: oracle-73
+    driver:
+      box: bento/oracle-7.3
+      box_url: https://atlas.hashicorp.com/bento/boxes/oracle-7.3/versions/201708.22.0/providers/virtualbox.box
+  - name: oracle-6
+    driver:
+      box: bento/oracle-6
+      box_url: https://atlas.hashicorp.com/bento/boxes/oracle-6/versions/201708.24.0/providers/virtualbox.box
   - name: ubuntu-trusty64
     driver:
       box: ubuntu/trusty64
