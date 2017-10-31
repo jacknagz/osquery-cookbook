@@ -79,15 +79,16 @@ default['osquery']['schedule']['query_name'] = {
 | `['osquery']['schedule']` | `Hash` | osquery_info | osquery scheduled queries |
 
 ##### attributes/file_paths.rb:
-File integrity monitoring paths. 
+File integrity monitoring paths.
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
 | `['osquery']['fim_enabled']` | `Boolean` | false | enable/disable file event tracking in config |
 | `['osquery']['file_paths']` | `Hash` | homes, etc, and tmp | file paths to monitor events from |
+| `['osquery']['exclude_paths']` | `Hash` | homes, etc, and tmp | file paths to ignore monitor events from |
 
 ##### attributes/decorators.rb:
-Decorator query options. 
+Decorator query options.
 
 | name   | type | default | description |
 |--------|------|---------|-------------|
@@ -110,6 +111,7 @@ osquery_conf osquery_config_path do
   action      :create
   schedule    node['osquery']['schedule']
   fim_paths   node['osquery']['file_paths']
+  fim_exclude_paths   node['osquery']['exclude_paths']
   packs       node['osquery']['packs']
   pack_source node['osquery']['pack_source']
   decorators  node['osquery']['decorators']

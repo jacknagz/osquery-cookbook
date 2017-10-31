@@ -7,6 +7,8 @@ end
 action :create do
   config_hash = { options: node['osquery']['options'], schedule: new_resource.schedule }
   config_hash[:file_paths] = new_resource.fim_paths if node['osquery']['fim_enabled'] && !new_resource.fim_paths.empty?
+  config_hash[:exclude_paths] = new_resource.fim_exclude_paths if node['osquery']['fim_enabled'] && !new_resource.fim_exclude_paths.empty?
+
   config_hash[:decorators] = new_resource.decorators unless new_resource.decorators.empty?
 
   unless new_resource.packs.empty?
