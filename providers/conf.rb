@@ -4,9 +4,22 @@ def whyrun_supported?
   true
 end
 
+def fim_enabled?
+  node['osquery']['fim_enabled']
+end
+
+def fim_file_paths_used?
+  fim_enabled? && !new_resource.fim_paths.empty?
+end
+
+def fim_exclude_file_paths_used?
+  fim_file_paths_used? && !new_resource.fim_exclude_paths.empty?
+end
+
 action :create do
   config_hash = { options: node['osquery']['options'], schedule: new_resource.schedule }
-  config_hash[:file_paths] = new_resource.fim_paths if node['osquery']['fim_enabled'] && !new_resource.fim_paths.empty?
+  config_hash[:file_paths] = new_resource.fim_paths if fim_file_paths_used?
+  config_hash[:exclude_paths] = new_resource.fim_exclude_paths if fim_exclude_file_paths_used?
   config_hash[:decorators] = new_resource.decorators unless new_resource.decorators.empty?
 
   unless new_resource.packs.empty?
