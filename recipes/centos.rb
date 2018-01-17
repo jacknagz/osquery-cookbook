@@ -13,10 +13,14 @@ osquery_install node['osquery']['version'] do
 end
 
 osquery_syslog node['osquery']['syslog']['filename'] do
-  action      :create
+  action      case node['osquery']['syslog']['enabled']
+                when true
+                  :create
+                when false
+                  :delete
+              end
   pipe_filter node['osquery']['syslog']['pipe_filter']
   pipe_path   node['osquery']['options']['syslog_pipe_path']
-  only_if     { node['osquery']['syslog']['enabled'] }
   notifies    :restart, "service[#{osquery_daemon}]"
 end
 
