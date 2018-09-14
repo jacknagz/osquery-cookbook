@@ -12,6 +12,11 @@ action :install_ubuntu do
   package_action = new_resource.upgrade ? :upgrade : :install
   os_codename = node['lsb']['codename']
 
+  # Work around for https://github.com/facebook/osquery/issues/4338
+  if node['lsb']['codename'] == 'bionic'
+    os_codename = 'deb'
+  end
+
   apt_repository 'osquery' do
     action        :add
     uri           ::File.join(osquery_s3, os_codename)
