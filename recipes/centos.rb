@@ -5,6 +5,8 @@
 # Copyright 2016, Jack Naglieri
 #
 
+return if os_version.eql?(5)
+
 osquery_install node['osquery']['version'] do
   # TODO: - combine centos/ubuntu into linux and write a
   #       generic action to determine the right platform
