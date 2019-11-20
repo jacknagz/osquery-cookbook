@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'osquery::ubuntu' do
+describe 'osquery::amazon' do
   include_context 'converged recipe'
 
   let(:node_attributes_extra) do
@@ -10,15 +10,17 @@ describe 'osquery::ubuntu' do
   let(:node_attributes) do
     {
       'osquery' => {
-        'version' => '2.3.0',
-        'packs' => %w[chefspec]
+        'packs' => %w[chefspec],
+        'version' => '4.0.2'
       }
     }.merge(node_attributes_extra)
   end
 
   let(:platform) do
-    { platform: 'ubuntu', version: '14.04', step_into: ['osquery_install'] }
+    { platform: 'amazon', version: '2018.03', step_into: ['osquery_install'] }
   end
+
+  let(:repo) { 'osquery-4.0.2-1.linux.x86_64.rpm' }
 
   before do
     allow_any_instance_of(Chef::Resource).to receive(:rsyslog_legacy).and_return(Chef::Version.new('7.4.4'))
@@ -30,11 +32,11 @@ describe 'osquery::ubuntu' do
 
   context 'specific version' do
     it 'installs osquery' do
-      expect(chef_run).to install_osquery_ubuntu('2.3.0')
+      expect(chef_run).to install_osquery_amazon('4.0.2')
     end
 
     it 'installs osquery package' do
-      expect(chef_run).to install_package('osquery').with(version: '2.3.0-1.linux')
+      expect(chef_run).to install_package('osquery').with(version: '4.0.2-1.linux')
     end
   end
 
@@ -50,7 +52,7 @@ describe 'osquery::ubuntu' do
     end
 
     it 'installs osquery' do
-      expect(chef_run).to install_osquery_ubuntu('4.0.2')
+      expect(chef_run).to install_osquery_amazon('4.0.2')
     end
 
     it 'installs/upgrades osquery package' do
@@ -62,8 +64,12 @@ describe 'osquery::ubuntu' do
     expect(chef_run).to create_osquery_syslog('/etc/rsyslog.d/60-osquery.conf')
   end
 
-  it 'adds osquery apt repo' do
-    expect(chef_run).to add_apt_repository('osquery')
+  it 'install osquery repo' do
+    expect(chef_run).to_not install_rpm_package('osquery repo')
+  end
+
+  it 'get osquery repo' do
+    expect(chef_run).to create_remote_file("#{Chef::Config['file_cache_path']}/#{repo}")
   end
 
   it 'creates osquery config' do

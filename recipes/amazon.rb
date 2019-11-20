@@ -1,12 +1,12 @@
 #
 # Cookbook Name:: osquery
-# Recipe:: ubuntu
+# Recipe:: amazon
 #
 # Copyright 2016, Jack Naglieri
 #
 
 osquery_install node['osquery']['version'] do
-  action  :install_ubuntu
+  action  :install_amazon
   upgrade node['osquery']['repo']['package_upgrade']
 end
 
@@ -31,5 +31,4 @@ end
 
 service osquery_daemon do
   action %i[enable start]
-  provider Chef::Provider::Service::Systemd if os_version.eql?(16)
 end

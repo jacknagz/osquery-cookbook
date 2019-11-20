@@ -37,7 +37,7 @@ describe 'osquery::default' do
     include_context 'converged recipe'
 
     let(:platform) do
-      { platform: 'centos', version: '7.0' }
+      { platform: 'centos', version: '7.7.1908' }
     end
 
     it 'includes centos installation recipe' do
@@ -53,11 +53,27 @@ describe 'osquery::default' do
     include_context 'converged recipe'
 
     let(:platform) do
-      { platform: 'redhat', version: '7.0' }
+      { platform: 'redhat', version: '7.6' }
     end
 
     it 'includes centos installation recipe' do
       expect(chef_run).to include_recipe('osquery::centos')
+    end
+
+    it 'converges without error' do
+      expect { chef_run }.not_to raise_error
+    end
+  end
+
+  context 'when amazon' do
+    include_context 'converged recipe'
+
+    let(:platform) do
+      { platform: 'amazon', version: '2018.03' }
+    end
+
+    it 'includes amazon installation recipe' do
+      expect(chef_run).to include_recipe('osquery::amazon')
     end
 
     it 'converges without error' do

@@ -9,6 +9,7 @@ module OsqueryInstallerHelpers
   def osquery_current_version
     version = shell_out!('`which osqueryi` -version')
     return nil if version.stdout.empty?
+
     osquery = version.stdout.split("\n")[0]
     Chef::Version.new(osquery.scan(/\d.\d.\d/).first)
   end
@@ -16,26 +17,29 @@ module OsqueryInstallerHelpers
   def rsyslog_legacy
     version = shell_out!('`which rsyslogd` -v')
     return nil unless version.stderr.empty?
+
     rsyslogd = version.stdout.split("\n")[0]
     rsyslogd.scan(/\d.\d.\d/).first.to_f < 7.0
   end
 
   def osx_upgradable
     return true if osquery_current_version.nil?
+
     osquery_current_version < osquery_latest_version
   end
 
   def supported
     {
-      mac_os_x: %w(10.10),
-      ubuntu: %w(12.04 14.04 16.04),
-      centos: %w(6.5 7.0),
-      redhat: %w(6.5 7.0)
+      mac_os_x: %w[10.10],
+      ubuntu: %w[12.04 14.04 16.04],
+      centos: %w[6.5 7.0],
+      redhat: %w[6.5 7.0],
+      amazon: %w[2018.03 2]
     }
   end
 
   def supported_platform_version
-    current_version = Chef::Version.new(node['platform_version'])
+    current_version = Chef::Version.new(node['platform_version'].to_f)
     supported[node['platform'].to_sym].each do |version|
       required_version = Chef::Version.new(version.to_f)
       next unless required_version.major == current_version.major
@@ -51,11 +55,13 @@ module OsqueryInstallerHelpers
   def repo_hashes
     {
       centos: {
-        6 => '5960044255a51feda80df816fc6769c2bf4316a59fb439b50a367db52d870144',
-        7 => '86fd64c84d78072e9ad4051afd29890ff6d854984ad5b16cd84d678cd1f7ec21'
+        key: '5a54f5f0ffad39f511d598ec83091604caa554efd037b47f4a73bab76d08650b'
       },
       ubuntu: {
         key: '1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B'
+      },
+      amazon: {
+        key: '5a54f5f0ffad39f511d598ec83091604caa554efd037b47f4a73bab76d08650b'
       }
     }
   end
@@ -68,6 +74,6 @@ module OsqueryInstallerHelpers
   end
 end
 
-Chef::Recipe.send(:include, OsqueryInstallerHelpers)
-Chef::Resource.send(:include, OsqueryInstallerHelpers)
-Chef::Provider.send(:include, OsqueryInstallerHelpers)
+Chef::Recipe.include OsqueryInstallerHelpers
+Chef::Resource.include OsqueryInstallerHelpers
+Chef::Provider.include OsqueryInstallerHelpers

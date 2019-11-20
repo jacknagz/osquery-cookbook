@@ -4,7 +4,7 @@ describe 'osquery_spec::osquery_syslog' do
   include_context 'converged recipe'
 
   let(:platform) do
-    { platform: 'ubuntu', version: '14.04', step_into: %w(osquery_syslog) }
+    { platform: 'ubuntu', version: '14.04', step_into: %w[osquery_syslog] }
   end
 
   before do

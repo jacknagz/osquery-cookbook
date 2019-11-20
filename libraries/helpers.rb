@@ -10,7 +10,7 @@ module Osquery
     case node['platform']
     when 'mac_os_x'
       'com.facebook.osqueryd'
-    when 'centos', 'ubuntu', 'redhat'
+    when 'centos', 'ubuntu', 'redhat', 'amazon'
       'osqueryd'
     end
   end
@@ -19,11 +19,15 @@ module Osquery
     'https://osquery-packages.s3.amazonaws.com'
   end
 
+  def osquery_pkg
+    'https://pkg.osquery.io'
+  end
+
   def osquery_config_path
     case node['platform']
     when 'mac_os_x'
       '/var/osquery/osquery.conf'
-    when 'centos', 'ubuntu', 'redhat'
+    when 'centos', 'ubuntu', 'redhat', 'amazon'
       '/etc/osquery/osquery.conf'
     end
   end
@@ -32,7 +36,7 @@ module Osquery
     case node['platform']
     when 'mac_os_x'
       '/var/osquery/packs'
-    when 'centos', 'ubuntu', 'redhat'
+    when 'centos', 'ubuntu', 'redhat', 'amazon'
       '/usr/share/osquery/packs'
     end
   end
@@ -41,7 +45,7 @@ module Osquery
     case node['platform']
     when 'mac_os_x'
       'wheel'
-    when 'centos', 'ubuntu', 'redhat'
+    when 'centos', 'ubuntu', 'redhat', 'amazon'
       'root'
     end
   end
@@ -51,6 +55,6 @@ module Osquery
   end
 end
 
-Chef::Recipe.send(:include, Osquery)
-Chef::Resource.send(:include, Osquery)
-Chef::Provider.send(:include, Osquery)
+Chef::Recipe.include Osquery
+Chef::Resource.include Osquery
+Chef::Provider.include Osquery

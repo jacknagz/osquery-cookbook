@@ -39,6 +39,14 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:osquery_install, :remove_centos, version)
   end
 
+  def install_osquery_amazon(version)
+    ChefSpec::Matchers::ResourceMatcher.new(:osquery_install, :install_amazon, version)
+  end
+
+  def remove_osquery_amazon(version)
+    ChefSpec::Matchers::ResourceMatcher.new(:osquery_install, :remove_amazon, version)
+  end
+
   def install_osquery_os_x(version)
     ChefSpec::Matchers::ResourceMatcher.new(:osquery_install, :install_os_x, version)
   end

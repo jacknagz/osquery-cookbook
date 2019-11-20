@@ -10,17 +10,17 @@ describe 'osquery::centos' do
   let(:node_attributes) do
     {
       'osquery' => {
-        'packs' => %w(chefspec),
-        'version' => '1.7.3'
+        'packs' => %w[chefspec],
+        'version' => '3.2.6'
       }
     }.merge(node_attributes_extra)
   end
 
   let(:platform) do
-    { platform: 'centos', version: '7.0', step_into: ['osquery_install'] }
+    { platform: 'centos', version: '7.7.1908', step_into: ['osquery_install'] }
   end
 
-  let(:repo) { 'osquery-s3-centos7-repo-1-0.0.noarch.rpm' }
+  let(:repo) { 'osquery-4.0.2-1.linux.x86_64.rpm' }
 
   before do
     allow_any_instance_of(Chef::Resource).to receive(:rsyslog_legacy).and_return(Chef::Version.new('7.4.4'))
@@ -32,11 +32,11 @@ describe 'osquery::centos' do
 
   context 'specific version' do
     it 'installs osquery' do
-      expect(chef_run).to install_osquery_centos('1.7.3')
+      expect(chef_run).to install_osquery_centos('3.2.6')
     end
 
     it 'installs osquery package' do
-      expect(chef_run).to install_package('osquery').with(version: '1.7.3-1.linux')
+      expect(chef_run).to install_package('osquery').with(version: '3.2.6-1.linux')
     end
   end
 
@@ -52,11 +52,11 @@ describe 'osquery::centos' do
     end
 
     it 'installs osquery' do
-      expect(chef_run).to install_osquery_centos('2.4.0')
+      expect(chef_run).to install_osquery_centos('4.0.2')
     end
 
     it 'installs/upgrades osquery package' do
-      expect(chef_run).to upgrade_package('osquery').with(version: '2.4.0-1.linux')
+      expect(chef_run).to upgrade_package('osquery').with(version: '4.0.2-1.linux')
     end
   end
 
@@ -76,7 +76,7 @@ describe 'osquery::centos' do
     expect(chef_run).to create_osquery_config('/etc/osquery/osquery.conf')
       .with(
         pack_source: 'osquery',
-        packs: %w(chefspec),
+        packs: %w[chefspec],
         decorators: {}
       )
   end
