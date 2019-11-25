@@ -2,7 +2,7 @@
 # Cookbook Name:: osquery
 # Recipe:: amazon
 #
-# Copyright 2016, Jack Naglieri
+# Copyright 2019, Dwolla Inc.
 #
 
 osquery_install node['osquery']['version'] do

@@ -203,6 +203,7 @@ License and Authors
 
 ```text
 Copyright 2013-2014 Jack Naglieri <jacknagzdev@gmail.com>
+Modifications made in 2019 Copyright Dwolla Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
