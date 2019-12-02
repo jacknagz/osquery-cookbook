@@ -65,11 +65,7 @@ describe 'osquery::centos' do
   end
 
   it 'install osquery repo' do
-    expect(chef_run).to_not install_rpm_package('osquery repo')
-  end
-
-  it 'get osquery repo' do
-    expect(chef_run).to create_remote_file("#{Chef::Config['file_cache_path']}/#{repo}")
+    expect(chef_run).to create_yum_repository('osquery')
   end
 
   it 'creates osquery config' do

@@ -34,20 +34,11 @@ end
 action :install_centos do
   package_version = "#{new_resource.version}#{PACKAGE_SUFFIX}"
   package_action = new_resource.upgrade ? :upgrade : :install
-  repo_url = 'https://pkg.osquery.io/rpm/osquery-4.0.2-1.linux.x86_64.rpm'
-  centos_repo = 'osquery-4.0.2-1.linux.x86_64.rpm'
 
-  remote_file "#{file_cache}/#{centos_repo}" do
-    action   :create
-    source   repo_url.to_s
-    checksum repo_hashes[:centos][:key]
-    notifies :install, 'rpm_package[osquery repo]', :immediately
-    not_if   { node['osquery']['repo']['internal'] }
-  end
-
-  rpm_package 'osquery repo' do
-    action :nothing
-    source "#{file_cache}/#{centos_repo}"
+  yum_repository 'osquery' do
+    baseurl 'https://s3.amazonaws.com/osquery-packages/rpm/$basearch/'
+    gpgkey 'https://pkg.osquery.io/rpm/GPG'
+    action :create
   end
 
   package 'osquery' do
@@ -59,20 +50,11 @@ end
 action :install_amazon do
   package_version = "#{new_resource.version}#{PACKAGE_SUFFIX}"
   package_action = new_resource.upgrade ? :upgrade : :install
-  repo_url = 'https://pkg.osquery.io/rpm/osquery-4.0.2-1.linux.x86_64.rpm'
-  amazon_repo = 'osquery-4.0.2-1.linux.x86_64.rpm'
 
-  remote_file "#{file_cache}/#{amazon_repo}" do
-    action   :create
-    source   repo_url.to_s
-    checksum repo_hashes[:amazon][:key]
-    notifies :install, 'rpm_package[osquery repo]', :immediately
-    not_if   { node['osquery']['repo']['internal'] }
-  end
-
-  rpm_package 'osquery repo' do
-    action :nothing
-    source "#{file_cache}/#{amazon_repo}"
+  yum_repository 'osquery' do
+    baseurl 'https://s3.amazonaws.com/osquery-packages/rpm/$basearch/'
+    gpgkey 'https://pkg.osquery.io/rpm/GPG'
+    action :create
   end
 
   package 'osquery' do

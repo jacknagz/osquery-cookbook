@@ -8,6 +8,7 @@ This cookbook includes recipes and resources to install, configure, and start Fa
 Supported
 ------------
 #### Platforms
+  * Amazon 2018.03, 2
   * Ubuntu: 12.04, 14.04, 16.04
   * Centos/Redhat: 6.5, 7.0
   * OS X

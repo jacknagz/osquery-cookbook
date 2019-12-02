@@ -54,14 +54,8 @@ module OsqueryInstallerHelpers
 
   def repo_hashes
     {
-      centos: {
-        key: '5a54f5f0ffad39f511d598ec83091604caa554efd037b47f4a73bab76d08650b'
-      },
       ubuntu: {
         key: '1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B'
-      },
-      amazon: {
-        key: '5a54f5f0ffad39f511d598ec83091604caa554efd037b47f4a73bab76d08650b'
       }
     }
   end
