@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 group :test do
   gem 'berkshelf'
-  gem 'chefspec', '~> 7'
-  gem 'fauxhai', '= 6.2.0'
+  gem 'chefspec', '~> 8'
+  gem 'fauxhai', '>= 6.11'
   gem 'foodcritic'
   gem 'kitchen-inspec'
   gem 'kitchen-vagrant'
@@ -15,6 +17,6 @@ group :test do
 end
 
 group :production do
-  gem 'chef', '>= 12.14.89'
-  gem 'chef-zero', '4.8.0'
+  gem 'chef', '~> 14'
+  gem 'chef-zero', '>= 14.0.6'
 end

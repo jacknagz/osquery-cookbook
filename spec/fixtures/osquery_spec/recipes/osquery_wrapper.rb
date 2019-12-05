@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 node.override['osquery']['pack_source'] = 'osquery_spec'
 node.override['osquery']['packs'] = %w[osquery_spec_test]
 node.override['osquery']['version'] = '4.0.2'

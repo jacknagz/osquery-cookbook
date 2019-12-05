@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'osquery::default' do
@@ -5,7 +7,7 @@ describe 'osquery::default' do
     include_context 'converged recipe'
 
     let(:platform) do
-      { platform: 'mac_os_x', version: '10.10' }
+      { platform: 'mac_os_x', version: '10.13' }
     end
 
     it 'includes mac os x installation recipe' do

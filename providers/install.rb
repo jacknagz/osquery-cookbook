@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 PACKAGE_SUFFIX = '-1.linux'
 
 def whyrun_supported?
@@ -8,17 +10,13 @@ end
 action :install_ubuntu do
   package_version = "#{new_resource.version}#{PACKAGE_SUFFIX}"
   package_action = new_resource.upgrade ? :upgrade : :install
-  os_codename = node['lsb']['codename']
-
-  # Work around for https://github.com/facebook/osquery/issues/4338
-  os_codename = 'deb' if node['lsb']['codename'] == 'bionic'
 
   apt_repository 'osquery' do
     action        :add
-    uri           ::File.join(osquery_s3, os_codename)
+    uri           ::File.join(osquery_s3, 'deb')
     components    ['main']
     arch          'amd64'
-    distribution  os_codename
+    distribution  'deb'
     keyserver     'keyserver.ubuntu.com'
     key           repo_hashes[:ubuntu][:key]
     not_if { node['osquery']['repo']['internal'] }
@@ -31,6 +29,7 @@ action :install_ubuntu do
   end
 end
 
+# Setup CentOS repo and install osquery package.
 action :install_centos do
   package_version = "#{new_resource.version}#{PACKAGE_SUFFIX}"
   package_action = new_resource.upgrade ? :upgrade : :install
@@ -112,7 +111,6 @@ end
 action :remove_ubuntu do
   service osquery_daemon do
     action %i[disable stop]
-    action
     only_if { ::File.exist?('/etc/init.d/osqueryd') && ::File.exist?(osquery_config_path) }
   end
 

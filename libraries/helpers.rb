@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mixlib/shellout'
 
 # helper methods for common case statements
@@ -16,10 +18,6 @@ module Osquery
   end
 
   def osquery_s3
-    'https://osquery-packages.s3.amazonaws.com'
-  end
-
-  def osquery_pkg
     'https://pkg.osquery.io'
   end
 

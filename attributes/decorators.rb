@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # default decorator hash.
 default['osquery']['decorators'] = {}
 

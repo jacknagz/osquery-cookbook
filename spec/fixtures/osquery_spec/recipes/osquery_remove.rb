@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 osquery_install node['osquery']['version'] do
   action :remove_ubuntu
 end

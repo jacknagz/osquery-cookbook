@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'osquery::centos' do
@@ -19,8 +21,6 @@ describe 'osquery::centos' do
   let(:platform) do
     { platform: 'centos', version: '7.7.1908', step_into: ['osquery_install'] }
   end
-
-  let(:repo) { 'osquery-4.0.2-1.linux.x86_64.rpm' }
 
   before do
     allow_any_instance_of(Chef::Resource).to receive(:rsyslog_legacy).and_return(Chef::Version.new('7.4.4'))

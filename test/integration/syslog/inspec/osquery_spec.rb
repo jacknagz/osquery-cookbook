@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 case os[:family]
 when 'debian', 'redhat', 'amazon'
   describe service('osqueryd') do

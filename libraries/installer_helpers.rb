@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # helper methods to setup installation
 module OsqueryInstallerHelpers
   include Chef::Mixin::ShellOut
@@ -23,14 +25,14 @@ module OsqueryInstallerHelpers
   end
 
   def osx_upgradable
-    return true if osquery_current_version.nil?
+    return true if !File.exist?('/usr/local/bin/osqueryi') || osquery_current_version.nil?
 
     osquery_current_version < osquery_latest_version
   end
 
   def supported
     {
-      mac_os_x: %w[10.10],
+      mac_os_x: %w[10.13],
       ubuntu: %w[12.04 14.04 16.04],
       centos: %w[6.5 7.0],
       redhat: %w[6.5 7.0],
@@ -62,8 +64,7 @@ module OsqueryInstallerHelpers
 
   def mac_os_x_pkg_hashes
     {
-      '1.8.1' => '1a118c535d009e6837efeb17bd3f44c125d0c442e6f7f652925d864a125e9f06',
-      '1.7.4' => '74dabf0a08f3ed321183fd07583a6ff49c7fd779e08d978a501014df7b073ecc'
+      '4.0.2' => '91932b1eb4a7d1ed684611f25686a5a72b7342b54ca20a990ac647ce6c42a381'
     }
   end
 end

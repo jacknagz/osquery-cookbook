@@ -1,20 +1,19 @@
 osquery Cookbook
 ====================
-[![Build Status](https://travis-ci.org/jacknagz/osquery-cookbook.svg?branch=master)](https://travis-ci.org/jacknagz/osquery-cookbook)
-[![Cookbook Version](https://img.shields.io/cookbook/v/osquery.svg)](https://supermarket.chef.io/cookbooks/osquery)
+[![Build Status](https://travis-ci.org/Dwolla/osquery-cookbook.svg?branch=master)](https://travis-ci.org/Dwolla/osquery-cookbook)
 
 This cookbook includes recipes and resources to install, configure, and start Facebook's  [osquery](https://osquery.io/).  osquery is an operating system instrumentation framework for OS X/macOS, Windows, and Linux.
 
 Supported
 ------------
 #### Platforms
-  * Amazon 2018.03, 2
+  * Amazon Linux: 2018.03, 2
   * Ubuntu: 12.04, 14.04, 16.04
   * Centos/Redhat: 6.5, 7.0
-  * OS X
+  * OS X 10.13
 
 #### Chef
-  * Chef 11+
+  * Chef 14+
 
 #### Cookbooks
   * [`apt`](https://github.com/chef-cookbooks/apt)

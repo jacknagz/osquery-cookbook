@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # config and logger configuration.
 default['osquery']['options']['config_plugin']  = 'filesystem'
 default['osquery']['options']['logger_plugin']  = 'filesystem'

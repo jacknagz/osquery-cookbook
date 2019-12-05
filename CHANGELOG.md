@@ -13,8 +13,7 @@ This file is used to list changes made in each version of the osquery cookbook.
 
 0.3.0
 -----
-- [dwolla inc] - Amazon Linux 2018.03 and 2 support
-
+- [dwolla inc] - Amazon Linux 2018.03 and 2 support. Update Ubuntu and OSX supported versions.
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
 

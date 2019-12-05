@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'osquery_spec'
 maintainer 'Jack Naglieri'
 maintainer_email 'jacknagzdev@gmail.com'

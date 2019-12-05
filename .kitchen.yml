@@ -10,15 +10,27 @@ verifier:
   name: inspec
 
 platforms:
-  - name: hbsmith/awslinux
+  - name: amazonlinux-2018.03
     driver:
       box: hbsmith/awslinux
-  - name: bento/centos-7.2
-    driver:
-      box: bento/centos-7.2
-  - name: bento/amazonlinux-2
+  - name: amazonlinux-2
     driver:
       box: bento/amazonlinux-2
+  - name: osx-10.13
+    driver:
+      box: monsenso/macos-10.13
+  - name: centos-6
+    driver:
+      box: centos/6
+  - name: centos-7.2
+    driver:
+      box: bento/centos-7.2
+  - name: ubuntu-bionic64
+    driver:
+      box: ubuntu/bionic64
+  - name: ubuntu-xenial64
+    driver:
+      box: ubuntu/xenial64
 
 suites:
   - name: default

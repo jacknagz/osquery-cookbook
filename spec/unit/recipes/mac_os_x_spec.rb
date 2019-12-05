@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'osquery::mac_os_x' do
@@ -13,7 +15,7 @@ describe 'osquery::mac_os_x' do
   end
 
   let(:platform) do
-    { platform: 'mac_os_x', version: '10.10', step_into: %w[osquery_conf osquery_install] }
+    { platform: 'mac_os_x', version: '10.13', step_into: %w[osquery_conf osquery_install] }
   end
 
   before do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'osquery'
 maintainer 'Dwolla Inc.'
 maintainer_email 'dev+chef-osquery@dwolla.com'
