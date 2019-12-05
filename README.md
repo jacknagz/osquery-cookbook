@@ -26,6 +26,8 @@ Recipes
 -------
 #### default
 The `default` recipe determines if a node is within the supported platform list and includes the one of the platform specific recipes to setup osquery.
+#### logrotate
+The `logrotate` recipe will rotate the osqueryd.results.log to reduce the possibility of running out of diskspace.
 
 #### centos/ubuntu/mac_os_x
   * Install osquery via package (rpm, deb, or pkg)

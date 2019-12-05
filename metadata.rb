@@ -21,3 +21,4 @@ issues_url 'https://github.com/jacknagz/osquery-cookbook/issues' if respond_to?(
 source_url 'https://github.com/jacknagz/osquery-cookbook' if respond_to?(:source_url)
 
 depends 'apt'
+depends 'logrotate'
