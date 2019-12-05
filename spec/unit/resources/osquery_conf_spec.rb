@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'osquery_spec::osquery_conf' do
@@ -5,7 +7,7 @@ describe 'osquery_spec::osquery_conf' do
     include_context 'converged recipe'
 
     let(:platform) do
-      { platform: 'ubuntu', version: '14.04', step_into: %w(osquery_conf) }
+      { platform: 'ubuntu', version: '14.04', step_into: %w[osquery_conf] }
     end
 
     it 'converges without error' do
@@ -48,7 +50,7 @@ describe 'osquery_spec::osquery_conf' do
     include_context 'converged recipe'
 
     let(:platform) do
-      { platform: 'mac_os_x', version: '10.10', step_into: %w(osquery_conf) }
+      { platform: 'mac_os_x', version: '10.12', step_into: %w[osquery_conf] }
     end
 
     it 'creates config directory if its missing' do

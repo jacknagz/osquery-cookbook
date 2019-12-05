@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if defined?(ChefSpec)
   def create_osquery_config(conf)
     ChefSpec::Matchers::ResourceMatcher.new(:osquery_conf, :create, conf)
@@ -37,6 +39,14 @@ if defined?(ChefSpec)
 
   def remove_osquery_centos(version)
     ChefSpec::Matchers::ResourceMatcher.new(:osquery_install, :remove_centos, version)
+  end
+
+  def install_osquery_amazon(version)
+    ChefSpec::Matchers::ResourceMatcher.new(:osquery_install, :install_amazon, version)
+  end
+
+  def remove_osquery_amazon(version)
+    ChefSpec::Matchers::ResourceMatcher.new(:osquery_install, :remove_amazon, version)
   end
 
   def install_osquery_os_x(version)

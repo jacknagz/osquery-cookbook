@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'osquery::mac_os_x' do
@@ -6,14 +8,14 @@ describe 'osquery::mac_os_x' do
   let(:node_attributes) do
     {
       'osquery' => {
-        'packs' => %w(osx_pack),
+        'packs' => %w[osx_pack],
         'version' => '1.7.4'
       }
     }
   end
 
   let(:platform) do
-    { platform: 'mac_os_x', version: '10.10', step_into: %w(osquery_conf osquery_install) }
+    { platform: 'mac_os_x', version: '10.13', step_into: %w[osquery_conf osquery_install] }
   end
 
   before do
@@ -23,7 +25,7 @@ describe 'osquery::mac_os_x' do
   let(:osquery_vers) { '1.7.4' }
   let(:domain) { 'com.facebook.osqueryd' }
   let(:pkg) { "/var/chef/cache/osquery-#{osquery_vers}.pkg" }
-  osquery_dirs = %w(/var/log/osquery /var/osquery/packs /var/osquery)
+  osquery_dirs = %w[/var/log/osquery /var/osquery/packs /var/osquery]
 
   it 'converges without error' do
     expect { chef_run }.not_to raise_error

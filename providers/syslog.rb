@@ -1,11 +1,11 @@
-use_inline_resources
+# frozen_string_literal: true
 
 def whyrun_supported?
   true
 end
 
 def load_current_resource
-  @current_resource = Chef::Resource::OsquerySyslog.new(new_resource.syslog_file)
+  @current_resource = Chef::Resource.resource_for_node(:osquery_syslog, node).new(new_resource.syslog_file)
   @current_resource.pipe_filter(new_resource.pipe_filter)
   @current_resource.pipe_path(new_resource.pipe_path)
 end
@@ -15,7 +15,7 @@ action :create do
     action :install
   end
 
-  default_pipe = '/var/osquery/syslog_pipe'.freeze
+  default_pipe = '/var/osquery/syslog_pipe'
   pipe_filter = new_resource.pipe_filter
   pipe_path = new_resource.pipe_path
 
@@ -41,7 +41,6 @@ action :create do
         command "chmod 460 #{pipe_path}"
         action :run
       end
-      new_resource.updated_by_last_action(true)
     end
   end
 

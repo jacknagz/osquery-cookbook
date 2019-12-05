@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 # osquery version and packs.
-default['osquery']['version'] = '2.4.0'
+default['osquery']['version'] = '4.0.2'
 default['osquery']['pack_source'] = 'osquery'
-default['osquery']['packs'] = %w(osquery-monitoring)
+default['osquery']['packs'] = %w[osquery-monitoring]
 
 # syslog options.
 default['osquery']['syslog']['enabled'] = true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'chefspec'
 require 'chefspec/berkshelf'
 
@@ -14,7 +16,7 @@ shared_context 'converged recipe' do
   let(:chef_run) do
     runner = ChefSpec::SoloRunner.new(platform) do |node|
       node_attributes.each do |k, v|
-        node.set[k] = v
+        node.normal[k] = v
       end
     end
     runner.converge(described_recipe)

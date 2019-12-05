@@ -11,6 +11,9 @@ This file is used to list changes made in each version of the osquery cookbook.
 -----
 - [jack naglieri] - Dynamic osquery config template
 
+0.3.0
+-----
+- [dwolla inc] - Amazon Linux 2018.03 and 2 support
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
 

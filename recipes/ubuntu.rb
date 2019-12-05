@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Cookbook Name:: osquery
 # Recipe:: ubuntu
@@ -30,6 +32,6 @@ osquery_conf osquery_config_path do
 end
 
 service osquery_daemon do
-  action [:enable, :start]
+  action %i[enable start]
   provider Chef::Provider::Service::Systemd if os_version.eql?(16)
 end

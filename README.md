@@ -8,12 +8,13 @@ This cookbook includes recipes and resources to install, configure, and start Fa
 Supported
 ------------
 #### Platforms
+  * Amazon Linux: 2018.03, 2
   * Ubuntu: 12.04, 14.04, 16.04
   * Centos/Redhat: 6.5, 7.0
-  * OS X
+  * OS X 10.13
 
 #### Chef
-  * Chef 11+
+  * Chef 14+
 
 #### Cookbooks
   * [`apt`](https://github.com/chef-cookbooks/apt)
