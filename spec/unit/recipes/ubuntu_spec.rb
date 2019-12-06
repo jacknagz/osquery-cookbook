@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'osquery::ubuntu' do
@@ -11,7 +13,7 @@ describe 'osquery::ubuntu' do
     {
       'osquery' => {
         'version' => '2.3.0',
-        'packs' => %w(chefspec)
+        'packs' => %w[chefspec]
       }
     }.merge(node_attributes_extra)
   end
@@ -50,11 +52,11 @@ describe 'osquery::ubuntu' do
     end
 
     it 'installs osquery' do
-      expect(chef_run).to install_osquery_ubuntu('2.4.0')
+      expect(chef_run).to install_osquery_ubuntu('4.0.2')
     end
 
     it 'installs/upgrades osquery package' do
-      expect(chef_run).to upgrade_package('osquery').with(version: '2.4.0-1.linux')
+      expect(chef_run).to upgrade_package('osquery').with(version: '4.0.2-1.linux')
     end
   end
 
@@ -70,7 +72,7 @@ describe 'osquery::ubuntu' do
     expect(chef_run).to create_osquery_config('/etc/osquery/osquery.conf')
       .with(
         pack_source: 'osquery',
-        packs: %w(chefspec),
+        packs: %w[chefspec],
         decorators: {}
       )
   end

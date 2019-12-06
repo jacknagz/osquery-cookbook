@@ -1,6 +1,6 @@
-use_inline_resources
+# frozen_string_literal: true
 
-PACKAGE_SUFFIX = '-1.linux'.freeze
+PACKAGE_SUFFIX = '-1.linux'
 
 def whyrun_supported?
   true
@@ -10,19 +10,13 @@ end
 action :install_ubuntu do
   package_version = "#{new_resource.version}#{PACKAGE_SUFFIX}"
   package_action = new_resource.upgrade ? :upgrade : :install
-  os_codename = node['lsb']['codename']
-
-  # Work around for https://github.com/facebook/osquery/issues/4338
-  if node['lsb']['codename'] == 'bionic'
-    os_codename = 'deb'
-  end
 
   apt_repository 'osquery' do
     action        :add
-    uri           ::File.join(osquery_s3, os_codename)
+    uri           ::File.join(osquery_s3, 'deb')
     components    ['main']
     arch          'amd64'
-    distribution  os_codename
+    distribution  'deb'
     keyserver     'keyserver.ubuntu.com'
     key           repo_hashes[:ubuntu][:key]
     not_if { node['osquery']['repo']['internal'] }
@@ -39,20 +33,27 @@ end
 action :install_centos do
   package_version = "#{new_resource.version}#{PACKAGE_SUFFIX}"
   package_action = new_resource.upgrade ? :upgrade : :install
-  repo_url = "#{osquery_s3}/centos#{os_version}/noarch"
-  centos_repo = "osquery-s3-centos#{os_version}-repo-1-0.0.noarch.rpm"
 
-  remote_file "#{file_cache}/#{centos_repo}" do
-    action   :create
-    source   "#{repo_url}/#{centos_repo}"
-    checksum repo_hashes[:centos][os_version]
-    notifies :install, 'rpm_package[osquery repo]', :immediately
-    not_if   { node['osquery']['repo']['internal'] }
+  yum_repository 'osquery' do
+    baseurl 'https://s3.amazonaws.com/osquery-packages/rpm/$basearch/'
+    gpgkey 'https://pkg.osquery.io/rpm/GPG'
+    action :create
   end
 
-  rpm_package 'osquery repo' do
-    action :nothing
-    source "#{file_cache}/#{centos_repo}"
+  package 'osquery' do
+    action   package_action
+    version  package_version
+  end
+end
+
+action :install_amazon do
+  package_version = "#{new_resource.version}#{PACKAGE_SUFFIX}"
+  package_action = new_resource.upgrade ? :upgrade : :install
+
+  yum_repository 'osquery' do
+    baseurl 'https://s3.amazonaws.com/osquery-packages/rpm/$basearch/'
+    gpgkey 'https://pkg.osquery.io/rpm/GPG'
+    action :create
   end
 
   package 'osquery' do
@@ -109,7 +110,7 @@ end
 # remove apt repo and osquery package.
 action :remove_ubuntu do
   service osquery_daemon do
-    action [:disable, :stop]
+    action %i[disable stop]
     only_if { ::File.exist?('/etc/init.d/osqueryd') && ::File.exist?(osquery_config_path) }
   end
 
@@ -131,7 +132,7 @@ end
 # remove osquery package.
 action :remove_centos do
   service osquery_daemon do
-    action [:disable, :stop]
+    action %i[disable stop]
   end
 
   package 'osquery' do
@@ -141,7 +142,7 @@ end
 
 # delete osquery binary files.
 action :remove_os_x do
-  %w(osqueryi osqueryd osqueryctl).each do |osquery_bin|
+  %w[osqueryi osqueryd osqueryctl].each do |osquery_bin|
     file osquery_bin do
       action :delete
     end

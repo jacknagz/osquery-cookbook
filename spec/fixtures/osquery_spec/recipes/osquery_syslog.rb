@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 node.default['osquery']['syslog']['enabled'] = true
 node.default['osquery']['syslog']['filename'] = '/etc/rsyslog.d/osquery.conf'
 node.default['osquery']['syslog']['pipe_user'] = 'root'

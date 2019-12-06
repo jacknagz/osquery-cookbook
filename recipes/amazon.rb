@@ -2,25 +2,20 @@
 
 #
 # Cookbook Name:: osquery
-# Recipe:: ubuntu
+# Recipe:: amazon
 #
-# Copyright 2016, Jack Naglieri
 #
 
 osquery_install node['osquery']['version'] do
-  action  :install_ubuntu
+  action  :install_amazon
   upgrade node['osquery']['repo']['package_upgrade']
 end
 
 osquery_syslog node['osquery']['syslog']['filename'] do
-  action      case node['osquery']['syslog']['enabled']
-                when true
-                  :create
-                when false
-                  :delete
-              end
+  action      :create
   pipe_filter node['osquery']['syslog']['pipe_filter']
   pipe_path   node['osquery']['options']['syslog_pipe_path']
+  only_if     { node['osquery']['syslog']['enabled'] }
   notifies    :restart, "service[#{osquery_daemon}]"
 end
 
@@ -37,5 +32,4 @@ end
 
 service osquery_daemon do
   action %i[enable start]
-  provider Chef::Provider::Service::Systemd if os_version.eql?(16)
 end

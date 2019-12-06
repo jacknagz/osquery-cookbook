@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rake'
 require 'rake/testtask'
 require 'rubocop/rake_task'
@@ -5,14 +7,14 @@ require 'foodcritic'
 require 'rspec/core/rake_task'
 
 desc 'Run all tests'
-task all: [
-  :rubocop,
-  :foodcritic,
-  :unit
+task all: %i[
+  rubocop
+  foodcritic
+  unit
 ]
-task lint: [
-  :rubocop,
-  :foodcritic
+task lint: %i[
+  rubocop
+  foodcritic
 ]
 task test: [
   :unit

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'osquery_spec::osquery_remove' do
@@ -7,7 +9,7 @@ describe 'osquery_spec::osquery_remove' do
     {
       platform: 'ubuntu',
       version: '14.04',
-      step_into: %w(osquery_syslog osquery_install osquery_conf)
+      step_into: %w[osquery_syslog osquery_install osquery_conf]
     }
   end
 
@@ -66,7 +68,7 @@ describe 'osquery_spec::osquery_remove' do
     expect(chef_run).to_not remove_apt_repository('osquery')
   end
 
-  %w(/etc/osquery /var/osquery /usr/share/osquery/packs).each do |osquery_path|
+  %w[/etc/osquery /var/osquery /usr/share/osquery/packs].each do |osquery_path|
     it "deletes the #{osquery_path} path" do
       expect(chef_run).to delete_directory(osquery_path)
         .with(recursive: true)

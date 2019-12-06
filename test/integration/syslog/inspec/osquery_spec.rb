@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 case os[:family]
-when 'debian', 'redhat'
+when 'debian', 'redhat', 'amazon'
   describe service('osqueryd') do
     it { should be_installed }
     it { should be_running }
