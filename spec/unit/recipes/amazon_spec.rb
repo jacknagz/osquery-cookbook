@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'osquery::centos' do
+describe 'osquery::amazon' do
   include_context 'converged recipe'
 
   let(:node_attributes_extra) do
@@ -13,13 +13,13 @@ describe 'osquery::centos' do
     {
       'osquery' => {
         'packs' => %w[chefspec],
-        'version' => '3.2.6'
+        'version' => '4.0.2'
       }
     }.merge(node_attributes_extra)
   end
 
   let(:platform) do
-    { platform: 'centos', version: '7.7.1908', step_into: ['osquery_install'] }
+    { platform: 'amazon', version: '2018.03', step_into: ['osquery_install'] }
   end
 
   before do
@@ -32,11 +32,11 @@ describe 'osquery::centos' do
 
   context 'specific version' do
     it 'installs osquery' do
-      expect(chef_run).to install_osquery_centos('3.2.6')
+      expect(chef_run).to install_osquery_amazon('4.0.2')
     end
 
     it 'installs osquery package' do
-      expect(chef_run).to install_package('osquery').with(version: '3.2.6-1.linux')
+      expect(chef_run).to install_package('osquery').with(version: '4.0.2-1.linux')
     end
   end
 
@@ -52,7 +52,7 @@ describe 'osquery::centos' do
     end
 
     it 'installs osquery' do
-      expect(chef_run).to install_osquery_centos('4.0.2')
+      expect(chef_run).to install_osquery_amazon('4.0.2')
     end
 
     it 'installs/upgrades osquery package' do

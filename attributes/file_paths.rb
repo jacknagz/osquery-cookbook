@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # FIM enable/disable.
 default['osquery']['fim_enabled'] = false
 default['osquery']['file_paths'] = {}

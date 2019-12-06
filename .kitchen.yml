@@ -10,30 +10,27 @@ verifier:
   name: inspec
 
 platforms:
-  - name: osx-1010
+  - name: amazonlinux-2018.03
     driver:
-      box: jhcook/osx-yosemite-10.10
-      box_url: https://atlas.hashicorp.com/jhcook/boxes/osx-yosemite-10.10/versions/10.10.5/providers/virtualbox.box
-  - name: centos-67
+      box: hbsmith/awslinux
+  - name: amazonlinux-2
     driver:
-      box: bento/centos-6.7
-      box_url: https://atlas.hashicorp.com/bento/boxes/centos-6.7/versions/2.2.5/providers/virtualbox.box
-  - name: centos-72
+      box: bento/amazonlinux-2
+  - name: osx-10.13
+    driver:
+      box: monsenso/macos-10.13
+  - name: centos-6
+    driver:
+      box: centos/6
+  - name: centos-7.2
     driver:
       box: bento/centos-7.2
-      box_url: https://atlas.hashicorp.com/bento/boxes/centos-7.2/versions/2.2.5/providers/virtualbox.box
-  - name: ubuntu-trusty64
+  - name: ubuntu-bionic64
     driver:
-      box: ubuntu/trusty64
-      box_url: https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/20160406.0.0/providers/virtualbox.box
-  - name: ubuntu/precise64
-    driver:
-      box: ubuntu/precise64
-      box_url: https://atlas.hashicorp.com/ubuntu/boxes/precise64/versions/20160329.0.0/providers/virtualbox.box
-  - name: ubuntu/xenial64
+      box: ubuntu/bionic64
+  - name: ubuntu-xenial64
     driver:
       box: ubuntu/xenial64
-      box_url: https://atlas.hashicorp.com/ubuntu/boxes/xenial64/versions/20170418.0.0/providers/virtualbox.box
 
 suites:
   - name: default
@@ -63,7 +60,7 @@ suites:
     run_list:
       - recipe[osquery_spec::osquery_wrapper]
     driver:
-        require_chef_omnibus: 11.18.12-1
+        require_chef_omnibus: 14.13
   - name: osquery_wrapper
     run_list:
       - recipe[osquery_spec::osquery_wrapper]
