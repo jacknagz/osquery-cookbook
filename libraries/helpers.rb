@@ -12,7 +12,7 @@ module Osquery
     case node['platform']
     when 'mac_os_x'
       'com.facebook.osqueryd'
-    when 'centos', 'ubuntu', 'redhat', 'amazon'
+    when 'centos', 'ubuntu', 'redhat', 'amazon', 'rocky'
       'osqueryd'
     end
   end
@@ -25,7 +25,7 @@ module Osquery
     case node['platform']
     when 'mac_os_x'
       '/var/osquery/osquery.conf'
-    when 'centos', 'ubuntu', 'redhat', 'amazon'
+    when 'centos', 'ubuntu', 'redhat', 'amazon', 'rocky'
       '/etc/osquery/osquery.conf'
     end
   end
@@ -34,7 +34,7 @@ module Osquery
     case node['platform']
     when 'mac_os_x'
       '/var/osquery/packs'
-    when 'centos', 'ubuntu', 'redhat', 'amazon'
+    when 'centos', 'ubuntu', 'redhat', 'amazon', 'rocky'
       '/usr/share/osquery/packs'
     end
   end
@@ -43,7 +43,7 @@ module Osquery
     case node['platform']
     when 'mac_os_x'
       'wheel'
-    when 'centos', 'ubuntu', 'redhat', 'amazon'
+    when 'centos', 'ubuntu', 'redhat', 'amazon', 'rocky'
       'root'
     end
   end
